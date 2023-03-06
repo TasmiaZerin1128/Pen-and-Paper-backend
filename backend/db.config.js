@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const dotenv = require('dotenv');
+const userModel = require('./models/user')
 
 dotenv.config();
 
@@ -17,9 +18,16 @@ function connectToDatabase() {
   //Connect to db
   db.connect((err) => {
     if (err) {
+      console.log('Connection to database failed!');
       throw err;
     }
     console.log(`${APP_NAME} successfully connected to database.`);
+    db.query(userModel.createUsers, function (err, result) {
+      if (err){
+        throw err;
+      }
+      console.log('User Table created');
+    })
   });
 }
 
