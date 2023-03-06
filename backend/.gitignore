@@ -8,6 +8,3 @@ node_modules
 .env
 # Optional npm cache directory
 .npm
-
-# Auto-Generated Jest MongoDB config
-globalConfig.json
