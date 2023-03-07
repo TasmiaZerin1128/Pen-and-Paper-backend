@@ -3,18 +3,13 @@ const database = require('../db.config');
 
 const TABLENAME = process.env.TABLENAME;
 
-exports.createUser = async (req, res) => {
-    const {Username, Email, Password} = req;
-    const CreatedAt = Date.now();
-    const UpdatedAt = Date.now();
-    console.log('Username is ' + Username);
-
-    // let query = "INSERT INTO " + TABLENAME + "(Username, Email, Password, CreatedAt, UpdatedAt)
-    // VALUES('" + Username + "', '" + Email + "', '" + '" + Password + "', '"+ CreatedAt, ${UpdatedAt})`;
+exports.createUser = async (id, username, email, password) => {
+    
+    console.log('Username is ' + username);
 
     try{
-        const data = database.db.query(query);
-        console.log(data.rows);
+        const data = await database.db.query("INSERT INTO " + TABLENAME + "(id, username, email, password, createdAt, updatedAt) VALUES (?, ?, ? , ?, NOW(), NOW())", [id, username, email, password]);
+        console.log('User created successfully');
         }
         catch(err){
             console.log(err);

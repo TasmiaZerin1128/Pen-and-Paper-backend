@@ -5,26 +5,26 @@ exports.getAllUsers = ((req, res) => {
     res.send('Getting all users');
 })
 
-exports.getUserbyId = ((req, res) => {
+exports.getUserbyUsername = ((req, res) => {
     res.send('Getting user ' + req.params.id);
 })
 
-exports.createUser = (async (req, res) => {
+exports.createUser = async (req, res) => {
     try{
-        userService.createUser(req.body);
-        res.status(200).send('User created successfully');
+        const data = await userService.createUser(req.body);
+        res.status(data.status).send(data.message);
     }
     catch{
         res.send('A problem occured!');
     }
-})
+}
 
-exports.updateUserbyId = async (req, res, next) => {
+exports.updateUserbyUsername = async (req, res, next) => {
     const id = req.params.id;
     await res.send('Updated user');
 }
 
-exports.deleteUserbyId = (req, res) => {
+exports.deleteUserbyUsername = (req, res) => {
     const id = req.params.id;
     res.send('User deleted');
 }

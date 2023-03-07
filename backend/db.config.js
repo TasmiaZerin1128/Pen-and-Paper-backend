@@ -15,9 +15,9 @@ const db = mysql.createConnection({
   database: "pen_paper",
 });
 
-function connectToDatabase() {
+async function connectToDatabase() {
   //Connect to db
-  db.connect((err) => {
+ await db.connect((err) => {
     if (err) {
       console.log("Connection to database failed!");
       throw err;
