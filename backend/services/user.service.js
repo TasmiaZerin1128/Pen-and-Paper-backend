@@ -1,4 +1,5 @@
 const userRepository = require("../repositories/user.repository");
+var validator = require("email-validator");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
@@ -9,7 +10,20 @@ exports.createUser = async (user) => {
 
   const id = uuidv4();
 
-  if(checkUsernameValid(user.username)){
+  var credentialsValid = true;
+
+  if(!checkUsernameValid(user.username)){
+    return {status:401, message:'Space not allowed in username!'};
+  }
+
+  if(!checkPasswordValid(user.password)){
+    return {status:401, message:'Password must contain atleast 6 characters'};
+  }
+
+  if(!checkEmailValid(user.email)){
+    return {status:401, message:'Email is not valid'};
+  }
+
   const username = user.username.toLowerCase();
   const saltRounds = 10;
 
@@ -23,11 +37,6 @@ exports.createUser = async (user) => {
   catch{
     return {status:401, message:'Please check your credentials again'};
   }
-  }
-  else{
-
-    return {status:401, message:'Space not allowed in username!'};
-  }
 };
 
 function checkUsernameValid(username){
@@ -35,4 +44,20 @@ function checkUsernameValid(username){
         return false;
     }
     return true;
+}
+
+function checkPasswordValid(password){
+    if(password.length < 6){
+        return false;
+    }
+    return true;
+}
+
+function checkEmailValid(email){
+    if(validator.validate(email)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
