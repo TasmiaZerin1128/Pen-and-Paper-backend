@@ -1,30 +1,27 @@
-const express = require('express');
-const userService = require('../services/user.service');
+const express = require("express");
+const userService = require("../services/user.service");
 
-exports.getAllUsers = ((req, res) => {
-    res.send('Getting all users');
-})
+exports.getAllUsers = async (req, res) => {
+  const data = await userService.getAllUsers();
+  res.status(data.status).send(data.message);
+};
 
-exports.getUserbyUsername = ((req, res) => {
-    res.send('Getting user ' + req.params.id);
-})
+exports.getUserbyUsername = async (req, res) => {
+  const data = await userService.getOneUser(req.params.username);
+  res.status(data.status).send(data.message);
+};
 
 exports.createUser = async (req, res) => {
-    try{
-        const data = await userService.createUser(req.body);
-        res.status(data.status).send(data.message);
-    }
-    catch{
-        res.send('A problem occured!');
-    }
-}
+  const data = await userService.createUser(req.body);
+  res.status(data.status).send(data.message);
+};
 
-exports.updateUserbyUsername = async (req, res, next) => {
-    const id = req.params.id;
-    await res.send('Updated user');
-}
+exports.updateUserbyUsername = async (req, res) => {
+  const data = await userService.updateUser(req.params.username, req.body);
+  res.status(data.status).send(data.message);
+};
 
-exports.deleteUserbyUsername = (req, res) => {
-    const id = req.params.id;
-    res.send('User deleted');
-}
+exports.deleteUserbyUsername = async (req, res) => {
+  const deletedUser = await userService.deleteUser(req.params.username);
+  res.status(deletedUser.status).send(deletedUser.message);
+};

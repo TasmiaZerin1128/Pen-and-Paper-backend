@@ -1,32 +1,63 @@
-const dotenv = require('dotenv').config();
-const database = require('../db.config');
+const dotenv = require("dotenv").config();
+const database = require("../db.config");
+const userDTO = require('../DTOs/user.dto');
 
 const TABLENAME = process.env.TABLENAME;
 
-exports.createUser = async (id, username, email, password) => {
-
-    try{
-        const data = await database.db.query("INSERT INTO " + TABLENAME + "(id, username, email, password, createdAt, updatedAt) VALUES (?, ?, ? , ?, NOW(), NOW())", [id, username, email, password]);
-        console.log('User created successfully');
-        }
-        catch(err){
-            console.log(err);
-        }
+function makeQuery(sql, params) {
+  return new Promise((resolve, reject) => {
+    database.db.query(sql, params, (error, results) => {
+      if (error) {
+        console.log(error.sqlMessage);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 }
 
-exports.gellAllUser = async () => {
+exports.createUser = async (username, email, password) => {
+  const result = await makeQuery(
+    "INSERT INTO " +
+      TABLENAME +
+      "(id, username, email, password, createdAt, updatedAt) VALUES (uuid(), ?, ? , ?, now(), now())",
+    [username, email, password]
+  );
+  console.log("User created successfully");
+  return result;
+};
 
-}
+exports.getUsers = async () => {
+  const query = "SELECT * FROM " + TABLENAME;
+  const result = await makeQuery(query);
+  const userdto = new userDTO(result);
+  return userdto.users;
+};
 
-exports.getSingleUser = async () => {
+exports.getUser = async (username) => {
+  const result = await makeQuery(
+    "SELECT * FROM " + TABLENAME + " where `username` = ?",
+    [username]
+  );
+  const userdto = new userDTO(result);
+  return userdto.users;
+};
 
-}
+exports.updateUser = async (username, updatedPassword) => {
+  const result = await makeQuery(
+    "UPDATE " +
+      TABLENAME +
+      " SET `password`= ?, `updatedAt`= now() where `username` = ?",
+    [updatedPassword, username]
+  );
+  return result;
+};
 
-exports.updateUser = async () => {
-
-}
-
-exports.deleteUser = async () => {
-
-}
-
+exports.deleteUser = async (username) => {
+  const result = await makeQuery(
+    "DELETE FROM " + TABLENAME + " where `username` = ?",
+    [username]
+  );
+  return result;
+};
