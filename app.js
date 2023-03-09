@@ -20,8 +20,28 @@ app.listen(PORT, () => {
 
 app.use(express.json());
 // Body-parser middleware
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({extended:true}));
+
+app.use((err, req, res, next) => {
+    if (!err) {
+        return next();
+    }
+
+    res.status(500);
+    res.send('500: Internal server error');
+});
 
 app.use('/api/users', userRouter);
+
+app.use('*', (req, res) => {
+    res.status(404).json({
+      success: 'false',
+      message: 'Page not found',
+      error: {
+        statusCode: 404,
+        message: 'You reached a route that is not defined on this server',
+      },
+    });
+});
 
 module.exports = app;
