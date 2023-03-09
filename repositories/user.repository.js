@@ -1,4 +1,4 @@
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 const database = require("../db.config");
 const userDTO = require('../DTOs/user.dto');
 
@@ -17,12 +17,12 @@ function makeQuery(sql, params) {
   });
 }
 
-exports.createUser = async (username, email, password) => {
+exports.createUser = async (id, username, email, password) => {
   const result = await makeQuery(
     "INSERT INTO " +
       TABLENAME +
-      "(id, username, email, password, createdAt, updatedAt) VALUES (uuid(), ?, ? , ?, now(), now()) ",
-    [username, email, password]
+      "(id, username, email, password, createdAt, updatedAt) VALUES (?, ?, ? , ?, now(), now()) ",
+    [id, username, email, password]
   );
   console.log("User created successfully");
   return result;

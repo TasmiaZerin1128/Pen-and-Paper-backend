@@ -5,8 +5,6 @@ class UserDTO{
         this.email = user.email;
         this.createdAt = user.createdAt;
         this.updatedAt = user.updatedAt;
-
-        console.log(this.username);
     }
   }
 
