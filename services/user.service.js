@@ -4,12 +4,14 @@ const bcrypt = require("bcrypt");
 
 
 exports.createUser = async (user) => {
-  if (user.password.length < 6) {
-    console.log("Password must be of atleast 6 characters");
+  
+  console.log(user.username);
+  if(user.username == undefined || user.email == undefined || user.password == undefined){
+    return {status:401, message:'Please enter all the fields'};
   }
 
-  if(user.username==null || user.email == null || user.password==null){
-    return {status:401, message:'Please enter all the fields'};
+  if(user.username.length == 0 || user.email.length == 0 || user.password.length == 0){
+    return {status:401, message:'Some fields are empty!'};
   }
 
   if(!checkUsernameValid(user.username)){
@@ -22,6 +24,14 @@ exports.createUser = async (user) => {
 
   if(!checkEmailValid(user.email)){
     return {status:401, message:'Email is not valid'};
+  }
+
+  if(await usernameExists(user.username)){
+    return {status:401, message: 'Username already exists!'};
+  }
+
+  if(await emailExists(user.email)){
+    return {status:401, message: 'Email already exists!'};
   }
 
   const username = user.username.toLowerCase();
@@ -41,7 +51,7 @@ exports.createUser = async (user) => {
 
 exports.getAllUsers = async () => {
   try{
-    const data =  await userRepository.getUsers();
+    const data =  await userRepository.getAllUsers();
     if(data.length==0){
       return {status:404, message:'Users table is empty!'};
     }
@@ -92,7 +102,8 @@ exports.deleteUser = async (username) =>{
 exports.getOneUser = async (username) => {
 
   try{
-    const result = await userRepository.getUser(username.toLowerCase());
+    const result = await userRepository.getUserbyUsername(username.toLowerCase());
+    console.log(result.length);
     if(result.length==0){
       return {status:404, message:'User not found'};
     }
@@ -104,11 +115,9 @@ exports.getOneUser = async (username) => {
 }
 
 function checkUsernameValid(username){
-    if(/\s/.test(username)){
-        return false;
-    }
-    const specialCharacterCheck = /[^A-Za-z0-9]/;
-    if(specialCharacterCheck.test(username)){
+
+    const usernameValidCheck = /[^A-Za-z0-9]/;
+    if(usernameValidCheck.test(username)){
       return false;
     }
     return true;
@@ -128,4 +137,22 @@ function checkEmailValid(email){
     else{
         return false;
     }
+}
+
+async function usernameExists(username){
+  const data = await userRepository.getUserbyUsername(username);
+  if(data.length == 0){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+async function emailExists(email){
+  const data = await userRepository.getUserbyEmail(email);
+  if(data.length == 0){
+    return false;
+  }
+  return true;
 }

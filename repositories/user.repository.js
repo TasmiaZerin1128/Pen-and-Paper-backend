@@ -28,20 +28,31 @@ exports.createUser = async (username, email, password) => {
   return result;
 };
 
-exports.getUsers = async () => {
+exports.getAllUsers = async () => {
   const query = "SELECT * FROM " + TABLENAME;
   const result = await makeQuery(query);
-  const userdto = new userDTO(result);
-  return userdto.users;
+
+  const allUsers = [];
+
+  result.forEach(element => {
+    allUsers.push(new userDTO(element));
+  });
+
+  return allUsers;
 };
 
-exports.getUser = async (username) => {
+exports.getUserbyUsername = async (username) => {
   const result = await makeQuery(
     "SELECT * FROM " + TABLENAME + " where `username` = ?",
     [username]
   );
-  const userdto = new userDTO(result);
-  return userdto.users;
+
+  const userdto = [];
+  result.forEach(element => {
+    userdto.push(new userDTO(element));
+  });
+
+  return userdto;
 };
 
 exports.updateUser = async (username, updatedPassword) => {
@@ -60,4 +71,19 @@ exports.deleteUser = async (username) => {
     [username]
   );
   return result;
+};
+
+
+exports.getUserbyEmail = async (email) => {
+  const result = await makeQuery(
+    "SELECT * FROM " + TABLENAME + " where `email` = ?",
+    [email]
+  );
+
+  const userdto = [];
+  result.forEach(element => {
+    userdto.push(new userDTO(element));
+  });
+
+  return userdto;
 };

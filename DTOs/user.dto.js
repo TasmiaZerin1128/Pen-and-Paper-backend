@@ -1,17 +1,12 @@
 class UserDTO{
     constructor(user) {
-        this.users = [];
-        user.forEach(element => {
-            let newUser = {
-                id : element.id,
-                username : element.username,
-                email : element.email,
-                createdAt : element.createdAt,
-                updatedAt : element.updatedAt
-            }
-            this.users.push(newUser);
-        });
+        this.id = user.id;
+        this.username = user.username;
+        this.email = user.email;
+        this.createdAt = user.createdAt;
+        this.updatedAt = user.updatedAt;
 
+        console.log(this.username);
     }
   }
 
