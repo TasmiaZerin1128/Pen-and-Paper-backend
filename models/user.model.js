@@ -29,12 +29,11 @@ const User = sequelize.define(
   }
 );
 
-const test = async () => {
+(async () => {
     await User.sync({ alter: true });
-    console.log(await User.findAll());
-};
+    const allUsers = await User.findAll();
+    console.log(allUsers.dataValues);
+})();
 
-
-test();
 
 module.exports = User;
