@@ -1,5 +1,5 @@
 const express = require('express');
-const userRouter = require('./routes/user.route');
+const router = require('./routes/index');
 const dotenv = require('dotenv');
 const bodyparser = require('body-parser')
 
@@ -31,7 +31,7 @@ app.use((err, req, res, next) => {
     res.send('500: Internal server error');
 });
 
-app.use('/api/users', userRouter);
+app.use('/api/', router);
 
 app.use('*', (req, res) => {
     res.status(404).json({
