@@ -1,5 +1,4 @@
 const validator = require("email-validator");
-const userRepository = require("../repositories/user.repository");
 
 function userValidator(username, email, password){
 
@@ -21,20 +20,6 @@ function userValidator(username, email, password){
 
     return {valid:true, message:'Credentials are valid'};
 
-}
-
-async function userDuplicate(username, email){
-    const duplicateUsername = await userRepository.getUserbyUsername(username);
-    if(duplicateUsername.length>0){
-      return {duplicate:true, message:'Username already exists!'};
-    }
-
-    const duplicateEmail = await userRepository.getUserbyEmail(email);
-    if(duplicateEmail.length>0){
-      return {duplicate:true, message:'Email already exists!'};
-    }
-
-    return {duplicate:false, message:'Username and email are unique'};
 }
 
 function checkUsernameValid(username){
@@ -63,4 +48,4 @@ function checkEmailValid(email){
 }
 
 
-module.exports = { userValidator, userDuplicate, checkUsernameValid, checkPasswordValid, checkEmailValid };
+module.exports = { userValidator, checkUsernameValid, checkPasswordValid, checkEmailValid };

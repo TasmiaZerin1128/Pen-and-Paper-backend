@@ -4,17 +4,23 @@ const hashPassword = require("../utils/hashPassword");
 const crypto = require("crypto");
 var validator = require("email-validator");
 
+'use strict';
 
-exports.createUser = async (user) => {
+async function createUser(user){
 
   const userValid = userUtils.userValidator(user.username, user.email, user.password);
   if(!userValid.valid){
     return {status:400, message: userValid.message};
   }
 
-  const userDuplicate = userUtils.userDuplicate(user.username, user.email);
-  if((await userDuplicate).duplicate){
-    return {status:422, message: (await userDuplicate).message};
+  const usernameDuplicate = await getUserbyUsername(user.username);
+  if (usernameDuplicate.status == 200){
+    return {status:422, message: "Username already exists!"};
+  }
+
+  const emailDuplicate = await getUserbyEmail(user.email);
+  if (emailDuplicate.status == 200){
+    return {status:422, message: "Email is already in use!"};
   }
 
   try{
@@ -29,7 +35,7 @@ exports.createUser = async (user) => {
   }
 };
 
-exports.getAllUsers = async () => {
+async function getAllUsers() {
   try{
     const data =  await userRepository.getAllUsers();
     if(data.length==0){
@@ -42,7 +48,7 @@ exports.getAllUsers = async () => {
   }
 }
 
-exports.updateUser = async (username, userToUpdate) => {
+async function updateUser(username, userToUpdate) {
 
   if(!userUtils.checkPasswordValid(userToUpdate)){
     return {status:400, message:'Password must contain atleast 6 characters'};
@@ -62,7 +68,7 @@ exports.updateUser = async (username, userToUpdate) => {
   }
 }
 
-exports.deleteUser = async (username) =>{
+async function deleteUser (username) {
   try{
     const result = await userRepository.deleteUser(username.toLowerCase());
     if(result.affectedRows == 0){
@@ -75,11 +81,10 @@ exports.deleteUser = async (username) =>{
   }
 }
 
-exports.getUser = async (username) => {
+async function getUserbyUsername(username){
 
   try{
     const result = await userRepository.getUserbyUsername(username.toLowerCase());
-    console.log(result.length);
     if(result.length==0){
       return {status:404, message:'User not found'};
     }
@@ -89,3 +94,17 @@ exports.getUser = async (username) => {
     return {status:404, message:'User not found'};
   }
 }
+
+async function getUserbyEmail(email){
+  try{
+    const duplicateEmail = await userRepository.getUserbyEmail(email);
+    if(duplicateEmail.length>0){
+      return {status:200, message:duplicateEmail};
+    }
+  }
+  catch{
+    return {status:404, message:'User not found'};
+  }
+}
+
+module.exports = { createUser, getAllUsers, getUserbyUsername, getUserbyEmail, updateUser, deleteUser };

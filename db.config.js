@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 const userModel = require("./models/user");
+const { Sequelize } = require('sequelize');
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const db = mysql.createConnection({
   password: "",
   database: "pen_paper",
 });
+
 
 async function connectToDatabase() {
   //Connect to db
@@ -30,6 +32,7 @@ async function connectToDatabase() {
       console.log(`${TABLENAME} Table created`);
     });
   });
+
 }
 
 module.exports = { connectToDatabase, db };
