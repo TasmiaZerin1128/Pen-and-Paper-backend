@@ -2,7 +2,6 @@ const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
 const hashPassword = require("../utils/hashPassword");
 const crypto = require("crypto");
-var validator = require("email-validator");
 
 'use strict';
 
@@ -48,17 +47,16 @@ async function getAllUsers() {
   }
 }
 
-async function updateUser(username, userToUpdate) {
+async function updateUser(username, updatedUser) {
 
-  if(!userUtils.checkPasswordValid(userToUpdate)){
+  if(!userUtils.checkPasswordValid(updatedUser.password)){
     return {status:400, message:'Password must contain atleast 6 characters'};
   }
   
   try{
-    const hashedPassword = await hashPassword(user.password);
+    const hashedPassword = await hashPassword(updatedUser.password);
     const result = await userRepository.updateUser(username.toLowerCase(), hashedPassword);
-    console.log(result);
-    if(result.affectedRows == 0){
+    if(result == 0){
       return {status:404, message:'User not found'};
     }
     return {status:200, message:'User updated'};
@@ -71,7 +69,7 @@ async function updateUser(username, userToUpdate) {
 async function deleteUser (username) {
   try{
     const result = await userRepository.deleteUser(username.toLowerCase());
-    if(result.affectedRows == 0){
+    if(!result){
       return {status:404, message:'User not found'};
     }
     return {status:200, message:'User removed'};
@@ -85,7 +83,7 @@ async function getUserbyUsername(username){
 
   try{
     const result = await userRepository.getUserbyUsername(username.toLowerCase());
-    if(result.length==0){
+    if(!result){
       return {status:404, message:'User not found'};
     }
     return {status:200, message:result};
@@ -98,9 +96,10 @@ async function getUserbyUsername(username){
 async function getUserbyEmail(email){
   try{
     const duplicateEmail = await userRepository.getUserbyEmail(email);
-    if(duplicateEmail.length>0){
-      return {status:200, message:duplicateEmail};
+    if(!duplicateEmail){
+      return {status:404, message:'User not found'};
     }
+    return {status:200, message:duplicateEmail};
   }
   catch{
     return {status:404, message:'User not found'};

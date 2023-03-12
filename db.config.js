@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv");
-const userModel = require("./models/user");
+const winston = require('winston');
 const { Sequelize } = require('sequelize');
 
 dotenv.config();
@@ -18,27 +18,22 @@ const TABLENAME = process.env.TABLENAME;
 
 const sequelize = new Sequelize('pen_paper', 'root', '', {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  // logging: logging
 });
 
+// function logging(){
+//   const logger = winston.createLogger({
+//     transports: [
+//       new winston.transports.Console(),
+//       new winston.transports.File({ filename: 'combined.log' })
+//     ]
+//   }); 
+// }
 
 
 async function connectToDatabase() {
   //Connect to db
-//  await db.connect((err) => {
-//     if (err) {
-//       console.log("Connection to database failed!");
-//       throw err;
-//     }
-//     console.log(`${APP_NAME} successfully connected to database.`);
-//     db.query(userModel.createUsers, function (err, result) {
-//       if (err) {
-//         throw err;
-//       }
-//       console.log(`${TABLENAME} Table created`);
-//     });
-//   });
-
 try {
   await db.authenticate();
   console.log('Connection has been established successfully.');

@@ -1,4 +1,3 @@
-const express = require("express");
 const userService = require("../services/user.service");
 
 'use strict';
@@ -9,7 +8,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getUserbyUsername = async (req, res) => {
-  const data = await userService.getUser(req.params.username);
+  const data = await userService.getUserbyUsername(req.params.username);
   res.status(data.status).send(data.message);
 };
 

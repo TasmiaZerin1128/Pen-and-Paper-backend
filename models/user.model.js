@@ -30,9 +30,7 @@ const User = sequelize.define(
 );
 
 (async () => {
-    await User.sync({ alter: true });
-    const allUsers = await User.findAll();
-    console.log(allUsers.dataValues);
+    await User.sync();   //alter: true
 })();
 
 
