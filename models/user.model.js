@@ -1,5 +1,5 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const {sequelize} = require("../db.config");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../db.config");
 
 const User = sequelize.define(
   "User",
@@ -8,6 +8,11 @@ const User = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      notNull: true,
+      notEmpty: true
     },
     username: {
       type: DataTypes.STRING,
@@ -33,7 +38,7 @@ const User = sequelize.define(
 );
 
 (async () => {
-    await User.sync();  
+    await User.sync({force:true});  
 })();
 
 

@@ -1,10 +1,11 @@
 const userDTO = require("../DTOs/user.dto");
 const User = require("../models/user.model");
 
-exports.createUser = async (id, username, email, password) => {
+exports.createUser = async (id, fullName, username, email, password) => {
   try {
     const result = await User.create({
       id: id,
+      fullName: fullName,
       username: username,
       email: email,
       password: password,
