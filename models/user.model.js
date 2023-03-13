@@ -1,5 +1,9 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db.config");
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+
+const saltRounds = Number(process.env.SALTROUND);
 
 const User = sequelize.define(
   "User",
@@ -28,9 +32,18 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      notNull: false,
+      notNull: true,
       notEmpty: true
     }
+  },{
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const salt = await bcrypt.genSalt(saltRounds);
+         user.password = await bcrypt.hash(user.password, salt);
+        }
+    }
+  }
   },
   {
     tableName: "Users",

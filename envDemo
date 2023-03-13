@@ -1,4 +1,3 @@
 APP_NAME='your app name'
 APP_PORT='port number'
-USERNAME='username for db'
 SALTROUND='salt for hashing'

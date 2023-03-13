@@ -16,7 +16,7 @@ async function createUser(user){
     const id = crypto.randomUUID();
     const hashedPassword = await hashPassword(user.password);
 
-    const data = await userRepository.createUser(id, user.username.toLowerCase(), user.email, hashedPassword);
+    const data = await userRepository.createUser(id, user.fullName, user.username.toLowerCase(), user.email, hashedPassword);
     return {status:201, message:'User created successfully'};
   }
   catch{
