@@ -5,9 +5,9 @@ const { Sequelize } = require('sequelize');
 dotenv.config();
 
 const APP_NAME = process.env.APP_NAME;
-const HOST = process.env.HOST;
+const USERNAME = process.env.USERNAME;
 
-const sequelize = new Sequelize(APP_NAME, HOST, '', {
+const sequelize = new Sequelize(APP_NAME, USERNAME, '', {
   host: 'localhost',
   dialect: 'mysql',
   // logging: logging
