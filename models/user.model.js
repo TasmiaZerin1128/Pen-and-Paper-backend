@@ -11,17 +11,20 @@ const User = sequelize.define(
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      notNull: true,
+      unique: true,
+      notEmpty: true
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      notNull: true,
+      unique: true,
+      notEmpty: true
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      notNull: false,
+      notEmpty: true
     }
   },
   {
@@ -30,7 +33,7 @@ const User = sequelize.define(
 );
 
 (async () => {
-    await User.sync();   //alter: true
+    await User.sync();  
 })();
 
 

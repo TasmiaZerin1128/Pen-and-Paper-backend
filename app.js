@@ -1,7 +1,6 @@
 const express = require('express');
 const router = require('./routes/index');
 const dotenv = require('dotenv');
-const bodyparser = require('body-parser')
 
 const database = require("./db.config");
 
@@ -31,7 +30,7 @@ app.use((err, req, res, next) => {
     res.send('500: Internal server error');
 });
 
-app.use('/api/', router);
+app.use('/api', router);
 
 app.use('*', (req, res) => {
     res.status(404).json({

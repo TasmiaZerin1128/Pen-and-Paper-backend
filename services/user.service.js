@@ -12,16 +12,6 @@ async function createUser(user){
     return {status:400, message: userValid.message};
   }
 
-  const usernameDuplicate = await getUserbyUsername(user.username);
-  if (usernameDuplicate.status == 200){
-    return {status:422, message: "Username already exists!"};
-  }
-
-  const emailDuplicate = await getUserbyEmail(user.email);
-  if (emailDuplicate.status == 200){
-    return {status:422, message: "Email is already in use!"};
-  }
-
   try{
     const id = crypto.randomUUID();
     const hashedPassword = await hashPassword(user.password);
