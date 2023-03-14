@@ -10,7 +10,7 @@ exports.register = async (user) => {
     user.password
   );
   if (!userValid.valid) {
-    return { status: 400, message: userValid.message };
+    return false;
   }
 
   try {
@@ -26,8 +26,8 @@ exports.login = async (user) => {
       try {
         const userExists = await authRepository.checkUserExists(user.username.toLowerCase());
         if(userExists){
-            const validPass = await bcrypt.compare(user.password, userExists.password);
-            if(!validPass){
+            const isPasswordMatched = await userExists.comparePassword(user.password);
+            if(!isPasswordMatched){
                 return false;
             } 
             return userExists;
@@ -38,4 +38,5 @@ exports.login = async (user) => {
       } catch (err) {
         throw err;
       }
-}
+};
+

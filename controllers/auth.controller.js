@@ -1,5 +1,6 @@
 const authService = require("../services/auth.service");
 const jwt = require("jsonwebtoken");
+const { sendToken, removeToken } = require("../utils/jwtToken");
 require("dotenv").config();
 
 
@@ -9,15 +10,7 @@ exports.getRegistered = async (req, res) => {
   try {
     const data = await authService.register(req.body);
     if (data) {
-
-        let accesstoken = jwt.sign({ username: data.username }, process.env.ACCESS_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.ACCESS_TOKEN_LIFE
-        })
-
-        res.cookie("jwt", accesstoken, {secure: true, httpOnly: true});
-
-        res.status(200).send(data);
+      sendToken(data, 201, res);
     } else {
       res.status(400).send("Please try again");
     }
@@ -32,19 +25,19 @@ exports.getLoggedIn = async (req, res) => {
     try{
         const data = await authService.login(req.body);
         if (data) {
-            console.log(data);
-            let accesstoken = jwt.sign({ username: data.username }, process.env.ACCESS_TOKEN_SECRET, {
-                algorithm: "HS256",
-                expiresIn: process.env.ACCESS_TOKEN_LIFE
-            })
-    
-            res.cookie("jwt", accesstoken, {secure: true, httpOnly: true});
-    
-            res.status(200).send("User is logged in");
+          sendToken(data, 200, res);
         } else {
-          res.status(400).send("Incorrect username or password");
+          res.status(404).send("Incorrect username or password");
         }
     } catch (err) {
         res.status(400).send("An error occured");
     }
+}
+
+exports.getLoggedOut = async (req, res) => {
+  try{
+    removeToken(res);
+  } catch (err) {
+    res.status(404).send("No user was logged in");
+  }
 }

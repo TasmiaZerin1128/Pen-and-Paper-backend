@@ -1,9 +1,9 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db.config");
 require("dotenv").config();
-const bcrypt = require("bcrypt");
-
-const saltRounds = Number(process.env.SALTROUND);
+const { hashPassword, matchPassword } = require("../utils/hashPassword");
+const jwt = require("jsonwebtoken");
+const { prototype } = require("../DTOs/user.dto");
 
 const User = sequelize.define(
   "User",
@@ -39,8 +39,7 @@ const User = sequelize.define(
     hooks: {
       beforeCreate: async (user) => {
         if (user.password) {
-          const salt = await bcrypt.genSalt(saltRounds);
-         user.password = await bcrypt.hash(user.password, salt);
+         user.password = await hashPassword(user.password);
         }
     }
   }
@@ -49,6 +48,17 @@ const User = sequelize.define(
     tableName: "Users",
   }
 );
+
+User.prototype.getJWTToken = function() {
+  return jwt.sign({ username: this.username }, process.env.ACCESS_TOKEN_SECRET, {
+    algorithm: "HS256",
+    expiresIn: process.env.ACCESS_TOKEN_LIFE
+})
+};
+
+User.prototype.comparePassword = async function(password) {
+  return await matchPassword(password, this.password);
+};
 
 (async () => {
     await User.sync({force:true});  
