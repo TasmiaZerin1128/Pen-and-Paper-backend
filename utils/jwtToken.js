@@ -9,7 +9,7 @@ const sendToken = (user, statusCode, res) => {
     });
 
     res.status(statusCode)
-    .cookie("jwt", accesstoken, {secure: true, httpOnly: true})
+    .cookie('jwt', accesstoken, {secure: true, httpOnly: true})
     .json({
         success: true,
         user,
@@ -20,7 +20,7 @@ const sendToken = (user, statusCode, res) => {
 
 const removeToken = (res) => {
     res.status(200)
-    .cookie("jwt", null, {
+    .cookie('jwt', null, {
         expiresIn: new Date(Date.now())
     }, 
     {secure: true, httpOnly: true})
