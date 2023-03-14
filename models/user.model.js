@@ -1,9 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db.config");
 require("dotenv").config();
-const { hashPassword, matchPassword } = require("../utils/hashPassword");
-const jwt = require("jsonwebtoken");
-const { prototype } = require("../DTOs/user.dto");
+const { hashPassword } = require("../utils/hashPassword");
 
 const User = sequelize.define(
   "User",
@@ -48,17 +46,6 @@ const User = sequelize.define(
     tableName: "Users",
   }
 );
-
-User.prototype.getJWTToken = function() {
-  return jwt.sign({ username: this.username }, process.env.ACCESS_TOKEN_SECRET, {
-    algorithm: "HS256",
-    expiresIn: process.env.ACCESS_TOKEN_LIFE
-})
-};
-
-User.prototype.comparePassword = async function(password) {
-  return await matchPassword(password, this.password);
-};
 
 (async () => {
     await User.sync({force:true});  

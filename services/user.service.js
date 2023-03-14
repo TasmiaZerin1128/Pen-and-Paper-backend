@@ -1,7 +1,7 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
 const hashPassword = require("../utils/hashPassword");
-const crypto = require("crypto");
+const ValidationError = require("../utils/errorHandler");
 
 'use strict';
 
@@ -40,19 +40,19 @@ async function getAllUsers() {
 async function updateUser(username, updatedUser) {
 
   if(!userUtils.checkPasswordValid(updatedUser.password)){
-    return {status:400, message:'Password must contain atleast 6 characters'};
+    throw new ValidationError('Password must contain atleast 6 characters', 400);
   }
   
   try{
     const hashedPassword = await hashPassword(updatedUser.password);
     const result = await userRepository.updateUser(username.toLowerCase(), hashedPassword);
     if(result == 0){
-      return {status:404, message:'User not found'};
+      throw new ValidationError('User not found', 404);
     }
     return {status:200, message:'User updated'};
   }
   catch{
-    return {status:400, message:'User update failed'};
+    throw new ValidationError('User update failed', 400);
   }
 }
 
@@ -60,26 +60,26 @@ async function deleteUser (username) {
   try{
     const result = await userRepository.deleteUser(username.toLowerCase());
     if(!result){
-      return {status:404, message:'User not found'};
+      throw new ValidationError('User not found', 404);
     }
     return {status:200, message:'User removed'};
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404);
   }
 }
 
 async function getUserbyUsername(username){
 
   try{
-    const result = await userRepository.getUserbyUsername(username.toLowerCase());
+    const result = await userRepository.getUserbyUsername(username);
     if(!result){
-      return {status:404, message:'User not found'};
+      throw new ValidationError('User not found', 404);
     }
-    return {status:200, message:result};
+    return result;
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404);
   }
 }
 
@@ -87,12 +87,12 @@ async function getUserbyEmail(email){
   try{
     const duplicateEmail = await userRepository.getUserbyEmail(email);
     if(!duplicateEmail){
-      return {status:404, message:'User not found'};
+      throw new ValidationError('User not found', 404);
     }
     return {status:200, message:duplicateEmail};
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404);
   }
 }
 

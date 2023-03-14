@@ -4,37 +4,33 @@ const { sendToken, removeToken } = require("../utils/jwtToken");
 require("dotenv").config();
 
 
-("use strict");
+"use strict"
 
-exports.getRegistered = async (req, res) => {
+exports.register = async (req, res, next) => {
   try {
     const data = await authService.register(req.body);
     if (data) {
       sendToken(data, 201, res);
-    } else {
-      res.status(400).send("Please try again");
-    }
+    } 
   } catch (err) {
-    res.status(400).send("An error occured");
+    res.status(err.statusCode).send(err.message);
   }
 };
 
 
-exports.getLoggedIn = async (req, res) => {
+exports.logIn = async (req, res) => {
 
     try{
         const data = await authService.login(req.body);
         if (data) {
           sendToken(data, 200, res);
-        } else {
-          res.status(404).send("Incorrect username or password");
-        }
+        } 
     } catch (err) {
-        res.status(400).send("An error occured");
+        res.status(err.statusCode).send(err.message);
     }
 }
 
-exports.getLoggedOut = async (req, res) => {
+exports.logOut = async (req, res) => {
   try{
     removeToken(res);
   } catch (err) {

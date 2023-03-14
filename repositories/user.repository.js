@@ -1,22 +1,6 @@
 const userDTO = require("../DTOs/user.dto");
+const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
-
-// exports.createUser = async (id, fullName, username, email, password) => {
-//   try {
-//     const result = await User.create({
-//       id: id,
-//       fullName: fullName,
-//       username: username,
-//       email: email,
-//       password: password,
-//     });
-//     console.log("User created successfully");
-//     return result;
-//   } catch (err) {
-//     console.log(err.stack);
-//     throw err;
-//   }
-// };
 
 exports.getAllUsers = async () => {
   try {
@@ -35,9 +19,9 @@ exports.getAllUsers = async () => {
 
 exports.getUserbyUsername = async (username) => {
   try {
+    username = username.toLowerCase();
     const result = await User.findOne({ where: { username: username } });
-    const userdto = new userDTO(result);
-    return userdto;
+    return result;
   } catch (err) {
     console.log(err.stack);
     throw err;
@@ -77,3 +61,14 @@ exports.getUserbyEmail = async (email) => {
     throw err;
   }
 };
+
+exports.register = async (user) => {
+  const userToRegister = new userRegisterDto(user);
+  try {
+      const result = await User.create(userToRegister);
+      console.log("User created successfully");
+      return result;
+    } catch (err) {
+      throw console.error(err);
+    }
+}

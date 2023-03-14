@@ -1,7 +1,12 @@
+const jwt = require("jsonwebtoken");
+
 // Create token
 
 const sendToken = (user, statusCode, res) => {
-    const accesstoken = user.getJWTToken();
+    const accesstoken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: process.env.ACCESS_TOKEN_LIFE
+    });
 
     res.status(statusCode)
     .cookie("jwt", accesstoken, {secure: true, httpOnly: true})
