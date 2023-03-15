@@ -1,7 +1,7 @@
 const userService = require("../services/user.service");
 const userUtils = require("../utils/userValidation");
 const { comparePassword } = require("../utils/hashPassword");
-const userRepository = require("../repositories/user.repository");
+const userDTO = require("../DTOs/user.dto");
 const ValidationError = require("../utils/errorHandler");
 
 exports.register = async (user) => {
@@ -14,10 +14,10 @@ exports.register = async (user) => {
     throw new ValidationError(userValid.message, 400);
   }
 
-  const userAlreadyExists = await userRepository.getUserbyUsername(user.username);
+  const userAlreadyExists = await userService.getUserbyUsername(user.username, false);
   if (!userAlreadyExists) {
     try {
-      const result = await userRepository.register(user);
+      const result = await userService.createUser(user);
       return result;
     } catch (err) {
       throw new ValidationError(err.message, 500);
@@ -33,13 +33,13 @@ exports.login = async (user) => {
   }
 
   try {
-    const userExists = await userService.getUserbyUsername(user.username);
+    const userExists = await userService.getUserbyUsername(user.username, false);
     if (userExists) {
       const isPasswordMatched = await comparePassword(user.password,userExists.password);
       if (!isPasswordMatched) {
         throw new ValidationError('Incorrect email or password', 401);
       }
-      return userExists;
+      return new userDTO(userExists);
     } else {
       throw new ValidationError('Incorrect email or password', 401);
     }

@@ -45,6 +45,7 @@ exports.updateUser = async (username, updatedPassword) => {
 
 exports.deleteUser = async (username) => {
   try {
+    username = username.toLowerCase();
     const result = User.destroy({ where: { username: username } });
     return result;
   } catch (err) {
@@ -64,7 +65,7 @@ exports.getUserbyEmail = async (email) => {
   }
 };
 
-exports.register = async (user) => {
+exports.createUser = async (user) => {
   const userToRegister = new userRegisterDto(user);
   try {
       const result = await User.create(userToRegister);
