@@ -5,6 +5,13 @@ const ValidationError = require("../utils/errorHandler");
 
 async function createBlog(blog){
 
+  if(!blog.title || !blog.description){
+    throw new ValidationError('Title and description are needed', 400, false);
+  }
+  if(!blog.authorId){
+    throw new ValidationError('Author not recognized for the blog', 400, false);
+  }
+
   try {
     const result = await blogRepository.createBlog(blog);
     return result;
@@ -31,33 +38,44 @@ async function updateBlog(blogId, updatedTitle, updatedDescription) {
       const result = await blogRepository.updateBlog(blogId, updatedTitle, updatedDescription);
       return result;
     } else {
-      throw new ValidationError('Blog not found', 404);
+      throw new ValidationError('Blog not found', 404, false);
     }
     
   }
-  catch{
-    throw new ValidationError('Blog update failed', 400);
+  catch (err) {
+    throw err;
   }
 }
 
-async function deleteBlog(blogId) {
+async function deleteBlog(blogId, authorId) {
   try{
-    const result = await blogRepository.deleteBlog(blogId);
-    return result;
+    const blogExists = await getBlogbyId(blogId);
+    if(blogExists){
+      if(blogExists.authorId == authorId){
+        const result = await blogRepository.deleteBlog(blogId);
+        return result;
+      }
+      else {
+        throw new ValidationError('You do not have permission to delete this blog!', 403, false);
+      }
+    }
+    else {
+      throw new ValidationError('Blog does not exist', 404, false);
+    }
   }
-  catch{
-    throw new ValidationError('Blog not found', 404);
+  catch (err) {
+    throw err;
   }
 }
 
 async function getBlogbyId(blogId){
 
   try{
-    const result = await blogRepository.getBlogbyId(blogId);
-    return result;
+      const result = await blogRepository.getBlogbyId(blogId);
+      return result;
   }
   catch{
-    throw new ValidationError('Blog not found', 404);
+    throw new ValidationError('Blog not found', 404, false);
   }
 }
 
@@ -67,7 +85,7 @@ async function getBlogbyAuthorId(authorId){
     return blogExists;
   }
   catch{
-    throw new ValidationError('Blog not found', 404);
+    throw new ValidationError('Blog not found', 404, false);
   }
 }
 
