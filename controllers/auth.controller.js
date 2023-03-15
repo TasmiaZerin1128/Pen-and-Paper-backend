@@ -18,7 +18,7 @@ exports.register = async (req, res, next) => {
 };
 
 
-exports.logIn = async (req, res) => {
+exports.login = async (req, res) => {
 
     try{
         const data = await authService.login(req.body);
@@ -30,7 +30,7 @@ exports.logIn = async (req, res) => {
     }
 }
 
-exports.logOut = async (req, res) => {
+exports.logout = async (req, res) => {
   try{
     removeToken(res);
   } catch (err) {
