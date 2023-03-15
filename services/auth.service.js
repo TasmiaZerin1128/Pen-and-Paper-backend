@@ -11,7 +11,7 @@ exports.register = async (user) => {
     user.password
   );
   if (!userValid.valid) {
-    throw new ValidationError(userValid.message, 400);
+    throw new ValidationError(userValid.message, 400, false);
   }
 
   const userAlreadyExists = await userService.getUserbyUsername(user.username, false);
@@ -20,16 +20,16 @@ exports.register = async (user) => {
       const result = await userService.createUser(user);
       return result;
     } catch (err) {
-      throw new ValidationError(err.message, 500);
+      throw new ValidationError(err.message, 500, true);
     }
   } else {
-    throw new ValidationError('User already exists!', 400);
+    throw new ValidationError('User already exists!', 400, false);
   }
 };
 
 exports.login = async (user) => {
   if (!user.username || !user.password) {
-    throw new ValidationError('All fields are required!', 400);
+    throw new ValidationError('All fields are required!', 400, false);
   }
 
   try {
@@ -37,13 +37,13 @@ exports.login = async (user) => {
     if (userExists) {
       const isPasswordMatched = await comparePassword(user.password,userExists.password);
       if (!isPasswordMatched) {
-        throw new ValidationError('Incorrect email or password', 401);
+        throw new ValidationError('Incorrect email or password', 401, false);
       }
       return new userDTO(userExists);
     } else {
-      throw new ValidationError('Incorrect email or password', 401);
+      throw new ValidationError('Incorrect email or password', 401, false);
     }
   } catch (err) {
-    throw new ValidationError(err.message, err.statusCode);
+    throw new ValidationError(err.message, err.statusCode, true);
   }
 };

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const sendToken = (user, statusCode, res) => {
     const accesstoken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
-        algorithm: "HS256",
+        algorithm: process.env.JWT_ALGO,
         expiresIn: parseInt(process.env.ACCESS_TOKEN_LIFE)
     });
 

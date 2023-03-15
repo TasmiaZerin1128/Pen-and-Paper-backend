@@ -12,7 +12,7 @@ async function createUser(user){
     const result = await userRepository.createUser(user);
     return result;
   } catch (err) {
-    throw new ValidationError(err.message, 500);
+    throw new ValidationError(err.message, 500, true);
   }
 };
 
@@ -29,7 +29,7 @@ async function getAllUsers() {
 async function updateUser(username, userToUpdate) {
 
   if(!userUtils.checkPasswordValid(userToUpdate.password)){
-    throw new ValidationError('Password must contain atleast 6 characters', 400);
+    throw new ValidationError('Password must contain atleast 6 characters', 400, false);
   }
   
   try{
@@ -39,12 +39,12 @@ async function updateUser(username, userToUpdate) {
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
     } else {
-      throw new ValidationError('User not found', 404);
+      throw new ValidationError('User not found', 404, false);
     }
     
   }
   catch{
-    throw new ValidationError('User update failed', 400);
+    throw new ValidationError('User update failed', 400, false);
   }
 }
 
@@ -54,7 +54,7 @@ async function deleteUser (username) {
     return result;
   }
   catch{
-    throw new ValidationError('User not found', 404);
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
@@ -70,7 +70,7 @@ async function getUserbyUsername(username, returnUsingDTO){
     }
   }
   catch{
-    throw new ValidationError('User not found', 404);
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
@@ -80,7 +80,7 @@ async function getUserbyEmail(email){
     return duplicateEmail;
   }
   catch{
-    throw new ValidationError('User not found', 404);
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
