@@ -1,6 +1,6 @@
 const userService = require("../services/user.service");
 
-("use strict");
+'use strict';
 
 exports.getAllUsers = async (req, res) => {
   try {
