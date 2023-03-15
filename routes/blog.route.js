@@ -7,7 +7,7 @@ router.route('/').get(blogController.getAllBlogs)
     .post(blogController.createBlog); 
 
 router.route('/:blogId')
-    .get(blogController.getBlog)
+    .get(blogController.getBlogbyId)
     .put(blogController.editBlog)
     .delete(blogController.deleteBlog);
 
