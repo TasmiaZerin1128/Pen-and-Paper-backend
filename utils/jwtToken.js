@@ -20,10 +20,7 @@ const sendToken = (user, statusCode, res) => {
 
 const removeToken = (res) => {
     res.status(200)
-    .cookie('jwt', null, {
-        expiresIn: new Date(Date.now())
-    }, 
-    { httpOnly: true })
+    .clearCookie('jwt')
     .json({
         success: true,
         message: "Logged Out"
