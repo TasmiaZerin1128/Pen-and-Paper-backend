@@ -9,7 +9,7 @@ const sendToken = (user, statusCode, res) => {
     });
 
     res.status(statusCode)
-    .cookie('jwt', accesstoken, {secure: true, httpOnly: true})
+    .cookie('jwt', accesstoken, { httpOnly: true })
     .json({
         success: true,
         user,
@@ -23,7 +23,7 @@ const removeToken = (res) => {
     .cookie('jwt', null, {
         expiresIn: new Date(Date.now())
     }, 
-    {secure: true, httpOnly: true})
+    { httpOnly: true })
     .json({
         success: true,
         message: "Logged Out"

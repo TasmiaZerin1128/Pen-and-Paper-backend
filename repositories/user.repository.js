@@ -30,10 +30,12 @@ exports.getUserbyUsername = async (username) => {
 
 exports.updateUser = async (username, updatedPassword) => {
   try {
+    username = username.toLowerCase();
     const result = await User.update(
       { password: updatedPassword },
       { where: { username: username } }
     );
+    console.log(result);
     return result;
   } catch (err) {
     console.log(err.stack);

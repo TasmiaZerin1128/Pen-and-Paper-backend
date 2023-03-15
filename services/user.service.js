@@ -1,6 +1,6 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
-const hashPassword = require("../utils/hashPassword");
+const { hashPassword } = require("../utils/hashPassword");
 const ValidationError = require("../utils/errorHandler");
 
 'use strict';
@@ -33,19 +33,19 @@ async function getAllUsers() {
     return {status:200, message: data};
   }
   catch{
-    return {status:200, message:'Users table is empty!'};
+    return new Error('Cannot find any Users table', 404);
   }
 }
 
-async function updateUser(username, updatedUser) {
+async function updateUser(username, userToUpdate) {
 
-  if(!userUtils.checkPasswordValid(updatedUser.password)){
+  if(!userUtils.checkPasswordValid(userToUpdate.password)){
     throw new ValidationError('Password must contain atleast 6 characters', 400);
   }
   
   try{
-    const hashedPassword = await hashPassword(updatedUser.password);
-    const result = await userRepository.updateUser(username.toLowerCase(), hashedPassword);
+    const hashedPassword = await hashPassword(userToUpdate.password);
+    const result = await userRepository.updateUser(username, hashedPassword);
     if(result == 0){
       throw new ValidationError('User not found', 404);
     }
