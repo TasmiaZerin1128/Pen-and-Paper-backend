@@ -14,10 +14,10 @@ exports.register = async (user) => {
     throw new ValidationError(userValid.message, 400);
   }
 
-  const userAlreadyExists = await userRepository.getUserbyUsername(user.username);
+  const userAlreadyExists = await userService.getUserbyUsername(user.username);
   if (!userAlreadyExists) {
     try {
-      const result = await userRepository.register(user);
+      const result = await userService.createUser(user);
       return result;
     } catch (err) {
       throw new ValidationError(err.message, 500);

@@ -64,7 +64,7 @@ exports.getUserbyEmail = async (email) => {
   }
 };
 
-exports.register = async (user) => {
+exports.createUser = async (user) => {
   const userToRegister = new userRegisterDto(user);
   try {
       const result = await User.create(userToRegister);

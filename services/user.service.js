@@ -5,24 +5,15 @@ const ValidationError = require("../utils/errorHandler");
 
 'use strict';
 
-// async function createUser(user){
+async function createUser(user){
 
-//   const userValid = userUtils.userValidator(user.username, user.email, user.password);
-//   if(!userValid.valid){
-//     return {status:400, message: userValid.message};
-//   }
-
-//   try{
-//     const id = crypto.randomUUID();
-//     const hashedPassword = await hashPassword(user.password);
-
-//     const data = await userRepository.createUser(id, user.fullName, user.username.toLowerCase(), user.email, hashedPassword);
-//     return {status:201, message:'User created successfully'};
-//   }
-//   catch{
-//     return {status:400, message:'Please check your credentials again'};
-//   }
-// };
+  try {
+    const result = await userRepository.createUser(user);
+    return result;
+  } catch (err) {
+    throw new ValidationError(err.message, 500);
+  }
+};
 
 async function getAllUsers() {
   try{
@@ -73,9 +64,6 @@ async function getUserbyUsername(username){
 
   try{
     const result = await userRepository.getUserbyUsername(username);
-    if(!result){
-      throw new ValidationError('User not found', 404);
-    }
     return result;
   }
   catch{
@@ -96,4 +84,4 @@ async function getUserbyEmail(email){
   }
 }
 
-module.exports = { getAllUsers, getUserbyUsername, getUserbyEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserbyUsername, getUserbyEmail, updateUser, deleteUser };
