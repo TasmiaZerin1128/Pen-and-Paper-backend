@@ -10,9 +10,10 @@ const authMiddleware = async (req, res, next) => {
       return res.status(403).send("Cannot access this route");
     }
     const decode = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    req.body.username = decode.username;
     next();
   } catch (err) {
-    return res.status(401).send("Invalid JWT token");
+    return res.status(401).send("Unauthorized User");
   }
 };
 

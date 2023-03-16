@@ -19,26 +19,20 @@ const Blog = sequelize.define(
     },
     description: {
       type: DataTypes.STRING,
-    },
-    authorId: {
-        type: DataTypes.UUID,
-        notNull: true,
-        notEmpty: true,
-        // references: 'Users',
-        // referencesKey: 'id'
-    },
-    authorName: {
-      type: DataTypes.STRING,
     }
   }
 );
 
-(async () => {
-    await Blog.sync(); 
-})();
+User.hasMany(Blog, {
+  foreignKey: "authorId"
+});
 
-// Blog.belongsTo(User, {
-//   foreignKey: "authorId"
-// });
+Blog.belongsTo(User, {
+  foreignKey: "authorId"
+});
+
+(async () => {
+  await Blog.sync(); 
+})();
 
 module.exports = Blog;
