@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db.config");
 require("dotenv").config();
+const User = require("./user.model");
 
 const Blog = sequelize.define(
   "Blog",
@@ -23,6 +24,11 @@ const Blog = sequelize.define(
         type: DataTypes.UUID,
         notNull: true,
         notEmpty: true,
+        // references: 'Users',
+        // referencesKey: 'id'
+    },
+    authorName: {
+      type: DataTypes.STRING,
     }
   }
 );
@@ -31,5 +37,8 @@ const Blog = sequelize.define(
     await Blog.sync(); 
 })();
 
+// Blog.belongsTo(User, {
+//   foreignKey: "authorId"
+// });
 
 module.exports = Blog;

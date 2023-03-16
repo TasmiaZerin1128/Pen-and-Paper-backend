@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db.config");
 require("dotenv").config();
 const { hashPassword } = require("../utils/hashPassword");
+const Blog = require('./blog.model');
 
 const User = sequelize.define(
   "User",
@@ -43,10 +44,10 @@ const User = sequelize.define(
   }
   }
 );
+User.hasMany(Blog, { as: "blogs" });
 
 (async () => {
     await User.sync();  
 })();
-
 
 module.exports = User;

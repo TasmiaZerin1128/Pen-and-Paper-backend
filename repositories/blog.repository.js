@@ -20,13 +20,13 @@ exports.getBlogbyId = async (blogId) => {
   }
 };
 
-exports.updateBlog = async (blogId, updatedTitle, updatedDescription) => {
+exports.editBlog = async (blogId, editedBlog) => {
   try {
     const result = await Blog.update(
-      { title: updatedTitle, description: updatedDescription },
+      { title: editedBlog.title, 
+        description: editedBlog.description },
       { where: { id: blogId } }
     );
-    console.log(result);
     return result;
   } catch (err) {
     console.log(err.stack);
@@ -46,7 +46,7 @@ exports.deleteBlog = async (blogId) => {
 
 exports.getBlogbyAuthorId = async (authorId) => {
   try {
-    const result = await Blog.findOne({ where: { authorId: authorId } });
+    const result = await Blog.findByPk(authorId);
     return result;
   } catch (err) {
     console.log(err.stack);

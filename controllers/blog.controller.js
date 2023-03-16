@@ -32,8 +32,13 @@ exports.getBlogbyId = async (req, res) => {
 
 exports.editBlog = async (req, res) => {
     try {
-    const editBlog = await blogService.editBlog(req.body);
-    res.status(200).json(editBlog);
+    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
+    if(editedBlog[0] == 1){
+        res.status(200).json('Blog edited successfully');
+    }
+    else {
+        res.status(400).json('Blog could not be edited. Please try again');
+    }
     } catch (err) {
         res.status(err.statusCode).json({error: err.message});
     }
@@ -41,7 +46,7 @@ exports.editBlog = async (req, res) => {
 
 exports.deleteBlog = async (req, res) => {
     try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId, req.params.authorId);
+    const deleteBlog = await blogService.deleteBlog(req.params.blogId, req.body.authorId);
     if(deleteBlog){
         res.status(200).json('Blog deleted');
     }
