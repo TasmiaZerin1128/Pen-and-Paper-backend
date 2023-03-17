@@ -12,7 +12,7 @@ async function createUser(user){
     const result = await userRepository.createUser(user);
     return result;
   } catch (err) {
-    throw new ValidationError(err.message, 500, true);
+    throw new Error(err.message, 500, true);
   }
 };
 
@@ -33,7 +33,7 @@ async function updateUser(username, userToUpdate) {
   }
   
   try{
-    const userExists = await getUserbyUsername(username, false);
+    const userExists = await getUserByUsername(username, false);
     if(userExists){
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
@@ -58,10 +58,10 @@ async function deleteUser (username) {
   }
 }
 
-async function getUserbyUsername(username, returnUsingDTO){
+async function getUserByUsername(username, returnUsingDTO){
 
   try{
-    const result = await userRepository.getUserbyUsername(username);
+    const result = await userRepository.getUserByUsername(username);
     if(returnUsingDTO){
       const userFound = new userDTO(result);
       return userFound;
@@ -84,4 +84,4 @@ async function getUserbyEmail(email){
   }
 }
 
-module.exports = { getAllUsers, createUser, getUserbyUsername, getUserbyEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserbyEmail, updateUser, deleteUser };

@@ -5,11 +5,7 @@ const userDTO = require("../DTOs/user.dto");
 const ValidationError = require("../utils/errorHandler");
 
 exports.register = async (user) => {
-  const userValid = userUtils.userValidator(
-    user.username,
-    user.email,
-    user.password
-  );
+  const userValid = userUtils.userValidator(user);
   if (!userValid.valid) {
     throw new ValidationError(userValid.message, 400, false);
   }
@@ -33,7 +29,7 @@ exports.login = async (user) => {
   }
 
   try {
-    const userExists = await userService.getUserbyUsername(user.username, false);
+    const userExists = await userService.getUserByUsername(user.username, false);    
     if (userExists) {
       const isPasswordMatched = await comparePassword(user.password,userExists.password);
       if (!isPasswordMatched) {

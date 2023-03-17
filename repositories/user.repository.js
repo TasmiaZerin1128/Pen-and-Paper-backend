@@ -17,7 +17,7 @@ exports.getAllUsers = async () => {
   }
 };
 
-exports.getUserbyUsername = async (username) => {
+exports.getUserByUsername = async (username) => {
   try {
     username = username.toLowerCase();
     const result = await User.findOne({ where: { username: username } });
@@ -54,7 +54,7 @@ exports.deleteUser = async (username) => {
   }
 };
 
-exports.getUserbyEmail = async (email) => {
+exports.getUserByEmail = async (email) => {
   try {
     const result = await User.findOne({ where: { email: email } });
     const userdto = new userDTO(result);
