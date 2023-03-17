@@ -17,9 +17,9 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserbyUsername = async (req, res) => {
+exports.getUserByUsername = async (req, res) => {
   try {
-    const data = await userService.getUserbyUsername(req.params.username, true);
+    const data = await userService.getUserByUsername(req.params.username, true);
     if (data) {
       res.status(200).send(data);
     } else {
@@ -30,7 +30,7 @@ exports.getUserbyUsername = async (req, res) => {
   }
 };
 
-exports.updateUserbyUsername = async (req, res) => {
+exports.updateUserByUsername = async (req, res) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
     res.status(200).send('User updated');
@@ -39,7 +39,7 @@ exports.updateUserbyUsername = async (req, res) => {
   }
 };
 
-exports.deleteUserbyUsername = async (req, res) => {
+exports.deleteUserByUsername = async (req, res) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.username);
     if(deletedUser){

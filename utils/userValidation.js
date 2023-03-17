@@ -1,20 +1,20 @@
 const validator = require("email-validator");
 
-function userValidator(username, email, password){
+function userValidator(user){
 
-    if(!username || !email || !password ){
+    if(!user.username || !user.email || !user.password ){
         return {valid:false, message:'Please enter all the fields'}; ;
     }
 
-    if(!checkUsernameValid(username)){
+    if(!checkUsernameValid(user.username)){
         return {valid:false, message:'Username cannot contain space and special characters!'};
     }
 
-    if(!checkEmailValid(email)){
+    if(!checkEmailValid(user.email)){
         return {valid:false, message:'Please enter a valid email'};
     }
 
-    if(!checkPasswordValid(password)){
+    if(!checkPasswordValid(user.password)){
         return {valid:false, message:'Password must contain atleast 6 characters'};
     }
 
