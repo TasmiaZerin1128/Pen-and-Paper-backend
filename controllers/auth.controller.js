@@ -5,7 +5,7 @@ require("dotenv").config();
 
 "use strict"
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   try {
     const data = await authService.register(req.body);
     if (data) {

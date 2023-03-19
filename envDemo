@@ -3,5 +3,5 @@ APP_PORT='port number'
 SALTROUND='salt for hashing'
 
 ACCESS_TOKEN_SECRET='any secret token'
-ACCESS_TOKEN_LIFE='life span of the token'
+ACCESS_TOKEN_LIFE='life span of the token (in seconds)'
 JWT_ALGO='algorithm used to sign jwt'

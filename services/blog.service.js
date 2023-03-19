@@ -1,23 +1,23 @@
 const blogRepository = require("../repositories/blog.repository");
 const ValidationError = require("../utils/errorHandler");
+const userService = require("../services/user.service");
 
 ("use strict");
 
-async function createBlog(blog) {
+async function createBlog(blog, username) {
   if (!blog.title || !blog.description) {
     throw new ValidationError("Title and description are needed", 400, false);
   }
-  if (!blog.authorId) {
-    throw new ValidationError(
-      "Author Id needed for creating a blog",
-      400,
-      false
-    );
-  }
 
   try {
-    const result = await blogRepository.createBlog(blog);
-    return result;
+    const authorExists = await userService.getUserByUsername(username);
+    if(authorExists){
+      blog.authorId = authorExists.id;
+      const result = await blogRepository.createBlog(blog);
+      return result;
+    } else {
+      throw new ValidationError("Author does not exist", 404, false);
+    }
   } catch (err) {
     throw new Error(err.message, 500);
   }
@@ -28,16 +28,17 @@ async function getAllBlogs() {
     const data = await blogRepository.getAllBlogs();
     return data;
   } catch {
-    return new Error("Cannot find any Blogs table", 404);
+    console.log("Cannot find any Blogs table", 404);
   }
 }
 
-async function editBlog(blogId, blogToEdit) {
+async function editBlog(blogId, authorName, blogItemsToEdit) {
   try {
     const blogExists = await getBlogbyId(blogId);
-    if (blogExists) {
-      if (blogExists.authorId == blogToEdit.authorId) {
-        const result = await blogRepository.editBlog(blogId, blogToEdit);
+    const authorExists = await userService.getUserByUsername(authorName);
+    if (blogExists && authorExists) {
+      if (blogExists.authorId == authorExists.id) {
+        const result = await blogRepository.editBlog(blogId, blogItemsToEdit);
         return result;
       } else {
         throw new ValidationError(
@@ -54,11 +55,12 @@ async function editBlog(blogId, blogToEdit) {
   }
 }
 
-async function deleteBlog(blogId, authorId) {
+async function deleteBlog(blogId, authorName) {
   try {
     const blogExists = await getBlogbyId(blogId);
-    if (blogExists) {
-      if (blogExists.authorId == authorId) {
+    const authorExists = await userService.getUserByUsername(authorName);
+    if (blogExists && authorExists) {
+      if (blogExists.authorId == authorExists.id) {
         const result = await blogRepository.deleteBlog(blogId);
         return result;
       } else {

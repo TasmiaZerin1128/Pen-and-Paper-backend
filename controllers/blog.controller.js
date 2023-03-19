@@ -3,8 +3,8 @@ const blogService = require("../services/blog.service");
 exports.getAllBlogs = async (req, res) => {
     try {
     const blogs = await blogService.getAllBlogs();
-    if(!blogs){
-        res.status(200).json("Blog list empty!");
+    if(blogs.length==0){
+        res.status(200).json('Blog list empty!');
     }
     res.status(200).json(blogs);
     } catch (err) {
@@ -14,7 +14,7 @@ exports.getAllBlogs = async (req, res) => {
 
 exports.createBlog = async (req, res) => {
     try {
-    const createdBlog = await blogService.createBlog(req.body);
+    const createdBlog = await blogService.createBlog(req.body, req.username);
     res.status(200).json(createdBlog);
     } catch (err) {
         res.status(err.statusCode).json({error: err.message});
@@ -32,7 +32,7 @@ exports.getBlogbyId = async (req, res) => {
 
 exports.editBlog = async (req, res) => {
     try {
-    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
+    const editedBlog = await blogService.editBlog(req.params.blogId, req.username, req.body);
     if(editedBlog[0] == 1){
         res.status(200).json('Blog edited successfully');
     }
@@ -46,7 +46,7 @@ exports.editBlog = async (req, res) => {
 
 exports.deleteBlog = async (req, res) => {
     try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId, req.body.authorId);
+    const deleteBlog = await blogService.deleteBlog(req.params.blogId, req.username);
     if(deleteBlog){
         res.status(200).json('Blog deleted');
     }

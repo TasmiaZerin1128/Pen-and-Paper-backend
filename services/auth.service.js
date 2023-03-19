@@ -10,34 +10,37 @@ exports.register = async (user) => {
     throw new ValidationError(userValid.message, 400, false);
   }
 
-  const userAlreadyExists = await userService.getUserbyUsername(user.username, false);
-  if (!userAlreadyExists) {
-    try {
+  try {
+    const userAlreadyExists = await userService.getUserByUsername(user.username,false);
+    if (!userAlreadyExists) {
       const result = await userService.createUser(user);
       return result;
-    } catch (err) {
-      throw new ValidationError(err.message, 500, true);
+    } else {
+      throw new ValidationError("User already exists!", 400, false);
     }
-  } else {
-    throw new ValidationError('User already exists!', 400, false);
+  } catch (err) {
+    throw new ValidationError(err.message, 500, true);
   }
 };
 
 exports.login = async (user) => {
   if (!user.username || !user.password) {
-    throw new ValidationError('All fields are required!', 400, false);
+    throw new ValidationError("All fields are required!", 400, false);
   }
 
   try {
-    const userExists = await userService.getUserByUsername(user.username, false);    
+    const userExists = await userService.getUserByUsername(user.username,false);
     if (userExists) {
-      const isPasswordMatched = await comparePassword(user.password,userExists.password);
+      const isPasswordMatched = await comparePassword(
+        user.password,
+        userExists.password
+      );
       if (!isPasswordMatched) {
-        throw new ValidationError('Incorrect email or password', 401, false);
+        throw new ValidationError("Incorrect email or password", 401, false);
       }
       return new userDTO(userExists);
     } else {
-      throw new ValidationError('Incorrect email or password', 401, false);
+      throw new ValidationError("Incorrect email or password", 401, false);
     }
   } catch (err) {
     throw new ValidationError(err.message, err.statusCode, true);

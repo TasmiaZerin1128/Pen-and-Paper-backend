@@ -4,12 +4,11 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router.route('/').get(blogController.getAllBlogs)
-    .post(blogController.createBlog); 
+router.route('/').get(blogController.getAllBlogs);
+router.route('/').post(authMiddleware, blogController.createBlog); 
 
-router.route('/:blogId')
-    .get(blogController.getBlogbyId)
-    .put(blogController.editBlog)
-    .delete( blogController.deleteBlog);
+router.route('/:blogId').get(blogController.getBlogbyId);
+router.route('/:blogId').put(authMiddleware, blogController.editBlog);
+router.route('/:blogId').delete(authMiddleware, blogController.deleteBlog);
 
 module.exports = router;
