@@ -46,7 +46,7 @@ exports.deleteBlog = async (blogId) => {
 
 exports.getBlogbyAuthorId = async (authorId) => {
   try {
-    const result = await Blog.findByPk(authorId);
+    const result = await Blog.findAll({ where: { authorId: authorId } });
     return result;
   } catch (err) {
     console.log(err.stack);

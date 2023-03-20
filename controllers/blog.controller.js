@@ -8,7 +8,7 @@ exports.getAllBlogs = async (req, res) => {
     }
     res.status(200).json(blogs);
     } catch (err) {
-        res.status(err.statusCode).json({error: err.message});
+    next(err);
     }
 }
 
@@ -17,7 +17,7 @@ exports.createBlog = async (req, res) => {
     const createdBlog = await blogService.createBlog(req.body, req.username);
     res.status(200).json(createdBlog);
     } catch (err) {
-        res.status(err.statusCode).json({error: err.message});
+        next(err);
     }
 }
 
@@ -26,13 +26,13 @@ exports.getBlogbyId = async (req, res) => {
         const blog = await blogService.getBlogbyId(req.params.blogId);
         res.status(200).json(blog);
     } catch (err) {
-        res.status(err.statusCode).json({error: err.message});
+        next(err);
     }
 }
 
 exports.editBlog = async (req, res) => {
     try {
-    const editedBlog = await blogService.editBlog(req.params.blogId, req.username, req.body);
+    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
     if(editedBlog[0] == 1){
         res.status(200).json('Blog edited successfully');
     }
@@ -40,13 +40,13 @@ exports.editBlog = async (req, res) => {
         res.status(400).json('Blog could not be edited. Please try again');
     }
     } catch (err) {
-        res.status(err.statusCode).json({error: err.message});
+        next(err);
     }
 }
 
 exports.deleteBlog = async (req, res) => {
     try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId, req.username);
+    const deleteBlog = await blogService.deleteBlog(req.params.blogId);
     if(deleteBlog){
         res.status(200).json('Blog deleted');
     }
@@ -54,6 +54,6 @@ exports.deleteBlog = async (req, res) => {
         res.status(404).json('Blog not found');
     }
     } catch (err) {
-        res.status(err.statusCode).json({error: err.message});
+        next(err);
     }
 }

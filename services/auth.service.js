@@ -2,12 +2,12 @@ const userService = require("../services/user.service");
 const userUtils = require("../utils/userValidation");
 const { comparePassword } = require("../utils/hashPassword");
 const userDTO = require("../DTOs/user.dto");
-const ValidationError = require("../utils/errorHandler");
+const AppError = require("../utils/errorHandler");
 
 exports.register = async (user) => {
   const userValid = userUtils.userValidator(user);
   if (!userValid.valid) {
-    throw new ValidationError(userValid.message, 400, false);
+    throw new AppError(userValid.message, 400, false);
   }
 
   try {
@@ -16,16 +16,16 @@ exports.register = async (user) => {
       const result = await userService.createUser(user);
       return result;
     } else {
-      throw new ValidationError("User already exists!", 400, false);
+      throw new AppError("User already exists!", 400, false);
     }
   } catch (err) {
-    throw new ValidationError(err.message, 500, true);
+    throw new AppError(err.message, 500, true);
   }
 };
 
 exports.login = async (user) => {
   if (!user.username || !user.password) {
-    throw new ValidationError("All fields are required!", 400, false);
+    throw new AppError("All fields are required!", 400, false);
   }
 
   try {
@@ -36,13 +36,13 @@ exports.login = async (user) => {
         userExists.password
       );
       if (!isPasswordMatched) {
-        throw new ValidationError("Incorrect email or password", 401, false);
+        throw new AppError("Incorrect email or password", 401, false);
       }
       return new userDTO(userExists);
     } else {
-      throw new ValidationError("Incorrect email or password", 401, false);
+      throw new AppError("Incorrect email or password", 401, false);
     }
   } catch (err) {
-    throw new ValidationError(err.message, err.statusCode, true);
+    throw new AppError(err.message, err.statusCode, true);
   }
 };

@@ -1,7 +1,7 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
 const { hashPassword } = require("../utils/hashPassword");
-const ValidationError = require("../utils/errorHandler");
+const AppError = require("../utils/errorHandler");
 const userDTO = require('../DTOs/user.dto');
 
 'use strict';
@@ -29,7 +29,7 @@ async function getAllUsers() {
 async function updateUser(username, userToUpdate) {
 
   if(!userUtils.checkPasswordValid(userToUpdate.password)){
-    throw new ValidationError('Password must contain atleast 6 characters', 400, false);
+    throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
   try{
@@ -39,12 +39,12 @@ async function updateUser(username, userToUpdate) {
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
     } else {
-      throw new ValidationError('User not found', 404, false);
+      throw new AppError('User not found', 404, false);
     }
     
   }
   catch{
-    throw new ValidationError('User update failed', 400, false);
+    throw new AppError('User update failed', 400, false);
   }
 }
 
@@ -54,7 +54,7 @@ async function deleteUser (username) {
     return result;
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 
@@ -70,7 +70,7 @@ async function getUserByUsername(username, returnUsingDTO){
     }
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 
@@ -80,7 +80,7 @@ async function getUserbyEmail(email){
     return duplicateEmail;
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 

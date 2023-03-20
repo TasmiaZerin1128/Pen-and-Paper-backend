@@ -13,7 +13,7 @@ exports.getAllUsers = async (req, res) => {
     }
     
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
@@ -26,7 +26,7 @@ exports.getUserByUsername = async (req, res) => {
       res.status(404).send("User not found");
     }
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
@@ -35,7 +35,7 @@ exports.updateUserByUsername = async (req, res) => {
     const data = await userService.updateUser(req.params.username, req.body);
     res.status(200).send('User updated');
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
@@ -48,6 +48,6 @@ exports.deleteUserByUsername = async (req, res) => {
       res.status(404).send('User not found');
     }
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };

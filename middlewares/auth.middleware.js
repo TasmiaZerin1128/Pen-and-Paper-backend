@@ -1,8 +1,7 @@
 "use strict";
 const jwt = require("jsonwebtoken");
 
-const authMiddleware = async (req, res, next) => {
-
+exports.guard = async (req, res, next) => {
   try {
     let accessToken = req.cookies.jwt;
 
@@ -22,4 +21,10 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+exports.authorize = async(req, res, next) => {
+  const tokenUsername = req.username;
+  if(tokenUsername != req.params.username){
+    return res.status(401).send("Permission denied");
+  }
+  next();
+}

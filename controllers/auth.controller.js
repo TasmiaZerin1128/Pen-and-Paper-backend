@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
       sendToken(data, 201, res);
     } 
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
           sendToken(data, 200, res);
         } 
     } catch (err) {
-        res.status(err.statusCode).send(err.message);
+        next(err);
     }
 }
 
