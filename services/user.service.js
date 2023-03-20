@@ -22,7 +22,7 @@ async function getAllUsers() {
     return data;
   }
   catch{
-    return new Error('Cannot find any Users table', 404);
+    return new AppError('Cannot find any Users table', 404, false);
   }
 }
 
@@ -65,9 +65,8 @@ async function getUserByUsername(username, returnUsingDTO){
     if(returnUsingDTO){
       const userFound = new userDTO(result);
       return userFound;
-    } else {
+    } 
       return result;
-    }
   }
   catch{
     throw new AppError('User not found', 404, false);
