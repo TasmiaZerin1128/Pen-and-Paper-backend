@@ -1,17 +1,15 @@
 const userService = require("../services/user.service");
+const {sendResponse} = require("../utils/contentNegotiation");
+const AppError = require("../utils/errorHandler");
 
 'use strict';
 
 exports.getAllUsers = async (req, res) => {
   try {
     const data = await userService.getAllUsers();
-    if(data.length!=0){
-      res.status(200).send(data);
-    } 
-      res.status(200).send('User table is empty');
-    
+    res.status(200).send(data.length ? data : 'User table is empty');
   } catch (err) {
-    next(err);
+    throw err;
   }
 };
 
@@ -19,11 +17,16 @@ exports.getUserByUsername = async (req, res) => {
   try {
     const data = await userService.getUserByUsername(req.params.username, true);
     if (data) {
-      res.status(200).send(data);
+      // res.status(200).send(data);
+      sendResponse(req, res, 200, data);
     }
-      res.status(404).send("User not found");
+    else {
+      sendResponse(req, res, 404, data);
+    }
+      // res.status(404).send("User not found");
   } catch (err) {
-    next(err);
+    // res.status(err.statusCode).send(err.message);
+    throw err;
   }
 };
 
