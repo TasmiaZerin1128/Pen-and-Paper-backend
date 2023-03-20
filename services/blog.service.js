@@ -19,7 +19,7 @@ async function createBlog(blog, username) {
       throw new AppError("Author does not exist", 404, false);
     }
   } catch (err) {
-    throw new Error(err.message, 500);
+    throw new AppError(err.message, err.statusCodde, err.isOperational);
   }
 }
 
@@ -28,25 +28,29 @@ async function getAllBlogs() {
     const data = await blogRepository.getAllBlogs();
     return data;
   } catch {
-    console.log("Cannot find any Blogs table", 404);
+    throw new AppError("Cannot find any Blogs table", 404, false);
   }
 }
 
 async function editBlog(blogId, blogItemsToEdit) {
+
   try {
-        const result = await blogRepository.editBlog(blogId, blogItemsToEdit);
-        return result;
+    if (!blogItemsToEdit.title && !blogItemsToEdit.description) {
+      throw new AppError("Title and description are missing", 400, false);
+    }
+    const result = await blogRepository.editBlog(blogId, blogItemsToEdit);
+    return result;
   } catch (err) {
-    throw err;
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
 
 async function deleteBlog(blogId) {
   try {
-        const result = await blogRepository.deleteBlog(blogId);
-        return result;
+    const result = await blogRepository.deleteBlog(blogId);
+    return result;
   } catch (err) {
-    throw err;
+    throw new AppError("Blog delete failed", 500, true);
   }
 }
 
