@@ -1,6 +1,6 @@
 const blogService = require("../services/blog.service");
 
-exports.getAllBlogs = async (req, res) => {
+exports.getAllBlogs = async (req, res, next) => {
     try {
     const blogs = await blogService.getAllBlogs();
     if(blogs.length==0){
@@ -12,7 +12,7 @@ exports.getAllBlogs = async (req, res) => {
     }
 }
 
-exports.createBlog = async (req, res) => {
+exports.createBlog = async (req, res, next) => {
     try {
     const createdBlog = await blogService.createBlog(req.body, req.username);
     res.status(200).json(createdBlog);
@@ -21,7 +21,7 @@ exports.createBlog = async (req, res) => {
     }
 }
 
-exports.getBlogbyId = async (req, res) => {
+exports.getBlogbyId = async (req, res, next) => {
     try {
         const blog = await blogService.getBlogbyId(req.params.blogId);
         res.status(200).json(blog);
@@ -30,21 +30,21 @@ exports.getBlogbyId = async (req, res) => {
     }
 }
 
-exports.editBlog = async (req, res) => {
+exports.editBlog = async (req, res, next) => {
     try {
     const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
     if(editedBlog[0] == 1){
         res.status(200).json('Blog edited successfully');
     }
     else {
-        res.status(400).json('Blog could not be edited. Please try again');
+        res.status(404).json('Blog not found');
     }
     } catch (err) {
         next(err);
     }
 }
 
-exports.deleteBlog = async (req, res) => {
+exports.deleteBlog = async (req, res, next) => {
     try{
     const deleteBlog = await blogService.deleteBlog(req.params.blogId);
     if(deleteBlog){

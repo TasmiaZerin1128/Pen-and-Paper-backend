@@ -12,7 +12,7 @@ async function createUser(user){
     const result = await userRepository.createUser(user);
     return result;
   } catch (err) {
-    throw new Error(err.message, 500, true);
+    throw new AppError(err.message, 500, true);
   }
 };
 
@@ -22,12 +22,11 @@ async function getAllUsers() {
     return data;
   }
   catch{
-    return new AppError('Cannot find any Users table', 404, false);
+    throw new AppError('Cannot find any Users table', 404, false);
   }
 }
 
 async function updateUser(username, userToUpdate) {
-
   if(!userUtils.checkPasswordValid(userToUpdate.password)){
     throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
@@ -44,7 +43,7 @@ async function updateUser(username, userToUpdate) {
     
   }
   catch{
-    throw new AppError('User update failed', 400, false);
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
 
@@ -73,9 +72,9 @@ async function getUserByUsername(username, returnUsingDTO){
   }
 }
 
-async function getUserbyEmail(email){
+async function getUserByEmail(email){
   try{
-    const duplicateEmail = await userRepository.getUserbyEmail(email);
+    const duplicateEmail = await userRepository.getUserByEmail(email);
     return duplicateEmail;
   }
   catch{
@@ -83,4 +82,4 @@ async function getUserbyEmail(email){
   }
 }
 
-module.exports = { getAllUsers, createUser, getUserByUsername, getUserbyEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser };

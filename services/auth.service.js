@@ -43,6 +43,6 @@ exports.login = async (user) => {
       throw new AppError("Incorrect email or password", 401, false);
     }
   } catch (err) {
-    throw new AppError(err.message, err.statusCode, true);
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 };
