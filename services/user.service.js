@@ -38,10 +38,8 @@ async function updateUser(username, userToUpdate) {
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
-    } else {
-      throw new ValidationError('User not found', 404, false);
-    }
-    
+    } 
+    throw new ValidationError('User not found', 404, false);
   }
   catch{
     throw new ValidationError('User update failed', 400, false);
@@ -65,9 +63,8 @@ async function getUserByUsername(username, returnUsingDTO){
     if(returnUsingDTO){
       const userFound = new userDTO(result);
       return userFound;
-    } else {
+    } 
       return result;
-    }
   }
   catch{
     throw new ValidationError('User not found', 404, false);
