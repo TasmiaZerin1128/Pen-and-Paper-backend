@@ -10,7 +10,7 @@ exports.register = async (user) => {
     throw new ValidationError(userValid.message, 400, false);
   }
 
-  const userAlreadyExists = await userService.getUserbyUsername(user.username, false);
+  const userAlreadyExists = await userService.getUserByUsername(user.username, false);
   if (!userAlreadyExists) {
     try {
       const result = await userService.createUser(user);
