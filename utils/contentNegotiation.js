@@ -1,7 +1,7 @@
-const e = require("express");
 const json2xml = require('xml-js');
-const json2html = require('node-json2html');
-const convertToPlain = require('json-to-plain-text');
+const json2html = require('json-to-html');
+const json2plain = require('json-to-plain-text');
+const { json } = require('body-parser');
 
 exports.sendJsonResponse = (req, res, statusCode, data) => {
     jsonData = { 'data' : data };
@@ -15,15 +15,13 @@ exports.sendXmlResponse = (req, res, statusCode, data) => {
 }
 
 exports.sendPlainResponse = (req, res, statusCode, data) => {
-    this.sendFinalResponse(req, res, statusCode, JSON.stringify(data));
+    var plainData = json2plain.toPlainText(JSON.parse(JSON.stringify(data)));
+    this.sendFinalResponse(req, res, statusCode, plainData);
 }
 
 exports.sendHtmlResponse = (req, res, statusCode, data) => {
-    let template = {
-        '<>': 'li',
-        html: '${title} - ${description}'
-      }
-    this.sendFinalResponse(req, res, statusCode, json2html.transform(data, template));
+    var htmlData = json2html(JSON.parse(JSON.stringify(data)));
+    this.sendFinalResponse(req, res, statusCode, htmlData);
 }
 
 exports.sendFinalResponse = (req, res, status, data) => {
@@ -31,17 +29,14 @@ exports.sendFinalResponse = (req, res, status, data) => {
 }
 
 exports.sendResponse = (req, res, statusCode, data) => {
-    if(req.headers.accept == 'application/xml'){
-        this.sendXmlResponse(req, res, statusCode, data);
+    if(req.headers.accept ==='application/xml' || req.headers.accept === 'text/xml'){
+        return this.sendXmlResponse(req, res, statusCode, data);
     }
-    else if(req.headers.accept == 'text/html'){
-        this.sendHtmlResponse(req, res, statusCode, data);
+    if(req.headers.accept === 'text/html'){
+        return this.sendHtmlResponse(req, res, statusCode, data);
     }
-    else if(req.headers.accept == 'text/plain'){
-        console.log("plain plain");
-        this.sendPlainResponse(req, res, statusCode, data);
+    if(req.headers.accept === 'text/plain'){
+        return this.sendPlainResponse(req, res, statusCode, data);
     }
-    else {
-        this.sendJsonResponse(req, res, statusCode, data);
-    }
+    return this.sendJsonResponse(req, res, statusCode, data);
 }
