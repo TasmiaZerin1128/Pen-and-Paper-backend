@@ -1,20 +1,33 @@
-const js2xmlparser = require("js2xmlparser");
-const json2html = require('json2html');
+const e = require("express");
+const json2xml = require('xml-js');
+const json2html = require('node-json2html');
+const convertToPlain = require('json-to-plain-text');
 
 exports.sendJsonResponse = (req, res, statusCode, data) => {
-    return res.status(statusCode).json(data);
+    jsonData = { 'data' : data };
+    this.sendFinalResponse(req, res, statusCode, jsonData);
 }
 
 exports.sendXmlResponse = (req, res, statusCode, data) => {
-    res.setHeader('Content-Type', 'application/xml');
-    return res.status(statusCode).send(js2xmlparser.parse(data));
+    var options = {compact: true, ignoreComment: true, spaces: 4};
+    var xmlData = json2xml.json2xml(JSON.stringify(data), options);
+    this.sendFinalResponse(req, res, statusCode, xmlData);
+}
+
+exports.sendPlainResponse = (req, res, statusCode, data) => {
+    this.sendFinalResponse(req, res, statusCode, JSON.stringify(data));
 }
 
 exports.sendHtmlResponse = (req, res, statusCode, data) => {
-    res.setHeader('Content-Type', 'text/html');
-    let template = {'<>':'div'};
-    console.log(json2html.render(data));
-    return res.status(statusCode).send(json2html.render(data));
+    let template = {
+        '<>': 'li',
+        html: '${title} - ${description}'
+      }
+    this.sendFinalResponse(req, res, statusCode, json2html.transform(data, template));
+}
+
+exports.sendFinalResponse = (req, res, status, data) => {
+    res.status(status).send(data);
 }
 
 exports.sendResponse = (req, res, statusCode, data) => {
@@ -22,10 +35,13 @@ exports.sendResponse = (req, res, statusCode, data) => {
         this.sendXmlResponse(req, res, statusCode, data);
     }
     else if(req.headers.accept == 'text/html'){
-        this.sendHtmlResponse(res, res, statusCode, data);
+        this.sendHtmlResponse(req, res, statusCode, data);
+    }
+    else if(req.headers.accept == 'text/plain'){
+        console.log("plain plain");
+        this.sendPlainResponse(req, res, statusCode, data);
     }
     else {
         this.sendJsonResponse(req, res, statusCode, data);
     }
-    
 }

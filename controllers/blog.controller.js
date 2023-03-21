@@ -1,12 +1,11 @@
 const blogService = require("../services/blog.service");
+const { sendResponse } = require("../utils/contentNegotiation");
 
 exports.getAllBlogs = async (req, res, next) => {
     try {
     const blogs = await blogService.getAllBlogs();
-    if(blogs.length==0){
-        res.status(200).json('Blog list empty!');
-    }
-    res.status(200).json(blogs);
+    // res.status(200).send(blogs.length ? blogs : 'Blog list is empty');
+    sendResponse(req, res, 200, blogs.length ? blogs : 'Blog list is empty');
     } catch (err) {
     next(err);
     }
