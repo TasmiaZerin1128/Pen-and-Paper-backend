@@ -18,8 +18,8 @@ exports.getAllBlogs = async () => {
 
 exports.getBlogbyId = async (blogId) => {
   try {
-    const result = await Blog.findOne({ where: { id: blogId } });
-    return result;
+    const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
+    return new blogDTO(result);
   } catch (err) {
     console.log(err.stack);
     throw err;
