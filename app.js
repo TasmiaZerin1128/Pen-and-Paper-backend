@@ -1,6 +1,7 @@
 const express = require('express');
 const router = require('./routes/index');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser')
 
 const database = require("./db.config");
 
@@ -11,6 +12,7 @@ const PORT = process.env.APP_PORT || 3000;
 database.connectToDatabase();
 
 const app = express();
+app.use(cookieParser())
 
 app.listen(PORT, () => {
     console.log(`App started on ${PORT}`);

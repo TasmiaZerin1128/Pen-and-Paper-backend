@@ -1,99 +1,84 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
-const hashPassword = require("../utils/hashPassword");
-const crypto = require("crypto");
+const { hashPassword } = require("../utils/hashPassword");
+const ValidationError = require("../utils/errorHandler");
+const userDTO = require('../DTOs/user.dto');
 
 'use strict';
 
 async function createUser(user){
 
-  const userValid = userUtils.userValidator(user.username, user.email, user.password);
-  if(!userValid.valid){
-    return {status:400, message: userValid.message};
-  }
-
-  try{
-    const id = crypto.randomUUID();
-    const hashedPassword = await hashPassword(user.password);
-
-    const data = await userRepository.createUser(id, user.username.toLowerCase(), user.email, hashedPassword);
-    return {status:201, message:'User created successfully'};
-  }
-  catch{
-    return {status:400, message:'Please check your credentials again'};
+  try {
+    const result = await userRepository.createUser(user);
+    return result;
+  } catch (err) {
+    throw new Error(err.message, 500, true);
   }
 };
 
 async function getAllUsers() {
   try{
     const data =  await userRepository.getAllUsers();
-    if(data.length==0){
-      return {status:200, message:'Users table is empty!'};
-    }
-    return {status:200, message: data};
+    return data;
   }
   catch{
-    return {status:200, message:'Users table is empty!'};
+    return new Error('Cannot find any Users table', 404);
   }
 }
 
-async function updateUser(username, updatedUser) {
+async function updateUser(username, userToUpdate) {
 
-  if(!userUtils.checkPasswordValid(updatedUser.password)){
-    return {status:400, message:'Password must contain atleast 6 characters'};
+  if(!userUtils.checkPasswordValid(userToUpdate.password)){
+    throw new ValidationError('Password must contain atleast 6 characters', 400, false);
   }
   
   try{
-    const hashedPassword = await hashPassword(updatedUser.password);
-    const result = await userRepository.updateUser(username.toLowerCase(), hashedPassword);
-    if(result == 0){
-      return {status:404, message:'User not found'};
-    }
-    return {status:200, message:'User updated'};
+    const userExists = await getUserByUsername(username, false);
+    if(userExists){
+      const hashedPassword = await hashPassword(userToUpdate.password);
+      const result = await userRepository.updateUser(username, hashedPassword);
+      return result;
+    } 
+    throw new ValidationError('User not found', 404, false);
   }
   catch{
-    return {status:400, message:'User update failed'};
+    throw new ValidationError('User update failed', 400, false);
   }
 }
 
 async function deleteUser (username) {
   try{
-    const result = await userRepository.deleteUser(username.toLowerCase());
-    if(!result){
-      return {status:404, message:'User not found'};
-    }
-    return {status:200, message:'User removed'};
+    const result = await userRepository.deleteUser(username);
+    return result;
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
-async function getUserbyUsername(username){
+async function getUserByUsername(username, returnUsingDTO){
 
   try{
-    const result = await userRepository.getUserbyUsername(username.toLowerCase());
-    if(!result){
-      return {status:404, message:'User not found'};
-    }
-    return {status:200, message:result};
+    const result = await userRepository.getUserByUsername(username);
+    if(returnUsingDTO){
+      const userFound = new userDTO(result);
+      return userFound;
+    } 
+      return result;
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
 async function getUserbyEmail(email){
   try{
     const duplicateEmail = await userRepository.getUserbyEmail(email);
-    if(!duplicateEmail){
-      return {status:404, message:'User not found'};
-    }
-    return {status:200, message:duplicateEmail};
+    return duplicateEmail;
   }
   catch{
-    return {status:404, message:'User not found'};
+    throw new ValidationError('User not found', 404, false);
   }
 }
 
-module.exports = { createUser, getAllUsers, getUserbyUsername, getUserbyEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserbyEmail, updateUser, deleteUser };

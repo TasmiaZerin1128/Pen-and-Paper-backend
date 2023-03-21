@@ -1,21 +1,6 @@
 const userDTO = require("../DTOs/user.dto");
+const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
-
-exports.createUser = async (id, username, email, password) => {
-  try {
-    const result = await User.create({
-      id: id,
-      username: username,
-      email: email,
-      password: password,
-    });
-    console.log("User created successfully");
-    return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
-};
 
 exports.getAllUsers = async () => {
   try {
@@ -32,11 +17,11 @@ exports.getAllUsers = async () => {
   }
 };
 
-exports.getUserbyUsername = async (username) => {
+exports.getUserByUsername = async (username) => {
   try {
+    username = username.toLowerCase();
     const result = await User.findOne({ where: { username: username } });
-    const userdto = new userDTO(result);
-    return userdto;
+    return result;
   } catch (err) {
     console.log(err.stack);
     throw err;
@@ -45,10 +30,12 @@ exports.getUserbyUsername = async (username) => {
 
 exports.updateUser = async (username, updatedPassword) => {
   try {
+    username = username.toLowerCase();
     const result = await User.update(
       { password: updatedPassword },
       { where: { username: username } }
     );
+    console.log(result);
     return result;
   } catch (err) {
     console.log(err.stack);
@@ -58,6 +45,7 @@ exports.updateUser = async (username, updatedPassword) => {
 
 exports.deleteUser = async (username) => {
   try {
+    username = username.toLowerCase();
     const result = User.destroy({ where: { username: username } });
     return result;
   } catch (err) {
@@ -66,7 +54,7 @@ exports.deleteUser = async (username) => {
   }
 };
 
-exports.getUserbyEmail = async (email) => {
+exports.getUserByEmail = async (email) => {
   try {
     const result = await User.findOne({ where: { email: email } });
     const userdto = new userDTO(result);
@@ -76,3 +64,14 @@ exports.getUserbyEmail = async (email) => {
     throw err;
   }
 };
+
+exports.createUser = async (user) => {
+  const userToRegister = new userRegisterDto(user);
+  try {
+      const result = await User.create(userToRegister);
+      console.log("User created successfully");
+      return result;
+    } catch (err) {
+      throw console.error(err);
+    }
+}

@@ -1,5 +1,7 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const {sequelize} = require("../db.config");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../db.config");
+require("dotenv").config();
+const { hashPassword } = require("../utils/hashPassword");
 
 const User = sequelize.define(
   "User",
@@ -8,6 +10,11 @@ const User = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      notNull: true,
+      notEmpty: true
     },
     username: {
       type: DataTypes.STRING,
@@ -23,9 +30,17 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      notNull: false,
+      notNull: true,
       notEmpty: true
     }
+  },{
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+         user.password = await hashPassword(user.password);
+        }
+    }
+  }
   },
   {
     tableName: "Users",
@@ -33,7 +48,7 @@ const User = sequelize.define(
 );
 
 (async () => {
-    await User.sync();  
+    await User.sync({force:true});  
 })();
 
 
