@@ -27,7 +27,7 @@ User.hasMany(Blog, {
   foreignKey: "authorId"
 });
 
-Blog.belongsTo(User, {
+Blog.belongsTo(User, { as: "author" }, {
   foreignKey: "authorId"
 });
 

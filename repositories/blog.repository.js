@@ -1,9 +1,15 @@
 const Blog = require('../models/blog.model');
+const blogDTO = require('../DTOs/blog.dto');
+const { all } = require('../routes');
 
 exports.getAllBlogs = async () => {
   try {
-    const result = await Blog.findAll();
-    return result;
+    const result = await Blog.findAll({include : ["author"]});
+    const allBlog = [];
+    result.forEach((element) => {
+      allBlog.push( new blogDTO(element));
+    });
+    return allBlog;
   } catch (err) {
     console.log(err.stack);
     throw err;
