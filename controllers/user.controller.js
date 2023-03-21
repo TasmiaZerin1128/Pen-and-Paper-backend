@@ -5,11 +5,7 @@ const userService = require("../services/user.service");
 exports.getAllUsers = async (req, res, next) => {
   try {
     const data = await userService.getAllUsers();
-    if(data.length){
-      res.status(200).send(data);
-    } else {
-      res.status(200).send('User table is empty');
-    }
+    res.status(200).json(data.length ? data : 'User table is empty');
   } catch (err) {
     next(err);
   }
