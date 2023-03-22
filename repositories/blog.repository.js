@@ -2,9 +2,9 @@ const Blog = require('../models/blog.model');
 const blogDTO = require('../DTOs/blog.dto');
 const { all } = require('../routes');
 
-exports.getAllBlogs = async () => {
+exports.getAllBlogs = async (limit, offset) => {
   try {
-    const result = await Blog.findAll({include : ["author"]});
+    const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit });
     const allBlog = [];
     result.forEach((element) => {
       allBlog.push( new blogDTO(element));

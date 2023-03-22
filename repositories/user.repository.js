@@ -2,9 +2,9 @@ const userDTO = require("../DTOs/user.dto");
 const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
 
-exports.getAllUsers = async () => {
+exports.getAllUsers = async (limit, offset) => {
   try {
-    const result = await User.findAll();
+    const result = await User.findAll({ offset : offset, limit : limit });
     const allUsers = [];
     result.forEach((element) => {
       allUsers.push(new userDTO(element));

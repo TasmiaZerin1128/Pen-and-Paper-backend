@@ -3,6 +3,7 @@ const userUtils = require("../utils/userValidation");
 const { hashPassword } = require("../utils/hashPassword");
 const AppError = require("../utils/errorHandler");
 const userDTO = require('../DTOs/user.dto');
+const { setLimitAndOffset } = require("../utils/pagination");
 
 'use strict';
 
@@ -16,9 +17,10 @@ async function createUser(user){
   }
 };
 
-async function getAllUsers() {
+async function getAllUsers(pageSize, pageNumber) {
   try{
-    const data =  await userRepository.getAllUsers();
+    const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const data =  await userRepository.getAllUsers(limit, offset);
     return data;
   }
   catch{

@@ -1,6 +1,7 @@
 const blogRepository = require("../repositories/blog.repository");
 const AppError = require("../utils/errorHandler");
 const userService = require("../services/user.service");
+const { setLimitAndOffset } = require("../utils/pagination");
 
 ("use strict");
 
@@ -23,9 +24,10 @@ async function createBlog(blog, username) {
   }
 }
 
-async function getAllBlogs() {
+async function getAllBlogs(pageSize, pageNumber) {
   try {
-    const data = await blogRepository.getAllBlogs();
+    const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const data = await blogRepository.getAllBlogs(limit, offset);
     return data;
   } catch {
     throw new AppError("Cannot find any Blogs table", 404, false);
