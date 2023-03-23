@@ -1,12 +1,10 @@
-
-class AppError extends Error{
-    constructor(message,statusCode, isOperational){
+class AppError extends Error {
+    constructor(message, statusCode, isOperational) {
         super(message);
         this.statusCode = statusCode;
-        this.isOperational  = isOperational;
+        this.isOperational = isOperational;
         // Error.captureStackTrace(this, this.constructor);
     }
-    
 }
 
-module.exports = AppError 
+module.exports = AppError;
