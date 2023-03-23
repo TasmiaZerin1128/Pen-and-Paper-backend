@@ -19,7 +19,7 @@ async function createBlog(blog, username) {
       throw new AppError("Author does not exist", 404, false);
     }
   } catch (err) {
-    throw new AppError(err.message, err.statusCodde, err.isOperational);
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
 
