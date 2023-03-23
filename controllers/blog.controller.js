@@ -3,8 +3,8 @@ const { sendResponse } = require("../utils/contentNegotiation");
 
 exports.getAllBlogs = async (req, res, next) => {
   try {
-    let pageSize = req.query.pageSize;
-    let pageNumber = req.query.pageNumber;
+    let pageSize = req.query.pagesize;
+    let pageNumber = req.query.pagenumber;
 
     const blogs = await blogService.getAllBlogs(pageSize, pageNumber);
     sendResponse(req, res, 200, blogs.length ? blogs : "Blog list is empty");
