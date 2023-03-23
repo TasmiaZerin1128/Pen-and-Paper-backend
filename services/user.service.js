@@ -42,9 +42,8 @@ async function updateUser(username, userToUpdate) {
     } else {
       throw new AppError('User not found', 404, false);
     }
-    
   }
-  catch{
+  catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
