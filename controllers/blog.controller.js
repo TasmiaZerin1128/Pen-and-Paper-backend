@@ -24,7 +24,7 @@ exports.createBlog = async (req, res, next) => {
 exports.getBlogById = async (req, res, next) => {
     try {
         const blog = await blogService.getBlogById(req.params.blogId);
-        res.status(200).json(blog);
+        sendResponse(req, res, 200, blog);
     } catch (err) {
         next(err);
     }
