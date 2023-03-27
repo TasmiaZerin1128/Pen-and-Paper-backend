@@ -31,7 +31,6 @@ exports.getBlogById = async (req, res, next) => {
 
 exports.editBlogByBlogId = async (req, res, next) => {
     try {
-        console.log("edit");
     const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
     if(editedBlog[0] == 1){
         res.status(200).json('Blog edited successfully');
