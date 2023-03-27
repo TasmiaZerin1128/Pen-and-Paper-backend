@@ -33,8 +33,8 @@ exports.getBlogById = async (req, res, next) => {
 exports.editBlogByBlogId = async (req, res, next) => {
     try {
     const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
-    if(editedBlog[0] == 1){
-        sendResponse(req, res, 200, 'Blog edited successfully');
+    if(editedBlog[0] === 1){
+        res.status(200).json('Blog edited successfully');
     }
     else {
         res.status(404).json('Blog not found');
