@@ -15,7 +15,7 @@ exports.getAllBlogs = async (limit, offset) => {
     }
 };
 
-exports.getBlogbyId = async (blogId) => {
+exports.getBlogById = async (blogId) => {
     try {
         const result = await Blog.findOne({ include: ['author'], where: { id: blogId } });
         return new BlogDTO(result);
@@ -25,7 +25,7 @@ exports.getBlogbyId = async (blogId) => {
     }
 };
 
-exports.editBlog = async (blogId, editedBlog) => {
+exports.editBlogByBlogId = async (blogId, editedBlog) => {
     try {
         const result = await Blog.update(
             { title: editedBlog.title, description: editedBlog.description },
@@ -38,7 +38,7 @@ exports.editBlog = async (blogId, editedBlog) => {
     }
 };
 
-exports.deleteBlog = async (blogId) => {
+exports.deleteBlogByBlogId = async (blogId) => {
     try {
         const result = Blog.destroy({ where: { id: blogId } });
         return result;
@@ -48,7 +48,7 @@ exports.deleteBlog = async (blogId) => {
     }
 };
 
-exports.getBlogbyAuthorId = async (authorId) => {
+exports.getBlogByAuthorId = async (authorId) => {
     try {
         const result = await Blog.findAll({ where: { authorId } });
         return result;

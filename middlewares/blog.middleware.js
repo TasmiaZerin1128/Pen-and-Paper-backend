@@ -1,9 +1,11 @@
 const blogService = require('../services/blog.service');
 const userService = require('../services/user.service');
 
+('use strict');
+
 exports.blogMiddleware = async (req, res, next) => {
     try {
-        const blogExists = await blogService.getBlogbyId(req.params.blogId);
+        const blogExists = await blogService.getBlogById(req.params.blogId);
         const authorExists = await userService.getUserByUsername(req.username);
         if (!blogExists) {
             return res.status(404).send('Blog not found');

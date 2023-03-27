@@ -1,7 +1,6 @@
-/* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
 
-exports.guard = async (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
     try {
         const accessToken = req.cookies.jwt;
 
@@ -18,6 +17,7 @@ exports.guard = async (req, res, next) => {
     } catch (err) {
         return res.status(401).send('Unauthorized User');
     }
+    return 0;
 };
 
 exports.authorize = async (req, res, next) => {
@@ -25,5 +25,5 @@ exports.authorize = async (req, res, next) => {
     if (tokenUsername !== req.params.username) {
         return res.status(401).send('Permission denied');
     }
-    next();
+    return next();
 };
