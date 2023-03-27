@@ -1,6 +1,8 @@
 const blogService = require("../services/blog.service");
 const { sendResponse } = require("../utils/contentNegotiation");
 
+"use strict";
+
 exports.getAllBlogs = async (req, res, next) => {
     try {
     const blogs = await blogService.getAllBlogs();
@@ -19,18 +21,19 @@ exports.createBlog = async (req, res, next) => {
     }
 }
 
-exports.getBlogbyId = async (req, res, next) => {
+exports.getBlogById = async (req, res, next) => {
     try {
-        const blog = await blogService.getBlogbyId(req.params.blogId);
-        sendResponse(req, res, 200, blog);
+        const blog = await blogService.getBlogById(req.params.blogId);
+        res.status(200).json(blog);
     } catch (err) {
         next(err);
     }
 }
 
-exports.editBlog = async (req, res, next) => {
+exports.editBlogByBlogId = async (req, res, next) => {
     try {
-    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
+        console.log("edit");
+    const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
     if(editedBlog[0] == 1){
         sendResponse(req, res, 200, 'Blog edited successfully');
     }
@@ -42,9 +45,9 @@ exports.editBlog = async (req, res, next) => {
     }
 }
 
-exports.deleteBlog = async (req, res, next) => {
+exports.deleteBlogByBlogId = async (req, res, next) => {
     try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId);
+    const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);
     if(deleteBlog){
         sendResponse(req, res, 200, 'Blog deleted');
     }

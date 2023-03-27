@@ -3,8 +3,7 @@ const { sendToken, removeToken } = require("../utils/jwtToken");
 const {sendResponse} = require("../utils/contentNegotiation");
 require("dotenv").config();
 
-
-"use strict"
+"use strict";
 
 exports.register = async (req, res, next) => {
   try {

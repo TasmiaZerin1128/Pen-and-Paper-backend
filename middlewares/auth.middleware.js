@@ -1,7 +1,8 @@
 "use strict";
+
 const jwt = require("jsonwebtoken");
 
-exports.guard = async (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
   try {
     let accessToken = req.cookies.jwt;
 
@@ -15,7 +16,7 @@ exports.guard = async (req, res, next) => {
       req.username = decoded.username;
       next();
       });
-    
+
   } catch (err) {
     return res.status(401).send("Unauthorized User");
   }
