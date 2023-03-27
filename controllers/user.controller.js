@@ -30,7 +30,7 @@ exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
     if(data[0] === 1){
-      res.status(200).send('User updated');
+      sendResponse(req, res, 200, 'User updated');
     } else {
       res.status(400).send('User could not be updated');
     }
