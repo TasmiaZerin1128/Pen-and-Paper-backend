@@ -1,38 +1,41 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../db.config");
-require("dotenv").config();
-const User = require("./user.model");
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.config');
+require('dotenv').config();
+const User = require('./user.model');
 
-const Blog = sequelize.define(
-  "Blog",
-  {
+const Blog = sequelize.define('Blog', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
     },
     title: {
-      type: DataTypes.STRING,
-      notNull: true,
-      notEmpty: true,
-      defaultValue: 'Untitled Blog'
+        type: DataTypes.STRING,
+        notNull: true,
+        notEmpty: true,
+        defaultValue: 'Untitled Blog',
     },
     description: {
-      type: DataTypes.STRING,
-    }
-  }
-);
+        type: DataTypes.STRING,
+    },
+});
 
 User.hasMany(Blog, {
-  foreignKey: "authorId", onDelete: 'cascade', hooks: true 
+    foreignKey: 'authorId',
+    onDelete: 'cascade',
+    hooks: true,
 });
 
-Blog.belongsTo(User, { as: "author" }, {
-  foreignKey: "authorId"
-});
+Blog.belongsTo(
+    User,
+    { as: 'author' },
+    {
+        foreignKey: 'authorId',
+    },
+);
 
 (async () => {
-  await Blog.sync(); 
+    await Blog.sync();
 })();
 
 module.exports = Blog;
