@@ -1,5 +1,7 @@
 const blogService = require("../services/blog.service");
 
+"use strict";
+
 exports.getAllBlogs = async (req, res, next) => {
     try {
     const blogs = await blogService.getAllBlogs();

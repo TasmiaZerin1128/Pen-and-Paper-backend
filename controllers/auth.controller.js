@@ -2,8 +2,7 @@ const authService = require("../services/auth.service");
 const { sendToken, removeToken } = require("../utils/jwtToken");
 require("dotenv").config();
 
-
-"use strict"
+"use strict";
 
 exports.register = async (req, res, next) => {
   try {

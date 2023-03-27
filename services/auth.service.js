@@ -4,6 +4,8 @@ const { comparePassword } = require("../utils/hashPassword");
 const userDTO = require("../DTOs/user.dto");
 const AppError = require("../utils/errorHandler");
 
+("use strict");
+
 exports.register = async (user) => {
   const userValid = userUtils.userValidator(user);
   if (!userValid.valid) {
