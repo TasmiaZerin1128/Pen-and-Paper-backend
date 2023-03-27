@@ -41,15 +41,11 @@ const User = sequelize.define(
         }
     }
   }
-  },
-  {
-    tableName: "Users",
   }
 );
 
 (async () => {
-    await User.sync({force:true});  
+    await User.sync();  
 })();
-
 
 module.exports = User;

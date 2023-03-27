@@ -1,10 +1,8 @@
 const authService = require("../services/auth.service");
-const jwt = require("jsonwebtoken");
 const { sendToken, removeToken } = require("../utils/jwtToken");
 require("dotenv").config();
 
-
-"use strict"
+"use strict";
 
 exports.register = async (req, res, next) => {
   try {
@@ -13,12 +11,12 @@ exports.register = async (req, res, next) => {
       sendToken(data, 201, res);
     } 
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
 
     try{
         const data = await authService.login(req.body);
@@ -26,7 +24,7 @@ exports.login = async (req, res) => {
           sendToken(data, 200, res);
         } 
     } catch (err) {
-        res.status(err.statusCode).send(err.message);
+        next(err);
     }
 }
 

@@ -1,7 +1,7 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
 const { hashPassword } = require("../utils/hashPassword");
-const ValidationError = require("../utils/errorHandler");
+const AppError = require("../utils/errorHandler");
 const userDTO = require('../DTOs/user.dto');
 
 'use strict';
@@ -12,7 +12,7 @@ async function createUser(user){
     const result = await userRepository.createUser(user);
     return result;
   } catch (err) {
-    throw new Error(err.message, 500, true);
+    throw new AppError(err.message, 500, true);
   }
 };
 
@@ -22,14 +22,13 @@ async function getAllUsers() {
     return data;
   }
   catch{
-    return new Error('Cannot find any Users table', 404);
+    throw new AppError('Cannot find any Users table', 404, false);
   }
 }
 
 async function updateUser(username, userToUpdate) {
-
   if(!userUtils.checkPasswordValid(userToUpdate.password)){
-    throw new ValidationError('Password must contain atleast 6 characters', 400, false);
+    throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
   try{
@@ -38,11 +37,12 @@ async function updateUser(username, userToUpdate) {
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
-    } 
-    throw new ValidationError('User not found', 404, false);
+    } else {
+      throw new AppError('User not found', 404, false);
+    }
   }
-  catch{
-    throw new ValidationError('User update failed', 400, false);
+  catch (err) {
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
 
@@ -52,7 +52,7 @@ async function deleteUser (username) {
     return result;
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 
@@ -67,18 +67,18 @@ async function getUserByUsername(username, returnUsingDTO){
       return result;
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 
-async function getUserbyEmail(email){
+async function getUserByEmail(email){
   try{
-    const duplicateEmail = await userRepository.getUserbyEmail(email);
+    const duplicateEmail = await userRepository.getUserByEmail(email);
     return duplicateEmail;
   }
   catch{
-    throw new ValidationError('User not found', 404, false);
+    throw new AppError('User not found', 404, false);
   }
 }
 
-module.exports = { getAllUsers, createUser, getUserByUsername, getUserbyEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser };

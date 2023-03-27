@@ -2,48 +2,50 @@ const userService = require("../services/user.service");
 
 'use strict';
 
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res, next) => {
   try {
     const data = await userService.getAllUsers();
-    if(data.length!=0){
-      res.status(200).send(data);
-    } 
-      res.status(200).send('User table is empty');
-    
+    res.status(200).json(data.length ? data : 'User table is empty');
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
-exports.getUserByUsername = async (req, res) => {
+exports.getUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.getUserByUsername(req.params.username, true);
     if (data) {
       res.status(200).send(data);
-    }
+    } else {
       res.status(404).send("User not found");
+    }
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
-exports.updateUserByUsername = async (req, res) => {
+exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
-    res.status(200).send('User updated');
+    if(data[0] === 1){
+      res.status(200).send('User updated');
+    } else {
+      res.status(400).send('User could not be updated');
+    }
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
-exports.deleteUserByUsername = async (req, res) => {
+exports.deleteUserByUsername = async (req, res, next) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.username);
     if(deletedUser){
       res.status(200).send('User deleted');
-    } 
+    } else {
       res.status(404).send('User not found');
+    }
   } catch (err) {
-    res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
