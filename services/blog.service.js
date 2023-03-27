@@ -34,40 +34,40 @@ async function getAllBlogs(pageSize, pageNumber) {
   }
 }
 
-async function editBlog(blogId, blogItemsToEdit) {
+async function editBlogByBlogId(blogId, blogItemsToEdit) {
 
   try {
     if (!blogItemsToEdit.title && !blogItemsToEdit.description) {
       throw new AppError("Title and description are missing", 400, false);
     }
-    const result = await blogRepository.editBlog(blogId, blogItemsToEdit);
+    const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
     return result;
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 }
 
-async function deleteBlog(blogId) {
+async function deleteBlogByBlogId(blogId) {
   try {
-    const result = await blogRepository.deleteBlog(blogId);
+    const result = await blogRepository.deleteBlogByBlogId(blogId);
     return result;
   } catch (err) {
     throw new AppError("Blog delete failed", 500, true);
   }
 }
 
-async function getBlogbyId(blogId) {
+async function getBlogById(blogId) {
   try {
-    const result = await blogRepository.getBlogbyId(blogId);
+    const result = await blogRepository.getBlogById(blogId);
     return result;
   } catch {
     throw new AppError("Blog not found", 404, false);
   }
 }
 
-async function getBlogbyAuthorId(authorId) {
+async function getBlogByAuthorId(authorId) {
   try {
-    const blogExists = await blogRepository.getBlogbyAuthorId(authorId);
+    const blogExists = await blogRepository.getBlogByAuthorId(authorId);
     return blogExists;
   } catch {
     throw new AppError("Blog not found", 404, false);
@@ -77,8 +77,8 @@ async function getBlogbyAuthorId(authorId) {
 module.exports = {
   getAllBlogs,
   createBlog,
-  getBlogbyId,
-  getBlogbyAuthorId,
-  editBlog,
-  deleteBlog,
+  getBlogById,
+  getBlogByAuthorId,
+  editBlogByBlogId,
+  deleteBlogByBlogId,
 };
