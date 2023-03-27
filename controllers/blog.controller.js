@@ -18,18 +18,19 @@ exports.createBlog = async (req, res, next) => {
     }
 }
 
-exports.getBlogbyId = async (req, res, next) => {
+exports.getBlogById = async (req, res, next) => {
     try {
-        const blog = await blogService.getBlogbyId(req.params.blogId);
+        const blog = await blogService.getBlogById(req.params.blogId);
         res.status(200).json(blog);
     } catch (err) {
         next(err);
     }
 }
 
-exports.editBlog = async (req, res, next) => {
+exports.editBlogByBlogId = async (req, res, next) => {
     try {
-    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
+        console.log("edit");
+    const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
     if(editedBlog[0] == 1){
         res.status(200).json('Blog edited successfully');
     }
@@ -41,9 +42,9 @@ exports.editBlog = async (req, res, next) => {
     }
 }
 
-exports.deleteBlog = async (req, res, next) => {
+exports.deleteBlogByBlogId = async (req, res, next) => {
     try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId);
+    const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);
     if(deleteBlog){
         res.status(200).json('Blog deleted');
     }
