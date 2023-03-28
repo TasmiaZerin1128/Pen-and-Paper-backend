@@ -1,28 +1,26 @@
 const Blog = require('../models/blog.model');
-const blogDTO = require('../DTOs/blog.dto');
-const { all } = require('../routes');
+const BlogDTO = require('../DTOs/blog.dto');
+const { SequelizeValidationError } = require("../utils/errorHandler");
 
 exports.getAllBlogs = async (limit, offset) => {
   try {
     const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit });
     const allBlog = [];
     result.forEach((element) => {
-      allBlog.push( new blogDTO(element));
+      allBlog.push( new BlogDTO(element));
     });
     return allBlog;
   } catch (err) {
-    console.log(err.stack);
-    throw err;
+    throw new SequelizeValidationError(err, 400);
   }
 };
 
 exports.getBlogById = async (blogId) => {
   try {
     const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
-    return new blogDTO(result);
+    return new BlogDTO(result);
   } catch (err) {
-    console.log(err.stack);
-    throw err;
+    throw new SequelizeValidationError(err, 400);
   }
 };
 
@@ -35,8 +33,7 @@ exports.editBlogByBlogId = async (blogId, editedBlog) => {
     );
     return result;
   } catch (err) {
-    console.log(err.stack);
-    throw err;
+    throw new SequelizeValidationError(err, 400);
   }
 };
 
@@ -45,8 +42,7 @@ exports.deleteBlogByBlogId = async (blogId) => {
     const result = Blog.destroy({ where: { id: blogId } });
     return result;
   } catch (err) {
-    console.log(err.stack);
-    throw err;
+    throw new SequelizeValidationError(err, 400);
   }
 };
 
@@ -55,8 +51,7 @@ exports.getBlogByAuthorId = async (authorId) => {
     const result = await Blog.findAll({ where: { authorId: authorId } });
     return result;
   } catch (err) {
-    console.log(err.stack);
-    throw err;
+    throw new SequelizeValidationError(err, 400);
   }
 };
 
@@ -66,6 +61,6 @@ exports.createBlog = async (blog) => {
       console.log("Blog created successfully");
       return result;
     } catch (err) {
-      throw console.error(err);
+      throw new SequelizeValidationError(err, 400);
     }
 }

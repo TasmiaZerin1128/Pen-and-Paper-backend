@@ -2,36 +2,34 @@ const userService = require("../services/user.service");
 const userUtils = require("../utils/userValidation");
 const { comparePassword } = require("../utils/hashPassword");
 const userDTO = require("../DTOs/user.dto");
-const AppError = require("../utils/errorHandler");
+const { AppError } = require("../utils/errorHandler");
 
 ("use strict");
 
 exports.register = async (user) => {
-
   try {
     const userValid = userUtils.userValidator(user);
     if (!userValid.valid) {
-        throw new AppError(userValid.message, 400, false);
+      throw new AppError(userValid.message, 400, false);
     }
 
     const userAlreadyExists = await userService.getUserByUsername(user.username);
     if (!userAlreadyExists) {
       const result = await userService.createUser(user);
       return result;
-    } else {
-      throw new AppError("User already exists!", 400, false);
     }
+    throw new AppError("User already exists!", 400, false);
   } catch (err) {
-    throw new AppError(err.message, 400, false);
+    throw new AppError(err.message, err.statusCode, err.isOperational);
   }
 };
 
 exports.login = async (user) => {
-  if (!user.username || !user.password) {
-    throw new AppError("All fields are required!", 400, false);
-  }
-
   try {
+    if (!user.username || !user.password) {
+      throw new AppError("All fields are required!", 400, false);
+    }
+
     const userExists = await userService.getUserByUsername(user.username);
     if (userExists) {
       const isPasswordMatched = await comparePassword(
@@ -42,9 +40,8 @@ exports.login = async (user) => {
         throw new AppError("Incorrect username or password", 401, false);
       }
       return new userDTO(userExists);
-    } else {
-      throw new AppError("Incorrect username or password", 401, false);
     }
+    throw new AppError("Incorrect username or password", 401, false);
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }

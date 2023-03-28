@@ -13,18 +13,23 @@ const User = sequelize.define(
     },
     fullName: {
       type: DataTypes.STRING,
-      notNull: true,
-      notEmpty: true
+      allowNull: false,
+      notEmpty: true,
     },
     username: {
       type: DataTypes.STRING,
-      notNull: true,
       unique: true,
-      notEmpty: true
+      notEmpty: true,
+      isAlphanumeric: true,
+      validate: {
+        isAlphanumeric: {
+          msg: 'Username cannot contain space and special characters!',
+        },
+      }
     },
     email: {
       type: DataTypes.STRING,
-      notNull: true,
+      allowNull: false,
       unique: true,
       notEmpty: true,
       validate: {
@@ -35,8 +40,11 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      notNull: true,
-      notEmpty: true
+      allowNull: false,
+      notEmpty: true,
+      validate: {
+        len: [6,20],
+      }
     }
   },{
     hooks: {

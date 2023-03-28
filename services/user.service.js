@@ -1,8 +1,7 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
 const { hashPassword } = require("../utils/hashPassword");
-const AppError = require("../utils/errorHandler");
-const userDTO = require('../DTOs/user.dto');
+const { AppError } = require("../utils/errorHandler");
 const { setLimitAndOffset } = require("../utils/pagination");
 const UserDTO = require("../DTOs/user.dto");
 
@@ -41,7 +40,7 @@ async function updateUser(username, userToUpdate) {
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
     } else {
-      throw new AppError('User could not be updated', 400, true);
+      throw new AppError('User does not exist', 404, true);
     }
   }
   catch (err) {

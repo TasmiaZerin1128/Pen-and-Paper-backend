@@ -13,7 +13,7 @@ const Blog = sequelize.define(
     },
     title: {
       type: DataTypes.STRING,
-      notNull: true,
+      allowNull: false,
       notEmpty: true,
       defaultValue: 'Untitled Blog'
     },

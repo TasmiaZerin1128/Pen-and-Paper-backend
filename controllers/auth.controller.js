@@ -6,10 +6,8 @@ require("dotenv").config();
 
 exports.register = async (req, res, next) => {
   try {
-    const data = await authService.register(req.body);
-    if (data) {
-      sendToken(req, data, 201, res);
-    } 
+    const newUser = await authService.register(req.body);
+    sendToken(req, newUser, 201, res);
   } catch (err) {
     next(err);
   }
@@ -17,12 +15,9 @@ exports.register = async (req, res, next) => {
 
 
 exports.login = async (req, res, next) => {
-
     try{
-        const data = await authService.login(req.body);
-        if (data) {
-          sendToken(req, data, 200, res);
-        } 
+        const user = await authService.login(req.body);
+        sendToken(req, user, 200, res);
     } catch (err) {
         next(err);
     }

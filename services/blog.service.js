@@ -1,5 +1,5 @@
 const blogRepository = require("../repositories/blog.repository");
-const AppError = require("../utils/errorHandler");
+const { AppError } = require("../utils/errorHandler");
 const userService = require("../services/user.service");
 const { setLimitAndOffset } = require("../utils/pagination");
 
