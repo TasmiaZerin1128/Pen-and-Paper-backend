@@ -4,6 +4,7 @@ const { hashPassword } = require("../utils/hashPassword");
 const AppError = require("../utils/errorHandler");
 const userDTO = require('../DTOs/user.dto');
 const { setLimitAndOffset } = require("../utils/pagination");
+const UserDTO = require("../DTOs/user.dto");
 
 'use strict';
 
@@ -34,13 +35,13 @@ async function updateUser(username, userToUpdate) {
   }
   
   try{
-    const userExists = await getUserByUsername(username, false);
+    const userExists = await getUserByUsername(username);
     if(userExists){
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
     } else {
-      throw new AppError('User not found', 404, false);
+      throw new AppError('User could not be updated', 400, true);
     }
   }
   catch (err) {
@@ -58,20 +59,27 @@ async function deleteUser (username) {
   }
 }
 
-async function getUserByUsername(username, returnUsingDTO){
+async function getUserByUsername(username){
 
   try{
     const result = await userRepository.getUserByUsername(username);
-    if(returnUsingDTO){
-      const userFound = new userDTO(result);
-      return userFound;
-    } 
-      return result;
+    return result;
   }
   catch{
     throw new AppError('User not found', 404, false);
   }
 }
+
+async function getUserDTOByUsername(username){
+
+    try{
+      const result = await userRepository.getUserDTOByUsername(username);
+      return new UserDTO(result);
+    }
+    catch{
+      throw new AppError('User not found', 404, false);
+    }
+  }
 
 async function getUserByEmail(email){
   try{
@@ -83,4 +91,4 @@ async function getUserByEmail(email){
   }
 }
 
-module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser, getUserDTOByUsername };

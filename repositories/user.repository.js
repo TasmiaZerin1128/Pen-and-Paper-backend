@@ -1,3 +1,4 @@
+const UserDTO = require("../DTOs/user.dto");
 const userDTO = require("../DTOs/user.dto");
 const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
@@ -28,6 +29,17 @@ exports.getUserByUsername = async (username) => {
   }
 };
 
+exports.getUserDTOByUsername = async (username) => {
+    try {
+      username = username.toLowerCase();
+      const result = await User.findOne({ where: { username: username } });
+      return result;
+    } catch (err) {
+      console.log(err.stack);
+      throw err;
+    }
+  };
+
 exports.updateUser = async (username, updatedPassword) => {
   try {
     username = username.toLowerCase();
@@ -35,7 +47,6 @@ exports.updateUser = async (username, updatedPassword) => {
       { password: updatedPassword },
       { where: { username: username } }
     );
-    console.log(result);
     return result;
   } catch (err) {
     console.log(err.stack);
@@ -72,6 +83,6 @@ exports.createUser = async (user) => {
       console.log("User created successfully");
       return result;
     } catch (err) {
-      throw console.error(err);
+      throw err;
     }
 }

@@ -7,13 +7,14 @@ const AppError = require("../utils/errorHandler");
 ("use strict");
 
 exports.register = async (user) => {
-  const userValid = userUtils.userValidator(user);
-  if (!userValid.valid) {
-    throw new AppError(userValid.message, 400, false);
-  }
 
   try {
-    const userAlreadyExists = await userService.getUserByUsername(user.username,false);
+    const userValid = userUtils.userValidator(user);
+    if (!userValid.valid) {
+        throw new AppError(userValid.message, 400, false);
+    }
+
+    const userAlreadyExists = await userService.getUserByUsername(user.username);
     if (!userAlreadyExists) {
       const result = await userService.createUser(user);
       return result;
@@ -21,7 +22,7 @@ exports.register = async (user) => {
       throw new AppError("User already exists!", 400, false);
     }
   } catch (err) {
-    throw new AppError(err.message, 500, true);
+    throw new AppError(err.message, 400, false);
   }
 };
 
@@ -31,18 +32,18 @@ exports.login = async (user) => {
   }
 
   try {
-    const userExists = await userService.getUserByUsername(user.username,false);
+    const userExists = await userService.getUserByUsername(user.username);
     if (userExists) {
       const isPasswordMatched = await comparePassword(
         user.password,
         userExists.password
       );
       if (!isPasswordMatched) {
-        throw new AppError("Incorrect email or password", 401, false);
+        throw new AppError("Incorrect username or password", 401, false);
       }
       return new userDTO(userExists);
     } else {
-      throw new AppError("Incorrect email or password", 401, false);
+      throw new AppError("Incorrect username or password", 401, false);
     }
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);

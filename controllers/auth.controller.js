@@ -1,6 +1,5 @@
 const authService = require("../services/auth.service");
 const { sendToken, removeToken } = require("../utils/jwtToken");
-const {sendResponse} = require("../utils/contentNegotiation");
 require("dotenv").config();
 
 "use strict";

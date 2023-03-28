@@ -19,12 +19,11 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getUserByUsername = async (req, res, next) => {
   try {
-    const data = await userService.getUserByUsername(req.params.username, true);
+    const data = await userService.getUserDTOByUsername(req.params.username);
     if (data) {
       sendResponse(req, res, 200, data);
-    } else {
+    } 
       res.status(404).send("User not found");
-    }
   } catch (err) {
     next(err);
   }
@@ -33,7 +32,7 @@ exports.getUserByUsername = async (req, res, next) => {
 exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
-    if(data[0] === 1){
+    if(data[0]){
       sendResponse(req, res, 200, 'User updated');
     } else {
       res.status(400).send('User could not be updated');
