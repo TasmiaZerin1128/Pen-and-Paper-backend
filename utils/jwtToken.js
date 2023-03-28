@@ -1,16 +1,17 @@
 const jwt = require("jsonwebtoken");
+const {sendResponse} = require("../utils/contentNegotiation");
 
 // Create token
 
-const sendToken = (user, statusCode, res) => {
+const sendToken = (req, user, statusCode, res) => {
     const accesstoken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
         algorithm: process.env.JWT_ALGO,
         expiresIn: parseInt(process.env.ACCESS_TOKEN_LIFE)
     });
 
-    res.status(statusCode)
-    .cookie('jwt', accesstoken, { httpOnly: true })
-    .json({
+    res.cookie('jwt', accesstoken, { httpOnly: true });
+
+    sendResponse(req, res, statusCode, {
         success: true,
         user,
     });
@@ -18,14 +19,12 @@ const sendToken = (user, statusCode, res) => {
 
 //Remove token
 
-const removeToken = (res) => {
-    res.status(200)
-    .clearCookie('jwt')
-    .json({
+const removeToken = (req, res) => {
+    res.clearCookie('jwt');
+    sendResponse(req, res, 200, {
         success: true,
         message: "Logged Out"
     });
 }
-
 
 module.exports = { sendToken, removeToken };

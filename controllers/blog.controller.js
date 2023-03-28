@@ -1,11 +1,12 @@
 const blogService = require("../services/blog.service");
+const { sendResponse } = require("../utils/contentNegotiation");
 
 "use strict";
 
 exports.getAllBlogs = async (req, res, next) => {
     try {
     const blogs = await blogService.getAllBlogs();
-    res.status(200).json(blogs.length ? blogs : 'Blog table is empty');
+    sendResponse(req, res, 200, blogs.length ? blogs : 'Blog list is empty');
     } catch (err) {
     next(err);
     }
@@ -14,7 +15,7 @@ exports.getAllBlogs = async (req, res, next) => {
 exports.createBlog = async (req, res, next) => {
     try {
     const createdBlog = await blogService.createBlog(req.body, req.username);
-    res.status(200).json(createdBlog);
+    sendResponse(req, res, 201, createdBlog);
     } catch (err) {
         next(err);
     }
@@ -23,7 +24,7 @@ exports.createBlog = async (req, res, next) => {
 exports.getBlogById = async (req, res, next) => {
     try {
         const blog = await blogService.getBlogById(req.params.blogId);
-        res.status(200).json(blog);
+        sendResponse(req, res, 200, blog);
     } catch (err) {
         next(err);
     }
@@ -33,7 +34,7 @@ exports.editBlogByBlogId = async (req, res, next) => {
     try {
     const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
     if(editedBlog[0] === 1){
-        res.status(200).json('Blog edited successfully');
+        sendResponse(req, res, 200, 'Blog edited successfully');
     }
     else {
         res.status(404).json('Blog not found');
@@ -47,7 +48,7 @@ exports.deleteBlogByBlogId = async (req, res, next) => {
     try{
     const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);
     if(deleteBlog){
-        res.status(200).json('Blog deleted');
+        sendResponse(req, res, 200, 'Blog deleted');
     }
     else {
         res.status(404).json('Blog not found');
