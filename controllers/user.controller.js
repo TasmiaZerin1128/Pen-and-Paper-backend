@@ -1,3 +1,5 @@
+const { typeOf } = require("json-to-plain-text/lib/lib");
+const { INTEGER } = require("sequelize");
 const userService = require("../services/user.service");
 const {sendResponse} = require("../utils/contentNegotiation");
 
@@ -6,7 +8,9 @@ const {sendResponse} = require("../utils/contentNegotiation");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const data = await userService.getAllUsers();
+    let pageSize = req.query.pageSize;   //how many items in one page
+    let pageNumber = req.query.pageNumber;    //which page to go
+    const data = await userService.getAllUsers(pageSize, pageNumber);
     sendResponse(req, res, 200, data.length ? data : 'User table is empty');
   } catch (err) {
     next(err);
