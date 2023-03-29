@@ -10,7 +10,6 @@ async function createBlog(blog, username) {
     throw new AppError("Title and description are needed", 400, false);
   }
 
-  try {
     const authorExists = await userService.getUserByUsername(username);
     if(!authorExists){
       throw new AppError("Author does not exist", 404, false);
@@ -18,9 +17,6 @@ async function createBlog(blog, username) {
     blog.authorId = authorExists.id;
     const result = await blogRepository.createBlog(blog);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
 }
 
 async function getAllBlogs(pageSize, pageNumber) {

@@ -7,7 +7,6 @@ const { AppError } = require("../utils/errorHandler");
 ("use strict");
 
 exports.register = async (user) => {
-  try {
     const userValid = userUtils.userValidator(user);
     if (!userValid.valid) {
       throw new AppError(userValid.message, 400, false);
@@ -19,13 +18,10 @@ exports.register = async (user) => {
     }
     const result = await userService.createUser(user);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
+
 };
 
 exports.login = async (user) => {
-  try {
     if (!user.username || !user.password) {
       throw new AppError("All fields are required!", 400, false);
     }
@@ -39,7 +35,4 @@ exports.login = async (user) => {
       throw new AppError("Incorrect username or password", 401, false);
     }
     return new userDTO(userExists);
-  } catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
 };
