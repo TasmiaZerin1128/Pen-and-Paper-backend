@@ -35,13 +35,12 @@ async function updateUser(username, userToUpdate) {
   
   try{
     const userExists = await getUserByUsername(username);
-    if(userExists){
+    if(!userExists){
+      throw new AppError('User does not exist', 404, true);
+    } 
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
-    } else {
-      throw new AppError('User does not exist', 404, true);
-    }
   }
   catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);

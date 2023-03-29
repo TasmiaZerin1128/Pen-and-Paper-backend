@@ -20,7 +20,7 @@ exports.getBlogById = async (blogId) => {
     const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
     return new BlogDTO(result);
   } catch (err) {
-    throw new SequelizeValidationError(err, 400);
+    throw new SequelizeValidationError(err, 404);
   }
 };
 
@@ -42,7 +42,7 @@ exports.deleteBlogByBlogId = async (blogId) => {
     const result = Blog.destroy({ where: { id: blogId } });
     return result;
   } catch (err) {
-    throw new SequelizeValidationError(err, 400);
+    throw new SequelizeValidationError(err, 404);
   }
 };
 
@@ -51,7 +51,7 @@ exports.getBlogByAuthorId = async (authorId) => {
     const result = await Blog.findAll({ where: { authorId: authorId } });
     return result;
   } catch (err) {
-    throw new SequelizeValidationError(err, 400);
+    throw new SequelizeValidationError(err, 404);
   }
 };
 

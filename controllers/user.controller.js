@@ -28,9 +28,9 @@ exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
     if(data[0]){
-      sendResponse(req, res, 200, 'User updated');
-    } 
-      res.status(400).send('User could not be updated');
+      return sendResponse(req, res, 200, 'User updated');
+    }
+      return res.status(400).send('User could not be updated');
   } catch (err) {
     next(err);
   }
@@ -39,10 +39,7 @@ exports.updateUserByUsername = async (req, res, next) => {
 exports.deleteUserByUsername = async (req, res, next) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.username);
-    if(deletedUser){
-      sendResponse(req, res, 200, 'User deleted');
-    } 
-      res.status(404).send('User not found');
+    sendResponse(req, res, 200, 'User deleted');
   } catch (err) {
     next(err);
   }

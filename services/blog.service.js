@@ -12,13 +12,12 @@ async function createBlog(blog, username) {
 
   try {
     const authorExists = await userService.getUserByUsername(username);
-    if(authorExists){
-      blog.authorId = authorExists.id;
-      const result = await blogRepository.createBlog(blog);
-      return result;
-    } else {
+    if(!authorExists){
       throw new AppError("Author does not exist", 404, false);
-    }
+    } 
+    blog.authorId = authorExists.id;
+    const result = await blogRepository.createBlog(blog);
+    return result;
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }
@@ -42,8 +41,8 @@ async function editBlogByBlogId(blogId, blogItemsToEdit) {
     }
     const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
+  } catch {
+    throw new AppError("Blog not found", 404, false);
   }
 }
 
@@ -51,8 +50,8 @@ async function deleteBlogByBlogId(blogId) {
   try {
     const result = await blogRepository.deleteBlogByBlogId(blogId);
     return result;
-  } catch (err) {
-    throw new AppError("Blog delete failed", 500, true);
+  } catch {
+    throw new AppError("Blog not found", 404, false);
   }
 }
 

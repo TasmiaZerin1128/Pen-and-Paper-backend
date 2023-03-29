@@ -14,11 +14,11 @@ exports.register = async (user) => {
     }
 
     const userAlreadyExists = await userService.getUserByUsername(user.username);
-    if (!userAlreadyExists) {
-      const result = await userService.createUser(user);
-      return result;
+    if (userAlreadyExists) {
+      throw new AppError("User already exists!", 400, false);
     }
-    throw new AppError("User already exists!", 400, false);
+    const result = await userService.createUser(user);
+    return result;
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }
@@ -31,17 +31,14 @@ exports.login = async (user) => {
     }
 
     const userExists = await userService.getUserByUsername(user.username);
-    if (userExists) {
-      const isPasswordMatched = await comparePassword(
-        user.password,
-        userExists.password
-      );
-      if (!isPasswordMatched) {
-        throw new AppError("Incorrect username or password", 401, false);
-      }
-      return new userDTO(userExists);
+    if (!userExists) {
+      throw new AppError("Incorrect username or password", 401, false);
     }
-    throw new AppError("Incorrect username or password", 401, false);
+    const isPasswordMatched = await comparePassword(user.password, userExists.password);
+    if (!isPasswordMatched) {
+      throw new AppError("Incorrect username or password", 401, false);
+    }
+    return new userDTO(userExists);
   } catch (err) {
     throw new AppError(err.message, err.statusCode, err.isOperational);
   }

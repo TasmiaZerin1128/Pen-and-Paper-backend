@@ -1,4 +1,3 @@
-const validator = require("email-validator");
 
 function userValidator(user){
 

@@ -35,14 +35,8 @@ exports.getBlogById = async (req, res, next) => {
 
 exports.editBlogByBlogId = async (req, res, next) => {
   try {
-    const editedBlog = await blogService.editBlogByBlogId(
-      req.params.blogId,
-      req.body
-    );
-    if (editedBlog[0]) {
-      sendResponse(req, res, 200, "Blog edited successfully");
-    }
-    res.status(404).json("Blog not found");
+    const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
+    sendResponse(req, res, 200, "Blog edited successfully");
   } catch (err) {
     next(err);
   }
@@ -51,10 +45,7 @@ exports.editBlogByBlogId = async (req, res, next) => {
 exports.deleteBlogByBlogId = async (req, res, next) => {
   try {
     const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);
-    if (deleteBlog) {
-      sendResponse(req, res, 200, "Blog deleted");
-    }
-    res.status(404).json("Blog not found");
+    sendResponse(req, res, 200, "Blog deleted");
   } catch (err) {
     next(err);
   }

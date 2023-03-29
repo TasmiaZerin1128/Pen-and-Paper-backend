@@ -12,7 +12,7 @@ const PORT = process.env.APP_PORT || 3000;
 database.connectToDatabase();
 
 const app = express();
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.listen(PORT, () => {
     console.log(`App started on ${PORT}`);
@@ -20,7 +20,6 @@ app.listen(PORT, () => {
 
 
 app.use(express.json());
-// Body-parser middleware
 app.use(express.urlencoded({extended:true}));
 
 app.use((err, req, res, next) => {
@@ -31,7 +30,7 @@ app.use((err, req, res, next) => {
     res.send('500: Internal server error');
 });
 
-const globalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (err, req, res) => {
   res.status(err.statusCode).send(err.message);
 }
 
