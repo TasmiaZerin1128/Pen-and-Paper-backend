@@ -1,15 +1,10 @@
-const UserDTO = require("../DTOs/user.dto");
 const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
 const { SequelizeValidationError } = require("../utils/errorHandler");
 
 exports.getAllUsers = async (limit, offset) => {
     const result = await User.findAll({ offset : offset, limit : limit });
-    const allUsers = [];
-    result.forEach((element) => {
-      allUsers.push(new UserDTO(element));
-    });
-    return allUsers;
+    return result;
 };
 
 exports.getUserByUsername = async (username) => {
@@ -17,12 +12,6 @@ exports.getUserByUsername = async (username) => {
     const result = await User.findOne({ where: { username: username } });
     return result;
 };
-
-exports.getUserDTOByUsername = async (username) => {
-      username = username.toLowerCase();
-      const result = await User.findOne({ where: { username: username } });
-      return result;
-  };
 
 exports.updateUser = async (username, updatedPassword) => {
     username = username.toLowerCase();
@@ -41,8 +30,7 @@ exports.deleteUser = async (username) => {
 
 exports.getUserByEmail = async (email) => {
     const result = await User.findOne({ where: { email: email } });
-    const userdto = new userDTO(result);
-    return userdto;
+    return result;
 };
 
 exports.createUser = async (user) => {

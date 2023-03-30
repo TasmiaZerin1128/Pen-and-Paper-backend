@@ -22,16 +22,10 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use((err, req, res, next) => {
-    if (!err) {
-        return next();
-    }
-    res.status(500);
-    res.send('500: Internal server error');
-});
-
 const globalErrorHandler = (err, req, res, next) => {
-  res.status(err.statusCode).send(err.message);
+  const statusCode = err.statusCode || 500;
+  const msg = err.message || 'Oops! something went wrong. Please try again';
+  res.status(statusCode).send(msg);
 }
 
 app.use('/api', router);
