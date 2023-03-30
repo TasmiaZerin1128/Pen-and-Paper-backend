@@ -25,7 +25,7 @@ exports.authenticate = async (req, res, next) => {
 exports.authorize = async(req, res, next) => {
   const tokenUsername = req.username;
   if(tokenUsername != req.params.username){
-    return res.status(401).send("Permission denied");
+    return res.status(403).send("Permission denied");
   }
   next();
 }

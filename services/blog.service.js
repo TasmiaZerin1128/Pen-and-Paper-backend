@@ -37,8 +37,8 @@ async function editBlogByBlogId(blogId, blogItemsToEdit) {
     }
     const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
     return result;
-  } catch {
-    throw new AppError("Blog not found", 404, false);
+  } catch (err) {
+    throw new AppError( err.message, err.statusCode, err.isOperational);
   }
 }
 

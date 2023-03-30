@@ -33,7 +33,6 @@ async function updateUser(username, userToUpdate) {
     throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
-  try{
     const userExists = await getUserByUsername(username);
     if(!userExists){
       throw new AppError('User does not exist', 404, true);
@@ -41,10 +40,7 @@ async function updateUser(username, userToUpdate) {
       const hashedPassword = await hashPassword(userToUpdate.password);
       const result = await userRepository.updateUser(username, hashedPassword);
       return result;
-  }
-  catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
+
 }
 
 async function deleteUser (username) {
