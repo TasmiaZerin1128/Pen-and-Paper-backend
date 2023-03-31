@@ -23,16 +23,16 @@ const Blog = sequelize.define(
   }
 );
 
-User.hasMany(Blog, {
-  foreignKey: "authorId", onDelete: 'cascade', hooks: true 
-});
+// User.hasMany(Blog, {
+//   foreignKey: "authorId", onDelete: 'cascade', hooks: true 
+// });
 
-Blog.belongsTo(User, { as: "author" }, {
-  foreignKey: "authorId"
-});
+// Blog.belongsTo(User, { as: "author" }, {
+//   foreignKey: "authorId"
+// });
 
-(async () => {
-  await Blog.sync(); 
-})();
+// (async () => {
+//   await Blog.sync(); 
+// })();
 
 module.exports = Blog;

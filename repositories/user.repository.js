@@ -17,7 +17,8 @@ exports.updateUser = async (username, updatedPassword) => {
     username = username.toLowerCase();
     const result = await User.update(
       { password: updatedPassword },
-      { where: { username: username } }
+      { where: { username: username },
+      individualHooks: true}
     );
     return result;
 };

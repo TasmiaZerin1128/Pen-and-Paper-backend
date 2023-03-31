@@ -4,12 +4,14 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser')
 
 const database = require("./db.config");
+const syncModels = require('./models/index');
 
 dotenv.config();
 
 const PORT = process.env.APP_PORT || 3000;
 
 database.connectToDatabase();
+syncModels();
 
 const app = express();
 app.use(cookieParser());
@@ -28,7 +30,7 @@ const globalErrorHandler = (err, req, res, next) => {
   res.status(statusCode).send(msg);
 }
 
-app.use('/api', router);
+app.use('/api/v1', router);
 
 app.use('*', (req, res) => {
     res.status(404).json({

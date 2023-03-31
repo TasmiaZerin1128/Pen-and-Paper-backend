@@ -49,13 +49,19 @@ const User = sequelize.define(
         if (user.password) {
          user.password = await hashPassword(user.password);
         }
-    }
+    },
+    beforeUpdate: async (user) => {
+      console.log(user.password);
+      if (user.password) {
+        user.password = await hashPassword(user.password);
+      }
+  }
   }
   }
 );
 
-(async () => {
-    await User.sync();  
-})();
+// (async () => {
+//     await User.sync();  
+// })()
 
 module.exports = User;
