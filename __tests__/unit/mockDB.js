@@ -80,3 +80,9 @@ const blogDB = [
         authorEmail: 'tasmia@gmail.com'
     }
 ];
+
+test("Db connected.", ()=>{
+    expect();
+})
+
+module.exports = { userDB, blogDB };
