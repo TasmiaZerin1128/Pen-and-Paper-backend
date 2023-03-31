@@ -1,19 +1,14 @@
 const Blog = require('../models/blog.model');
-const BlogDTO = require('../DTOs/blog.dto');
 const { SequelizeValidationError } = require("../utils/errorHandler");
 
 exports.getAllBlogs = async (limit, offset) => {
     const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit });
-    const allBlog = [];
-    result.forEach((element) => {
-      allBlog.push( new BlogDTO(element));
-    });
-    return allBlog;
+    return result;
 };
 
 exports.getBlogById = async (blogId) => {
     const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
-    return new BlogDTO(result);
+    return result;
 };
 
 exports.editBlogByBlogId = async (blogId, editedBlog) => {

@@ -8,24 +8,18 @@ const UserDTO = require("../DTOs/user.dto");
 'use strict';
 
 async function createUser(user){
-
-  try {
     const result = await userRepository.createUser(user);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, 500, true);
-  }
 };
 
 async function getAllUsers(pageSize, pageNumber) {
-  try{
     const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
     const data =  await userRepository.getAllUsers(limit, offset);
-    return data;
-  }
-  catch{
-    throw new AppError('Cannot find any Users table', 404, false);
-  }
+    const allUsers = [];
+    data.forEach((element) => {
+      allUsers.push(new UserDTO(element));
+    });
+    return allUsers;
 }
 
 async function updateUser(username, userToUpdate) {
@@ -37,52 +31,32 @@ async function updateUser(username, userToUpdate) {
     if(!userExists){
       throw new AppError('User does not exist', 404, true);
     } 
-      const hashedPassword = await hashPassword(userToUpdate.password);
-      const result = await userRepository.updateUser(username, hashedPassword);
+      const result = await userRepository.updateUser(username, userToUpdate.password);
       return result;
-
 }
 
 async function deleteUser (username) {
-  try{
     const result = await userRepository.deleteUser(username);
+    if(!result) throw new AppError('User not found', 404, false);
     return result;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
 }
 
 async function getUserByUsername(username){
 
-  try{
     const result = await userRepository.getUserByUsername(username);
     return result;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
 }
 
 async function getUserDTOByUsername(username){
 
-    try{
-      const result = await userRepository.getUserDTOByUsername(username);
+      const result = await userRepository.getUserByUsername(username);
+      if(!result) throw new AppError('User not found', 404, false);
       return new UserDTO(result);
-    }
-    catch{
-      throw new AppError('User not found', 404, false);
-    }
   }
 
 async function getUserByEmail(email){
-  try{
     const duplicateEmail = await userRepository.getUserByEmail(email);
     return duplicateEmail;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
 }
 
 module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser, getUserDTOByUsername };
