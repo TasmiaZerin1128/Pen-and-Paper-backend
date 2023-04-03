@@ -8,24 +8,21 @@ exports.getAllUsers = async (limit, offset) => {
 };
 
 exports.getUserByUsername = async (username) => {
-    username = username.toLowerCase();
-    const result = await User.findOne({ where: { username: username } });
+    const result = await User.findOne({ where: { username: username.toLowerCase() } });
     return result;
 };
 
 exports.updateUser = async (username, updatedPassword) => {
-    username = username.toLowerCase();
     const result = await User.update(
       { password: updatedPassword },
-      { where: { username: username },
+      { where: { username: username.toLowerCase() },
       individualHooks: true}
     );
     return result;
 };
 
 exports.deleteUser = async (username) => {
-    username = username.toLowerCase();
-    const result = User.destroy({ where: { username: username } });
+    const result = User.destroy({ where: { username: username.toLowerCase() } });
     return result;
 };
 
