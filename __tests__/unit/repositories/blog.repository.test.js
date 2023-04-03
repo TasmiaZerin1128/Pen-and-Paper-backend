@@ -6,9 +6,9 @@ const { SequelizeValidationError } = require("../../../utils/errorHandler");
 class createNewBlog {
     constructor(newBlog) {
         this.id = '89b4bca8-c564-45ea-a1a6-8662d4bb2fe2',
-        this.fullName = newBlog.fullName;
-        this.Blogname = newBlog.Blogname;
-        this.password = newBlog.password;
+        this.title = newBlog.title;
+        this.description = newBlog.description;
+        this.authorId = '0001';
         this.createdAt = '2023-03-30T03:35:31.000Z',
         this.updatedAt = '2023-03-30T03:35:31.000Z';
     }
@@ -93,136 +93,128 @@ describe('Testing Blog Repository', () => {
             const expectedData = [blogDB[0], blogDB[3]];
 
             jest
-                .spyOn(Blog, 'findOne').mockResolvedValueOnce(expectedData);
+                .spyOn(Blog, 'findAll').mockResolvedValueOnce(expectedData);
             
             const response = await blogRepository.getBlogByAuthorId(authorId);
 
             expect(Blog.findAll).toBeCalledTimes(1);
             expect(Blog.findAll).toBeCalledWith(
-                { where: { authorId: authorId } }
+                {include : ["author"], where: { authorId: authorId } }
             );
             expect(response).toEqual(expectedData);  
         });
-        it('should return null when no Blog found', async () => {
-            const email = 'tasmia@gmail.com';
+        it('should return null when no Blog or Author found', async () => {
+            const authorId = '300';
             jest
-                .spyOn(Blog, 'findOne').mockReturnValue(null);
+                .spyOn(Blog, 'findAll').mockReturnValue(null);
             
-            const response = await blogRepository.getBlogByEmail(email);
+            const response = await blogRepository.getBlogByAuthorId(authorId);
 
-            expect(Blog.findOne).toBeCalledTimes(1);
-            expect(Blog.findOne).toBeCalledWith(
-                { where : { email: email} }
+            expect(Blog.findAll).toBeCalledTimes(1);
+            expect(Blog.findAll).toBeCalledWith(
+                {include : ["author"], where: { authorId: authorId } }
             );
             expect(response).toEqual(null);  
         })
     });
 
-    describe('Testing update Blog by Blogname', () => {
-        it('should update a Blog and return 1', async () => {
-            const Blogname = 'tasmia';
-            const updatedPassword = 'newPassword';
+    describe('Testing edit Blog by BlogId', () => {
+        it('should edit a Blog and return 1', async () => {
+            const blogId = '001';
+            const editedBlog = { title : 'new blog', description : 'hey there this is new blog' };
 
             jest
                 .spyOn(Blog, 'update').mockResolvedValue(1);
 
-            const response = await blogRepository.updateBlog(Blogname, updatedPassword);
+            const response = await blogRepository.editBlogByBlogId(blogId, editedBlog);
 
             expect(Blog.update).toBeCalledWith(
-                { password: updatedPassword },
-                { where: { Blogname: Blogname.toLowerCase() },
-                individualHooks: true
-            });
+                { title: editedBlog.title, 
+                  description: editedBlog.description },
+                { where: { id: blogId } }
+            );
             expect(response).toBe(1);
         });
         it('should return 0 if no Blog found', async () => {
-            const Blogname = 'noBlog';
-            const updatedPassword = 'newPassword';
+            const blogId = '100';
+            const editedBlog = { title : 'new blog', description : 'hey there this is new blog' };
 
             jest
                 .spyOn(Blog, 'update').mockResolvedValue(0);
 
-            const response = await blogRepository.updateBlog(Blogname, updatedPassword);
+            const response = await blogRepository.editBlogByBlogId(blogId, editedBlog);
 
             expect(Blog.update).toBeCalledWith(
-                { password: updatedPassword },
-                { where: { Blogname: Blogname.toLowerCase() },
-                individualHooks: true
-            });
+                { title: editedBlog.title, 
+                  description: editedBlog.description },
+                { where: { id: blogId } }
+            );
             expect(response).toBe(0);
         })
     })
 
     describe('Testing delete a Blog', () => {
-        it('should delete a Blog by Blogname', async () => {
-            const Blogname = 'tasmia';
+        it('should delete a Blog by BlogId', async () => {
+            const blogId = '001';
             jest
                 .spyOn(Blog, 'destroy')
                 .mockResolvedValueOnce(1);
 
-            const response = await blogRepository.deleteBlog(Blogname);
+            const response = await blogRepository.deleteBlogByBlogId(blogId);
 
-            expect(Blog.destroy).toHaveBeenCalledWith({
-                where: { Blogname: Blogname.toLowerCase() },
-            });
+            expect(Blog.destroy).toHaveBeenCalledWith(
+                 { where: { id: blogId } } 
+            );
             expect(response).toBe(1);
         });
         it('should return 0 if Blog not found', async () => {
-            const Blogname = 'notListedBlog';
+            const blogId = '001';
             jest
                 .spyOn(Blog, 'destroy')
                 .mockResolvedValueOnce(0);
 
-            const response = await blogRepository.deleteBlog(Blogname);
+            const response = await blogRepository.deleteBlogByBlogId(blogId);
 
-            expect(Blog.destroy).toHaveBeenCalledWith({
-                where: { Blogname: Blogname.toLowerCase() },
-            });
+            expect(Blog.destroy).toHaveBeenCalledWith(
+                { where: { id: blogId } } 
+            );
             expect(response).toBe(0);
         });
     });
 
     describe('Testing create a Blog', () => {
         it('should create a Blog and return it', async () => {
-            const Blog = { 
-                fullName: 'new name',
-                Blogname: 'newBlog',
-                email: 'new@gmail.com', 
-                password: '123456'
+            const newBlog = { 
+                title: 'new blog',
+                description: 'newBlog',
             };
 
-            const BlogToRegister = new BlogRegisterDTO(Blog);
-            const returnNewBlog = new createNewBlog(BlogToRegister);
+            const returnNewBlog = new createNewBlog(newBlog);
             jest
                 .spyOn(Blog, 'create')
                 .mockResolvedValue(returnNewBlog);
             
-            const response = await blogRepository.createBlog(BlogToRegister);
+            const response = await blogRepository.createBlog(newBlog);
             console.log(response);
 
             expect(Blog.create).toBeCalledTimes(1);
-            expect(Blog.create).toBeCalledWith(BlogToRegister);
+            expect(Blog.create).toBeCalledWith(newBlog);
             expect(response).toBe(returnNewBlog);
         });
         it('should throw sequelize validation error', async () => {
             const expectedError = new Error('Any sequelize validation error');
             expectedError.errors = [{ message: 'sequelize validation error' }]
 
-            const Blog = { 
-                fullName: 'new name',
-                Blogname: 'newBlog',
-                email: 'new', 
-                password: '123456'
+            const newBlog = { 
+                title: ' ',
+                description: ' ',
             };
-
-            const BlogToRegister = new BlogRegisterDTO(Blog);
-
             jest
                 .spyOn(Blog, 'create')
                 .mockRejectedValueOnce(expectedError);
                
             await expect(
-                blogRepository.createBlog(BlogToRegister)
+                blogRepository.createBlog(newBlog)
             ).rejects.toThrow(new SequelizeValidationError(expectedError, 400));
         })
     })
