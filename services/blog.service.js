@@ -38,22 +38,26 @@ async function deleteBlogByBlogId(blogId) {
 }
 
 async function getBlogById(blogId) {
-  
     const result = await blogRepository.getBlogById(blogId);
     if(!result) throw new AppError("Blog not found", 404, false);
     return new BlogDTO(result); 
 }
 
-async function getBlogByAuthorId(authorId) {
-    const blogExists = await blogRepository.getBlogByAuthorId(authorId);
-    return blogExists;
+async function getBlogsByAuthorId(authorId) {
+    const result = await blogRepository.getBlogByAuthorId(authorId);
+    if(!result) throw new AppError("The author has no blogs", 404, false);
+    const allBlog = [];
+    result.forEach((element) => {
+      allBlog.push(new BlogDTO(element));
+    });
+    return allBlog;
 }
 
 module.exports = {
   getAllBlogs,
   createBlog,
   getBlogById,
-  getBlogByAuthorId,
+  getBlogsByAuthorId,
   editBlogByBlogId,
   deleteBlogByBlogId,
 };

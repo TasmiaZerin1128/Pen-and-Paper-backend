@@ -26,7 +26,7 @@ exports.deleteBlogByBlogId = async (blogId) => {
 };
 
 exports.getBlogByAuthorId = async (authorId) => {
-    const result = await Blog.findAll({ where: { authorId: authorId } });
+    const result = await Blog.findAll({include : ["author"], where: { authorId: authorId } });
     return result;
 };
 

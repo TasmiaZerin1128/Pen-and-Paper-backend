@@ -38,6 +38,15 @@ exports.getBlogById = async (req, res, next) => {
   }
 };
 
+exports.getBlogsByAuthorId = async (req, res, next) => {
+  try {
+    const blog = await blogService.getBlogsByAuthorId(req.params.authorId);
+    sendResponse(req, res, 200, blog);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.editBlogByBlogId = async (req, res, next) => {
   try {
     const blogItemsToEdit = req.body;
