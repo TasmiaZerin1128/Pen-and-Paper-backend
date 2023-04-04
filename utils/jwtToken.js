@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 // Create token
 
-const sendToken = (user, res) => {
+const sendToken = (user) => {
     const accesstoken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, {
         algorithm: process.env.JWT_ALGO,
         expiresIn: parseInt(process.env.ACCESS_TOKEN_LIFE)

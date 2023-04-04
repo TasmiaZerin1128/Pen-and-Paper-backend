@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Pen-and-Paper/controllers/auth.controller.js</title>
+    <title>Code coverage report for Pen-and-Paper/controllers/blog.controller.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">Pen-and-Paper/controllers</a> auth.controller.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">Pen-and-Paper/controllers</a> blog.controller.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">24.28% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/63</span>
+                <span class='fraction'>17/70</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">24.28% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/63</span>
+                <span class='fraction'>17/70</span>
             </div>
         
             
@@ -125,47 +125,21 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -187,69 +161,119 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const authService = require("../services/auth.service");
-const { sendToken, removeToken } = require("../utils/jwtToken");
-const { AppError } = require("../utils/errorHandler");
-const userUtils = require("../utils/userValidation");
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const blogService = require("../services/blog.service");
 const { sendResponse } = require("../utils/contentNegotiation");
+const { AppError } = require("../utils/errorHandler");
 &nbsp;
-"use strict";
+("use strict");
 &nbsp;
-exports.register = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+exports.getAllBlogs = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const user = req.body;</span>
-<span class="cstat-no" title="statement not covered" >    const userValid = userUtils.userValidator(user);</span>
-<span class="cstat-no" title="statement not covered" >    if (!userValid.valid) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new AppError(userValid.message, 400, false);</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    const newUser = await authService.register(user);</span>
-<span class="cstat-no" title="statement not covered" >    const accesstoken = sendToken(newUser);</span>
+<span class="cstat-no" title="statement not covered" >    let pageSize = req.query.pagesize;</span>
+<span class="cstat-no" title="statement not covered" >    let pageNumber = req.query.pagenumber;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    res.cookie('jwt', accesstoken, { httpOnly: true });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    return sendResponse(req, res, 201, {</span>
-<span class="cstat-no" title="statement not covered" >      success: true,</span>
-<span class="cstat-no" title="statement not covered" >      user: newUser,</span>
-<span class="cstat-no" title="statement not covered" >      accesstoken</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    const blogs = await blogService.getAllBlogs(pageSize, pageNumber);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 200, blogs.length ? blogs : "Blog list is empty");</span>
 <span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
 <span class="cstat-no" title="statement not covered" >    next(err);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-&nbsp;
-exports.login = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    try{</span>
-<span class="cstat-no" title="statement not covered" >      const { username, password } = req.body;</span>
-<span class="cstat-no" title="statement not covered" >      if (!username || !password) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new AppError("All fields are required!", 400, false);</span>
-<span class="cstat-no" title="statement not covered" >      }  </span>
-<span class="cstat-no" title="statement not covered" >        const user = await authService.login(req.body);</span>
-<span class="cstat-no" title="statement not covered" >        const accesstoken = sendToken(user, res);</span>
-<span class="cstat-no" title="statement not covered" >        res.cookie('jwt', accesstoken, { httpOnly: true });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >       return sendResponse(req, res, 200, {</span>
-<span class="cstat-no" title="statement not covered" >          success: true,</span>
-<span class="cstat-no" title="statement not covered" >          message: 'User logged in successfully',</span>
-<span class="cstat-no" title="statement not covered" >          accesstoken</span>
-<span class="cstat-no" title="statement not covered" >      });</span>
-<span class="cstat-no" title="statement not covered" >        </span>
-<span class="cstat-no" title="statement not covered" >    } catch (err) {</span>
-<span class="cstat-no" title="statement not covered" >        next(err);</span>
+exports.createBlog = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const {title, description } = req.body;</span>
+<span class="cstat-no" title="statement not covered" >    if (!title || !description) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new AppError("Title and description are needed", 400, false);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >}</span>
-&nbsp;
-exports.logout = <span class="fstat-no" title="function not covered" >async (req, res) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try{</span>
-<span class="cstat-no" title="statement not covered" >    removeToken(res);</span>
-<span class="cstat-no" title="statement not covered" >    return sendResponse(req, res, 200, {</span>
-<span class="cstat-no" title="statement not covered" >      success: true,</span>
-<span class="cstat-no" title="statement not covered" >      message: "Logged Out"</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    const createdBlog = await blogService.createBlog(req.body, req.username);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 201, createdBlog);</span>
 <span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
-<span class="cstat-no" title="statement not covered" >    res.status(404).send("No user was logged in");</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >}</span></pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;
+exports.getBlogById = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const blog = await blogService.getBlogById(req.params.blogId);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 200, blog);</span>
+<span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;
+exports.getBlogsByAuthorId = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const blog = await blogService.getBlogsByAuthorId(req.params.authorId);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 200, blog);</span>
+<span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;
+exports.editBlogByBlogId = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const blogItemsToEdit = req.body;</span>
+<span class="cstat-no" title="statement not covered" >    if (!blogItemsToEdit.title &amp;&amp; !blogItemsToEdit.description) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new AppError("Title and description are missing", 400, false);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 200, "Blog edited successfully");</span>
+<span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;
+exports.deleteBlogByBlogId = <span class="fstat-no" title="function not covered" >async (req, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);</span>
+<span class="cstat-no" title="statement not covered" >    sendResponse(req, res, 200, "Blog deleted");</span>
+<span class="cstat-no" title="statement not covered" >  } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

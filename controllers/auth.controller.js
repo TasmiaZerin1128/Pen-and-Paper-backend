@@ -13,12 +13,12 @@ exports.register = async (req, res, next) => {
     if (!userValid.valid) {
       throw new AppError(userValid.message, 400, false);
     }
-    const newUser = await authService.register(req.body);
-    accesstoken = sendToken(newUser, res);
+    const newUser = await authService.register(user);
+    const accesstoken = sendToken(newUser);
 
     res.cookie('jwt', accesstoken, { httpOnly: true });
 
-    sendResponse(req, res, 201, {
+    return sendResponse(req, res, 201, {
       success: true,
       user: newUser,
       accesstoken
@@ -36,10 +36,10 @@ exports.login = async (req, res, next) => {
         throw new AppError("All fields are required!", 400, false);
       }  
         const user = await authService.login(req.body);
-        accesstoken = sendToken(user, res);
+        const accesstoken = sendToken(user, res);
         res.cookie('jwt', accesstoken, { httpOnly: true });
 
-        sendResponse(req, res, 200, {
+       return sendResponse(req, res, 200, {
           success: true,
           message: 'User logged in successfully',
           accesstoken
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res) => {
   try{
     removeToken(res);
-    sendResponse(req, res, 200, {
+    return sendResponse(req, res, 200, {
       success: true,
       message: "Logged Out"
   });
