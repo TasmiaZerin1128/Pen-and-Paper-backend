@@ -2,6 +2,7 @@ const authService = require("../services/auth.service");
 const { sendToken, removeToken } = require("../utils/jwtToken");
 const { AppError } = require("../utils/errorHandler");
 const userUtils = require("../utils/userValidation");
+const { sendResponse } = require("../utils/contentNegotiation");
 
 "use strict";
 
@@ -13,7 +14,15 @@ exports.register = async (req, res, next) => {
       throw new AppError(userValid.message, 400, false);
     }
     const newUser = await authService.register(req.body);
-    sendToken(req, newUser, 201, res);
+    accesstoken = sendToken(newUser, res);
+
+    res.cookie('jwt', accesstoken, { httpOnly: true });
+
+    sendResponse(req, res, 201, {
+      success: true,
+      user: newUser,
+      accesstoken
+  });
   } catch (err) {
     next(err);
   }
@@ -27,7 +36,15 @@ exports.login = async (req, res, next) => {
         throw new AppError("All fields are required!", 400, false);
       }  
         const user = await authService.login(req.body);
-        sendToken(req, user, 200, res);
+        accesstoken = sendToken(user, res);
+        res.cookie('jwt', accesstoken, { httpOnly: true });
+
+        sendResponse(req, res, 200, {
+          success: true,
+          message: 'User logged in successfully',
+          accesstoken
+      });
+        
     } catch (err) {
         next(err);
     }
@@ -35,7 +52,11 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res) => {
   try{
-    removeToken(req, res);
+    removeToken(res);
+    sendResponse(req, res, 200, {
+      success: true,
+      message: "Logged Out"
+  });
   } catch (err) {
     res.status(404).send("No user was logged in");
   }
