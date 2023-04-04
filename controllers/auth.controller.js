@@ -18,7 +18,7 @@ exports.register = async (req, res, next) => {
 
     res.cookie('jwt', accesstoken, { httpOnly: true });
 
-    sendResponse(req, res, 201, {
+    return sendResponse(req, res, 201, {
       success: true,
       user: newUser,
       accesstoken
@@ -39,7 +39,7 @@ exports.login = async (req, res, next) => {
         accesstoken = sendToken(user, res);
         res.cookie('jwt', accesstoken, { httpOnly: true });
 
-        sendResponse(req, res, 200, {
+        return sendResponse(req, res, 200, {
           success: true,
           message: 'User logged in successfully',
           accesstoken
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res) => {
   try{
     removeToken(res);
-    sendResponse(req, res, 200, {
+    return sendResponse(req, res, 200, {
       success: true,
       message: "Logged Out"
   });
