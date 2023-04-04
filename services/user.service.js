@@ -32,6 +32,7 @@ async function updateUser(username, userToUpdate) {
       throw new AppError('User does not exist', 404, true);
     } 
       const result = await userRepository.updateUser(username, userToUpdate.password);
+      if(!result[0]) throw new AppError('User could not be updated', 400, true);
       return result;
 }
 

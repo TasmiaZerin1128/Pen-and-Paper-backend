@@ -27,10 +27,7 @@ exports.getUserByUsername = async (req, res, next) => {
 exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
-    if(data[0]){
-      return sendResponse(req, res, 200, 'User updated');
-    }
-      return res.status(400).send('User could not be updated');
+    return sendResponse(req, res, 200, 'User updated');
   } catch (err) {
     next(err);
   }
