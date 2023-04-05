@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/43</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/43</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -110,93 +110,93 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const userRegisterDto = require("../DTOs/userRegister.dto");
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
 const { SequelizeValidationError } = require("../utils/errorHandler");
 &nbsp;
-exports.getAllUsers = <span class="fstat-no" title="function not covered" >async (limit, offset) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const result = await User.findAll({ offset : offset, limit : limit });</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+exports.getAllUsers = async (limit, offset) =&gt; {
+    const result = await User.findAll({ offset : offset, limit : limit });
+    return result;
+};
 &nbsp;
-exports.getUserByUsername = <span class="fstat-no" title="function not covered" >async (username) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const result = await User.findOne({ where: { username: username.toLowerCase() } });</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+exports.getUserByUsername = async (username) =&gt; {
+    const result = await User.findOne({ where: { username: username.toLowerCase() } });
+    return result;
+};
 &nbsp;
-exports.updateUser = <span class="fstat-no" title="function not covered" >async (username, updatedPassword) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const result = await User.update(</span>
-<span class="cstat-no" title="statement not covered" >      { password: updatedPassword },</span>
-<span class="cstat-no" title="statement not covered" >      { where: { username: username.toLowerCase() },</span>
-<span class="cstat-no" title="statement not covered" >      individualHooks: true}</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+exports.updateUser = async (username, updatedPassword) =&gt; {
+    const result = await User.update(
+      { password: updatedPassword },
+      { where: { username: username.toLowerCase() },
+      individualHooks: true}
+    );
+    return result;
+};
 &nbsp;
-exports.deleteUser = <span class="fstat-no" title="function not covered" >async (username) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const result = User.destroy({ where: { username: username.toLowerCase() } });</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+exports.deleteUser = async (username) =&gt; {
+    const result = User.destroy({ where: { username: username.toLowerCase() } });
+    return result;
+};
 &nbsp;
-exports.getUserByEmail = <span class="fstat-no" title="function not covered" >async (email) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const result = await User.findOne({ where: { email: email } });</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+exports.getUserByEmail = async (email) =&gt; {
+    const result = await User.findOne({ where: { email: email } });
+    return result;
+};
 &nbsp;
-exports.createUser = <span class="fstat-no" title="function not covered" >async (user) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const userToRegister = new userRegisterDto(user);</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >      const result = await User.create(userToRegister);</span>
-<span class="cstat-no" title="statement not covered" >      console.log("User created successfully");</span>
-<span class="cstat-no" title="statement not covered" >      return result;</span>
-<span class="cstat-no" title="statement not covered" >    } catch (err) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new SequelizeValidationError(err, 400);</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >}</span></pre></td></tr></table></pre>
+exports.createUser = async (user) =&gt; {
+  const userToRegister = new userRegisterDto(user);
+  try {
+      const result = await User.create(userToRegister);
+      console.log("User created successfully");
+      return result;
+    } catch (err) {
+        throw new SequelizeValidationError(err, 400);
+    }
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-05T08:32:48.240Z
+                at 2023-04-05T09:36:38.037Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

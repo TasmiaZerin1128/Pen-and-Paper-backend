@@ -1,7 +1,8 @@
 const blogService = require('../../../services/blog.service');
+const userService = require('../../../services/user.service');
 const blogRepository = require('../../../repositories/blog.repository');
 const { AppError } = require("../../../utils/errorHandler");
-const { blogDB, blogWithAuthorDB } = require('../mockDB');
+const { blogDB, blogWithAuthorDB, userDB } = require('../mockDB');
 const BlogDTO = require("../../../DTOs/blog.dto");
 const { setLimitAndOffset } = require("../../../utils/pagination");
 
@@ -11,47 +12,66 @@ jest.mock('../../../DTOs/blog.dto');
 describe('Testing Blog Service', () => {
     describe('Testing createBlog', () => {
         it('should return the created blog', async () => {
-            const newUser = {
-                fullName : 'New User',
-                username : 'newUser',
-                email : 'new@gmail.com',
-                password : 'thisisnew',
+            const blog = {
+                title: 'Hello there',
+                description: 'New post',
             }
-
+            const username = 'tasmia';
+            const author = userDB[2];
             const expectedResult = {
-                id: '006',
-                fullName : 'New User',
-                username : 'newUser',
-                email : 'new@gmail.com',
-                password : 'herwroskpoksfofsfssfswd3',
-                createdAt: '2023-03-29T03:12:53.000Z',
-                updatedAt: '2023-03-29T07:31:37.000Z',
+                id: '800',
+                title: 'Hello there',
+                description: 'New post',
+                createdAt: '2023-03-30T03:59:52.000Z',
+                updatedAt: '2023-03-30T04:00:09.000Z'
             }
 
             jest
-                .spyOn(blogRepository, 'createUser')
+                .spyOn(userService, 'getUserByUsername')
+                .mockReturnValueOnce(author);
+
+            jest
+                .spyOn(blogRepository, 'createBlog')
                 .mockReturnValueOnce(expectedResult);
             
-            const response = await blogService.createUser(newUser);
+            const response = await blogService.createBlog(blog);
 
-            expect(blogRepository.createUser).toBeCalledTimes(1);
-            expect(blogRepository.createUser).toBeCalledWith(newUser);
+            expect(blogRepository.createBlog).toBeCalledTimes(1);
+            expect(blogRepository.createBlog).toBeCalledWith(blog);
+            // expect(userService.getUserByUsername).toBeCalledWith(username);
             expect(response).toBe(expectedResult);
         });
-        it('should throw error if userRepository fails', async () => {
-            const newUser = {
-                fullName : 'New User',
-                username : 'newUser',
-                email : 'new@gmail.com',
-                password : 'thisisnew',
+        it('should throw error if author does not exist', async () => {
+            const blog = {
+                title: 'Hello there',
+                description: 'New post',
+            }
+            const expectedError = new AppError('Author does not exist');
+            jest
+                .spyOn(userService, 'getUserByUsername')
+                .mockReturnValueOnce(null);
+
+            await expect(blogService.createBlog(blog)).rejects.toThrow(expectedError);
+        })
+        it('should throw error if blogRepository fails', async () => {
+            const blog = {
+                title: 'Hello there',
+                description: 'New post',
             }
             const expectedError = new Error('Something went wrong!');
 
+            const username = 'tasmia';
+            const author = userDB[2];
+
             jest
-                .spyOn(blogRepository, 'createUser')
+                .spyOn(userService, 'getUserByUsername')
+                .mockReturnValueOnce(author);
+
+            jest
+                .spyOn(blogRepository, 'createBlog')
                 .mockRejectedValueOnce(expectedError);
             
-            await expect(blogService.createUser(newUser)).rejects.toThrow(expectedError);
+            await expect(blogService.createBlog(blog)).rejects.toThrow(expectedError);
         });
     });
 
@@ -180,7 +200,7 @@ describe('Testing Blog Service', () => {
 
     describe('Testing edit blog by blogId', () => {
         it('should edit the blog and return success', async () => {
-            const blogId = '600';
+            const blogId = '300';
             const blogItemsToEdit = { title : 'New blog' };
         
         jest
@@ -193,87 +213,64 @@ describe('Testing Blog Service', () => {
         expect(response).toEqual([1]);
 
         });
-        it('should throw an error if user does not exist', async () => {
-            const username = 'noUser';
-            const userToUpdate = { password : '123' };
+        it('should throw an error if blog not found', async () => {
+            const blogId = '900';
+            const blogItemsToEdit = { title : 'New blog' };
 
-            const expectedError = new AppError('User does not exist');
-
-            jest
-                .spyOn(userUtils, 'checkPasswordValid')
-                .mockReturnValueOnce(true);
+            const expectedError = new AppError('Blog not found');
 
             jest
-                .spyOn(blogService, 'getUserByUsername')
-                .mockReturnValueOnce(null);
+            .spyOn(blogRepository, 'editBlogByBlogId')
+            .mockReturnValueOnce(null);
 
-            await expect(blogService.updateUser(username, userToUpdate)).rejects.toThrow(expectedError);
+            await expect(blogService.editBlogByBlogId(blogId, blogItemsToEdit)).rejects.toThrow(expectedError);
         });
-        it('should throw an error if user update fails', async () => {
-            const username = 'tasmia';
-            const userToUpdate = { password : '123657547' };
-
-            const expectedResult = {
-                id: '003',
-                fullName: 'Tasmia Zerin',
-                username: 'tasmia',
-                email: 'tasmia@gmail.com',
-                password: '123456',
-                createdAt: '2023-03-29T09:56:57.000Z',
-                updatedAt: '2023-03-29T09:56:57.000Z',
-            }
-
-            const expectedError = new AppError('User could not be updated');
-
-            jest
-                .spyOn(userUtils, 'checkPasswordValid')
-                .mockReturnValueOnce(true);
-
-            jest
-                .spyOn(blogService, 'getUserByUsername')
-                .mockReturnValueOnce(expectedResult);
-            
-            jest
-                .spyOn(blogRepository, 'updateUser')
-                .mockReturnValueOnce([0]);
-
-            await expect(blogService.updateUser(username, userToUpdate)).rejects.toThrow(expectedError);
-        })
-    });
-
-    describe('Testing delete user', () => {
-        it('should delete the user and return success', async () => {
-            const username = 'tasmia';
-
-            jest   
-                .spyOn(blogRepository, 'deleteUser')
-                .mockReturnValueOnce(true);
-
-            const response = await blogService.deleteUser(username);
-
-            expect(blogRepository.deleteUser).toBeCalledTimes(1);
-            expect(blogRepository.deleteUser).toBeCalledWith(username);
-            expect(response).toEqual(true);
-        });
-        it('should throw error if userRepository fails', async () => {
-            const username = 'tasmia';
+        it('should throw error if blogRepository fails', async () => {
+            const blogId = '200';
+            const blogItemsToEdit = { title : 'New blog' };
             const expectedError = new Error('Something went wrong!');
 
             jest   
-                .spyOn(blogRepository, 'deleteUser')
+                .spyOn(blogRepository, 'editBlogByBlogId')
                 .mockRejectedValueOnce(expectedError);
             
-            await expect(blogService.deleteUser(username)).rejects.toThrow(expectedError);
+            await expect(blogService.editBlogByBlogId(blogId, blogItemsToEdit)).rejects.toThrow(expectedError);
         });
-        it('should throw error if no user is found', async () => {
-            const username = 'noUser';
-            const expectedError = new AppError('User not found');
+    });
+
+    describe('Testing delete blog', () => {
+        it('should delete the blog and return success', async () => {
+            const blogId = '200';
 
             jest   
-                .spyOn(blogRepository, 'deleteUser')
+                .spyOn(blogRepository, 'deleteBlogByBlogId')
+                .mockReturnValueOnce(true);
+
+            const response = await blogService.deleteBlogByBlogId(blogId);
+
+            expect(blogRepository.deleteBlogByBlogId).toBeCalledTimes(1);
+            expect(blogRepository.deleteBlogByBlogId).toBeCalledWith(blogId);
+            expect(response).toEqual(true);
+        });
+        it('should throw error if blogRepository fails', async () => {
+            const blogId = '200';
+            const expectedError = new Error('Something went wrong!');
+
+            jest   
+                .spyOn(blogRepository, 'deleteBlogByBlogId')
+                .mockRejectedValueOnce(expectedError);
+            
+            await expect(blogService.deleteBlogByBlogId(blogId)).rejects.toThrow(expectedError);
+        });
+        it('should throw error if no blog is found', async () => {
+            const blogId = '200';
+            const expectedError = new AppError('Blog not found');
+
+            jest   
+                .spyOn(blogRepository, 'deleteBlogByBlogId')
                 .mockReturnValueOnce(false);
             
-            await expect(blogService.getUserDTOByUsername(username)).rejects.toThrow(expectedError);
+            await expect(blogService.deleteBlogByBlogId(blogId)).rejects.toThrow(expectedError);
         });
     });
 })

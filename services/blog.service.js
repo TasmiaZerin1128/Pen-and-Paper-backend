@@ -46,6 +46,7 @@ async function getBlogById(blogId) {
 
 async function getBlogsByAuthorId(authorId) {
     const result = await blogRepository.getBlogByAuthorId(authorId);
+    if(!result) throw new AppError("The author has no blogs", 404, false);
     const allBlog = [];
     result.forEach((element) => {
       allBlog.push(new BlogDTO(element));
