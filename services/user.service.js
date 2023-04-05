@@ -1,6 +1,5 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
-const { hashPassword } = require("../utils/hashPassword");
 const { AppError } = require("../utils/errorHandler");
 const { setLimitAndOffset } = require("../utils/pagination");
 const UserDTO = require("../DTOs/user.dto");
@@ -43,13 +42,11 @@ async function deleteUser (username) {
 }
 
 async function getUserByUsername(username){
-
     const result = await userRepository.getUserByUsername(username);
     return result;
 }
 
 async function getUserDTOByUsername(username){
-
       const result = await userRepository.getUserByUsername(username);
       if(!result) throw new AppError('User not found', 404, false);
       return new UserDTO(result);

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.92% </span>
+                <span class="strong">41.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/63</span>
+                <span class='fraction'>26/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.92% </span>
+                <span class="strong">41.93% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/63</span>
+                <span class='fraction'>26/62</span>
             </div>
         
             
@@ -125,8 +125,7 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -154,10 +153,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -171,7 +170,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -217,10 +215,10 @@ const BlogDTO = require('../DTOs/blog.dto');
 <span class="cstat-no" title="statement not covered" >    return allBlog;</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async function editBlogByBlogId(blogId, blogItemsToEdit) {</span></span>
-<span class="cstat-no" title="statement not covered" >    const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);</span>
-<span class="cstat-no" title="statement not covered" >    return result;</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+async function editBlogByBlogId(blogId, blogItemsToEdit) {
+    const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
+    return result;
+}
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async function deleteBlogByBlogId(blogId) {</span></span>
 <span class="cstat-no" title="statement not covered" >    const result = await blogRepository.deleteBlogByBlogId(blogId);</span>
@@ -236,7 +234,6 @@ const BlogDTO = require('../DTOs/blog.dto');
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async function getBlogsByAuthorId(authorId) {</span></span>
 <span class="cstat-no" title="statement not covered" >    const result = await blogRepository.getBlogByAuthorId(authorId);</span>
-<span class="cstat-no" title="statement not covered" >    if(!result) throw new AppError("The author has no blogs", 404, false);</span>
 <span class="cstat-no" title="statement not covered" >    const allBlog = [];</span>
 <span class="cstat-no" title="statement not covered" >    result.forEach((element) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      allBlog.push(new BlogDTO(element));</span>
@@ -259,7 +256,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-04T11:02:51.892Z
+                at 2023-04-05T08:32:48.240Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
