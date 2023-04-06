@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680687398188" clover="3.2.0">
-  <project timestamp="1680687398188" name="All files">
-    <metrics statements="719" coveredstatements="611" conditionals="118" coveredconditionals="113" methods="62" coveredmethods="44" elements="899" coveredelements="768" complexity="0" loc="719" ncloc="719" packages="7" files="20" classes="20"/>
+<coverage generated="1680754854380" clover="3.2.0">
+  <project timestamp="1680754854380" name="All files">
+    <metrics statements="719" coveredstatements="611" conditionals="116" coveredconditionals="112" methods="62" coveredmethods="44" elements="897" coveredelements="767" complexity="0" loc="719" ncloc="719" packages="7" files="20" classes="20"/>
     <package name="Pen-and-Paper">
       <metrics statements="24" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="db.config.js" path="C:\Users\Cefalo_User\Documents\Projects\Pen-and-Paper\db.config.js">
@@ -441,9 +441,9 @@
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="11" count="6" type="stmt"/>
-        <line num="12" count="6" type="stmt"/>
-        <line num="13" count="6" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="16" count="2" type="stmt"/>
@@ -477,7 +477,7 @@
       </file>
     </package>
     <package name="Pen-and-Paper.services">
-      <metrics statements="154" coveredstatements="154" conditionals="52" coveredconditionals="50" methods="15" coveredmethods="15"/>
+      <metrics statements="154" coveredstatements="154" conditionals="50" coveredconditionals="49" methods="15" coveredmethods="15"/>
       <file name="auth.service.js" path="C:\Users\Cefalo_User\Documents\Projects\Pen-and-Paper\services\auth.service.js">
         <metrics statements="30" coveredstatements="30" conditionals="8" coveredconditionals="8" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
@@ -579,7 +579,7 @@
         <line num="64" count="1" type="stmt"/>
       </file>
       <file name="user.service.js" path="C:\Users\Cefalo_User\Documents\Projects\Pen-and-Paper\services\user.service.js">
-        <metrics statements="60" coveredstatements="60" conditionals="23" coveredconditionals="22" methods="7" coveredmethods="7"/>
+        <metrics statements="60" coveredstatements="60" conditionals="21" coveredconditionals="21" methods="7" coveredmethods="7"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -617,20 +617,20 @@
         <line num="35" count="1" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
-        <line num="38" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="38" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="39" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="40" count="3" type="cond" truecount="1" falsecount="0"/>
         <line num="41" count="1" type="stmt"/>
         <line num="42" count="1" type="stmt"/>
         <line num="43" count="1" type="stmt"/>
-        <line num="44" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="45" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="46" count="4" type="stmt"/>
-        <line num="47" count="4" type="stmt"/>
+        <line num="44" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="45" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
         <line num="48" count="1" type="stmt"/>
-        <line num="49" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="50" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="51" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="50" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="51" count="3" type="cond" truecount="1" falsecount="0"/>
         <line num="52" count="1" type="stmt"/>
         <line num="53" count="1" type="stmt"/>
         <line num="54" count="1" type="stmt"/>

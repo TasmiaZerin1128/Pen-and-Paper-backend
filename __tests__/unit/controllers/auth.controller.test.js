@@ -50,7 +50,6 @@ describe('Testing Auth Controller functionalities', () => {
             sendResponse.mockReturnValueOnce(contentNegotiateResponse);
 
             const response = await authController.register(req, res, next);
-            console.log(response);
 
             expect(authService.register).toHaveBeenCalledTimes(1);
             expect(authService.register).toHaveBeenCalledWith(req.body);

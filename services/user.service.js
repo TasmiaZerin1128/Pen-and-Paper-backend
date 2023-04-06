@@ -26,7 +26,7 @@ async function updateUser(username, userToUpdate) {
     throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
-    const userExists = await getUserByUsername(username);
+    const userExists = await userRepository.getUserByUsername(username);
     if(!userExists){
       throw new AppError('User does not exist', 404, true);
     } 

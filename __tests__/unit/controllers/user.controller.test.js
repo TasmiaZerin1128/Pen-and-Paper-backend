@@ -11,8 +11,8 @@ describe('Testing userController module', () => {
         it('should return all users in response', async () => {
             const req = {
                 query: {
-                    pageSize: 3,
-                    pageNumber: 1
+                    pagesize: 3,
+                    pagenumber: 1
                 }
             };
 
@@ -29,15 +29,15 @@ describe('Testing userController module', () => {
 
             expect(userService.getAllUsers).toBeCalledTimes(1);
             expect(response).toBe(userDB);
-            expect(userService.getAllUsers).toHaveBeenCalledWith(req.query.pageSize, req.query.pageNumber);
+            expect(userService.getAllUsers).toHaveBeenCalledWith(req.query.pagesize, req.query.pagenumber);
         });
 
         it('should throw an error if userService call fails', async () => {
 
             const req = {
                 query: {
-                    pageSize: 3,
-                    pageNumber: 1
+                    pagesize: 3,
+                    pagenumber: 1
                 }
             };
 

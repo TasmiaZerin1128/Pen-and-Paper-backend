@@ -11,13 +11,13 @@ describe('Testing blogController module', () => {
             
             const req = {
                 query: {
-                    pageSize: 3,
-                    pageNumber: 1
+                    pagesize: 3,
+                    pagenumber: 1
                 }
             }
 
-            const pageSize = req.query.pageSize;
-            const pageNumber = req.query.pageNumber;
+            const pageSize = req.query.pagesize;
+            const pageNumber = req.query.pagenumber;
 
             const res = {};
             const next = jest.fn();
@@ -32,7 +32,7 @@ describe('Testing blogController module', () => {
 
             console.log(req.query);
             expect(blogService.getAllBlogs).toBeCalledTimes(1);
-            // expect(blogService.getAllBlogs).toHaveBeenCalledWith(pageSize, pageNumber);
+            expect(blogService.getAllBlogs).toHaveBeenCalledWith(pageSize, pageNumber);
             expect(response).toBe(blogDB);
             
         });

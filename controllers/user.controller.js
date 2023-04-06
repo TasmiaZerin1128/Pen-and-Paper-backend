@@ -6,8 +6,8 @@ const {sendResponse} = require("../utils/contentNegotiation");
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    let pageSize = req.query.pageSize;   //how many items in one page
-    let pageNumber = req.query.pageNumber;    //which page to go
+    let pageSize = req.query.pagesize;   //how many items in one page
+    let pageNumber = req.query.pagenumber;    //which page to go
     const data = await userService.getAllUsers(pageSize, pageNumber);
     return sendResponse(req, res, 200, data.length ? data : 'User table is empty');
   } catch (err) {

@@ -109,7 +109,7 @@ describe('Testing User Service', () => {
             
             await expect(userService.getAllUsers(limit, offset)).rejects.toThrow(expectedError);
         })
-    })
+    });
 
     describe('Testing get User by username', () => {
         it('should return the user if exists', async () => {
@@ -199,8 +199,8 @@ describe('Testing User Service', () => {
             jest   
                 .spyOn(userRepository, 'getUserByEmail')
                 .mockReturnValueOnce(expectedResult);
+            
             const response = await userService.getUserByEmail(email);
-            console.log(response);
 
             expect(userRepository.getUserByEmail).toBeCalledTimes(1);
             expect(userRepository.getUserByEmail).toBeCalledWith(email);
@@ -238,8 +238,8 @@ describe('Testing User Service', () => {
             .mockReturnValueOnce(true);
 
         jest
-            .spyOn(userService, 'getUserByUsername')
-            .mockReturnValueOnce(expectedResult);
+            .spyOn(userRepository, 'getUserByUsername')
+            .mockResolvedValueOnce(expectedResult);
         
         jest
             .spyOn(userRepository, 'updateUser')
@@ -274,8 +274,8 @@ describe('Testing User Service', () => {
                 .mockReturnValueOnce(true);
 
             jest
-                .spyOn(userService, 'getUserByUsername')
-                .mockReturnValueOnce(null);
+                .spyOn(userRepository, 'getUserByUsername')
+                .mockResolvedValueOnce(null);
 
             await expect(userService.updateUser(username, userToUpdate)).rejects.toThrow(expectedError);
         });
@@ -300,7 +300,7 @@ describe('Testing User Service', () => {
                 .mockReturnValueOnce(true);
 
             jest
-                .spyOn(userService, 'getUserByUsername')
+                .spyOn(userRepository, 'getUserByUsername')
                 .mockReturnValueOnce(expectedResult);
             
             jest
@@ -343,7 +343,7 @@ describe('Testing User Service', () => {
                 .spyOn(userRepository, 'deleteUser')
                 .mockReturnValueOnce(false);
             
-            await expect(userService.getUserDTOByUsername(username)).rejects.toThrow(expectedError);
+            await expect(userService.deleteUser(username)).rejects.toThrow(expectedError);
         });
     });
 })
