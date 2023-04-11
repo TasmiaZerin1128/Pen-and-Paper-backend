@@ -94,6 +94,43 @@ describe('Testing User Service', () => {
                 ])
             );
         });
+        it('should return a users list using default limit offset if invalid page size and number are given', async () => {
+            const pageSize = null;
+            const pageNumber = null;
+            const limit = 3;
+            const offset = (1 - 1)*3;
+
+            setLimitAndOffset.mockReturnValueOnce({limit, offset});
+
+            jest
+                .spyOn(userRepository, 'getAllUsers')
+                .mockImplementation((limit, offset) => {
+                    return userDB.slice(offset, offset + limit);
+                });
+            
+            const expectedUserList = [];
+            userDB.forEach((element) => {
+                expectedUserList.push(new UserDTO(element));
+            });    
+            
+            const response = await userService.getAllUsers(pageSize, pageNumber);
+
+            expect(userRepository.getAllUsers).toBeCalledTimes(1);
+            expect(userRepository.getAllUsers).toBeCalledWith(limit, offset);
+            expect(response).toHaveLength(limit);
+            expect(response).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: expect.any(String),
+                        fullName: expect.any(String),
+                        username: expect.any(String),
+                        email: expect.any(String),
+                        createdAt: expect.any(String),
+                        updatedAt: expect.any(String),
+                    }),
+                ])
+            );
+        });
         it('should throw error if userRepository fails', async () => {
             const pageSize = 5;
             const pageNumber = 1;
@@ -109,7 +146,7 @@ describe('Testing User Service', () => {
             
             await expect(userService.getAllUsers(limit, offset)).rejects.toThrow(expectedError);
         })
-    });
+    });;
 
     describe('Testing get User by username', () => {
         it('should return the user if exists', async () => {

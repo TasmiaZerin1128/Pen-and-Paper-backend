@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">34.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/41</span>
+                <span class='fraction'>14/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">34.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/41</span>
+                <span class='fraction'>14/41</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,90 +107,90 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const Blog = require('../models/blog.model');
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Blog = require('../models/blog.model');
 const { SequelizeValidationError } = require("../utils/errorHandler");
 &nbsp;
-exports.getAllBlogs = async (limit, offset) =&gt; {
-    const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit });
-    return result;
-};
+exports.getAllBlogs = <span class="fstat-no" title="function not covered" >async (limit, offset) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit });</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-exports.getBlogById = async (blogId) =&gt; {
-    const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
-    return result;
-};
+exports.getBlogById = <span class="fstat-no" title="function not covered" >async (blogId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await Blog.findOne({include : ["author"], where: { id: blogId } });</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-exports.editBlogByBlogId = async (blogId, editedBlog) =&gt; {
-    const result = await Blog.update(
-      { title: editedBlog.title, 
-        description: editedBlog.description },
-      { where: { id: blogId } }
-    );
-    return result;
-};
+exports.editBlogByBlogId = <span class="fstat-no" title="function not covered" >async (blogId, editedBlog) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await Blog.update(</span>
+<span class="cstat-no" title="statement not covered" >      { title: editedBlog.title, </span>
+<span class="cstat-no" title="statement not covered" >        description: editedBlog.description },</span>
+<span class="cstat-no" title="statement not covered" >      { where: { id: blogId } }</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-exports.deleteBlogByBlogId = async (blogId) =&gt; {
-    const result = Blog.destroy({ where: { id: blogId } });
-    return result;
-};
+exports.deleteBlogByBlogId = <span class="fstat-no" title="function not covered" >async (blogId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = Blog.destroy({ where: { id: blogId } });</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-exports.getBlogByAuthorId = async (authorId) =&gt; {
-    const result = await Blog.findAll({include : ["author"], where: { authorId: authorId } });
-    return result;
-};
+exports.getBlogByAuthorId = <span class="fstat-no" title="function not covered" >async (authorId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await Blog.findAll({include : ["author"], where: { authorId: authorId } });</span>
+<span class="cstat-no" title="statement not covered" >    return result;</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
-exports.createBlog = async (blog) =&gt; {
-  try {
-      const result = await Blog.create(blog);
-      console.log("Blog created successfully");
-      return result;
-    } catch (err) {
-      throw new SequelizeValidationError(err, 400);
-    }
-}</pre></td></tr></table></pre>
+exports.createBlog = <span class="fstat-no" title="function not covered" >async (blog) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >      const result = await Blog.create(blog);</span>
+<span class="cstat-no" title="statement not covered" >      console.log("Blog created successfully");</span>
+<span class="cstat-no" title="statement not covered" >      return result;</span>
+<span class="cstat-no" title="statement not covered" >    } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new SequelizeValidationError(err, 400);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >}</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-06T04:20:54.274Z
+                at 2023-04-11T03:30:13.862Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

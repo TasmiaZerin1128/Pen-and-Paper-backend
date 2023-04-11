@@ -105,6 +105,35 @@ describe('Testing Blog Service', () => {
             expect(response).toHaveLength(limit);
             expect(response).toEqual(blogDB.slice(offset, offset + limit));
         });
+        it('should return a blogs list using default limit offset', async () => {
+            const pageSize = 'g';
+            const pageNumber = 'ks';
+            const limit = 3;
+            const offset = (1 - 1)*3;
+
+            setLimitAndOffset.mockReturnValueOnce({limit, offset});
+
+            jest
+                .spyOn(blogRepository, 'getAllBlogs')
+                .mockImplementation((limit, offset) => {
+                    return blogDB.slice(offset, offset + limit);
+                });  
+
+                const allBlog = [];
+                blogDB.forEach((element) => {
+                    BlogDTO.mockImplementation((element) => { 
+                        return element;
+                })
+                allBlog.push(element);
+              });
+            
+            const response = await blogService.getAllBlogs(pageSize, pageNumber);
+
+            expect(blogRepository.getAllBlogs).toBeCalledTimes(1);
+            expect(blogRepository.getAllBlogs).toBeCalledWith(limit, offset);
+            expect(response).toHaveLength(limit);
+            expect(response).toEqual(blogDB.slice(offset, offset + limit));
+        });
         it('should throw error if blogRepository fails', async () => {
             const pageSize = 4;
             const pageNumber = 1;
@@ -186,6 +215,16 @@ describe('Testing Blog Service', () => {
             expect(blogRepository.getBlogByAuthorId).toBeCalledWith(authroId);
             expect(response).toEqual(expectedData);
         });
+        it('should throw an error if author has no blog', async () => {
+            const authroId = '003';
+            const expectedError = new AppError('The author has no blogs');
+
+            jest   
+                .spyOn(blogRepository, 'getBlogByAuthorId')
+                .mockReturnValueOnce(null);
+            
+            await expect(blogService.getBlogsByAuthorId(authroId)).rejects.toThrow(expectedError);
+        })
         it('should throw error if blogRepository fails', async () => {
             const authroId = '003';
             const expectedError = new Error('Something went wrong!');
