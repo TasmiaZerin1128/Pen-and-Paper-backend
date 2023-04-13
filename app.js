@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser')
 const database = require("./db.config");
 const syncModels = require('./models/index');
 
+const cors = require("cors");
+
 dotenv.config();
 
 const PORT = process.env.APP_PORT || 3000;
@@ -19,6 +21,14 @@ app.use(cookieParser());
 app.listen(PORT, () => {
     console.log(`App started on ${PORT}`);
 });
+
+app.use(cors());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // or a specific origin
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+})
 
 
 app.use(express.json());
