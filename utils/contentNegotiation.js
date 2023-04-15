@@ -3,7 +3,7 @@ const json2html = require('json-to-html');
 const json2plain = require('json-to-plain-text');
 
 exports.sendJsonResponse = (data) => {
-  return jsonData = { data: data };
+  return data;
 };
 
 exports.sendXmlResponse = (data) => {
