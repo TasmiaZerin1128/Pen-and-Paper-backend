@@ -54,7 +54,7 @@ describe('Testing Auth Controller functionalities', () => {
             expect(authService.register).toHaveBeenCalledTimes(1);
             expect(authService.register).toHaveBeenCalledWith(req.body);
             expect(res.cookie).toHaveBeenCalledTimes(1);
-            expect(res.cookie).toHaveBeenCalledWith('jwt', accesstoken, { httpOnly: true });
+            expect(res.cookie).toHaveBeenCalledWith('jwt', accesstoken, { sameSite: 'none', secure: true });
             expect(response).toEqual(contentNegotiateResponse);
         });
 
@@ -134,7 +134,7 @@ describe('Testing Auth Controller functionalities', () => {
             expect(authService.login).toHaveBeenCalledTimes(1);
             expect(authService.login).toHaveBeenCalledWith(req.body);
             expect(res.cookie).toHaveBeenCalledTimes(1);
-            expect(res.cookie).toHaveBeenCalledWith('jwt', accesstoken, { httpOnly: true });
+            expect(res.cookie).toHaveBeenCalledWith('jwt', accesstoken, { sameSite: 'none', secure: true });
             expect(response).toBe(contentNegotiateResponse);
         });
 

@@ -3,7 +3,11 @@ const User = require("../models/user.model");
 const { SequelizeValidationError } = require("../utils/errorHandler");
 
 exports.getAllUsers = async (limit, offset) => {
-    const result = await User.findAll({ offset : offset, limit : limit });
+    const result = await User.findAll({ 
+        order: [['updatedAt', 'DESC']], 
+        offset : offset, 
+        limit : limit 
+    });
     return result;
 };
 

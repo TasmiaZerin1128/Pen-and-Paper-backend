@@ -18,7 +18,7 @@ const Blog = sequelize.define(
       defaultValue: 'Untitled Blog'
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     }
   }
 );

@@ -29,7 +29,8 @@ describe('Testing Blog Repository', () => {
         const response = await blogRepository.getAllBlogs(limit, offset);
 
         expect(Blog.findAll).toHaveBeenCalledWith(
-            {include : ["author"], offset : offset, limit : limit }
+            {include : ["author"], order: [
+                ['updatedAt', 'DESC']], offset : offset, limit : limit }
         );
         expect(response).toHaveLength(limit);
         expect(response).toEqual(

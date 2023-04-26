@@ -81,7 +81,7 @@ describe('Testing Auth Service', () => {
             const newUser = userDB[0];
             const oldUser = userDB[0];
 
-            const expectedError = new AppError('User already exists!');
+            const expectedError = new AppError('Username already exists!');
 
             jest
                 .spyOn(userService, 'getUserByUsername')

@@ -9,7 +9,7 @@ exports.register = async (user) => {
     
     const userAlreadyExists = await userService.getUserByUsername(user.username);
     if (userAlreadyExists) {
-      throw new AppError("User already exists!", 400, false);
+      throw new AppError("Username already exists!", 400, false);
     }
     const result = await userService.createUser(user);
     return result;

@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
     const newUser = await authService.register(user);
     const accesstoken = sendToken(newUser);
 
-    res.cookie('jwt', accesstoken, { secure: true, samesite: true });
+    res.cookie('jwt', accesstoken, { sameSite: 'none', secure: true });
 
     return sendResponse(req, res, 201, {
       success: true,
@@ -37,7 +37,7 @@ exports.login = async (req, res, next) => {
       }  
         const user = await authService.login(req.body);
         const accesstoken = sendToken(user, res);
-        res.cookie('jwt', accesstoken, { secure: true, samesite: true });
+        res.cookie('jwt', accesstoken, { sameSite: 'none', secure: true });
 
        return sendResponse(req, res, 200, {
           success: true,
