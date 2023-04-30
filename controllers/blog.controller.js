@@ -41,7 +41,7 @@ exports.getBlogById = async (req, res, next) => {
 exports.getBlogsByAuthorId = async (req, res, next) => {
   try {
     const blog = await blogService.getBlogsByAuthorId(req.params.authorId);
-    return sendResponse(req, res, 200, blog);
+    return sendResponse(req, res, 200, blog.length ? blog : "Blog list is empty");
   } catch (err) {
     next(err);
   }
