@@ -1,5 +1,6 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
+const { comparePassword } = require("../utils/hashPassword");
 const { AppError } = require("../utils/errorHandler");
 const { setLimitAndOffset } = require("../utils/pagination");
 const UserDTO = require("../DTOs/user.dto");
@@ -22,7 +23,7 @@ async function getAllUsers(pageSize, pageNumber) {
 }
 
 async function updateUser(username, userToUpdate) {
-  if(!userUtils.checkPasswordValid(userToUpdate.password)){
+  if(!userUtils.checkPasswordValid(userToUpdate.newPassword)){
     throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
@@ -30,7 +31,11 @@ async function updateUser(username, userToUpdate) {
     if(!userExists){
       throw new AppError('User does not exist', 404, true);
     } 
-      const result = await userRepository.updateUser(username, userToUpdate.password);
+      const isPasswordMatched = await comparePassword(userToUpdate.oldPassword, userExists.password);
+      if (!isPasswordMatched) {
+        throw new AppError("Old password is not valid", 401, false);
+      }
+      const result = await userRepository.updateUser(username, userToUpdate.newPassword);
       if(!result[0]) throw new AppError('User could not be updated', 400, true);
       return result;
 }
