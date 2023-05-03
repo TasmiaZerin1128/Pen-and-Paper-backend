@@ -26,8 +26,8 @@ exports.deleteBlogByBlogId = async (blogId) => {
     return result;
 };
 
-exports.getBlogByAuthorId = async (authorId) => {
-    const result = await Blog.findAll({include : ["author"], where: { authorId: authorId }, order: [
+exports.getBlogByAuthorId = async (authorId, limit, offset) => {
+    const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit, where: { authorId: authorId }, order: [
       ['updatedAt', 'DESC']] });
     return result;
 };

@@ -44,8 +44,9 @@ async function getBlogById(blogId) {
     return new BlogDTO(result); 
 }
 
-async function getBlogsByAuthorId(authorId) {
-    const result = await blogRepository.getBlogByAuthorId(authorId);
+async function getBlogsByAuthorId(authorId, pageSize, pageNumber) {
+  const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const result = await blogRepository.getBlogByAuthorId(authorId, limit, offset);
     if(!result) throw new AppError("The author has no blogs", 404, false);
     const allBlog = [];
     result.forEach((element) => {
