@@ -196,10 +196,16 @@ describe('Testing Blog Service', () => {
         it('should return the blogs of the author', async () => {
             const authroId = '003';
             const expectedData = [blogDB[0], blogDB[3]];
+            const pageSize = 1;
+            const pageNumber = 1;
+            const limit = pageSize;
+            const offset = (pageNumber - 1)*pageSize;
+
+            setLimitAndOffset.mockReturnValueOnce({limit, offset});
 
             jest   
                 .spyOn(blogRepository, 'getBlogByAuthorId')
-                .mockReturnValueOnce(expectedData);
+                .mockReturnValue(expectedData);  
 
             const allBlog = [];
             expectedData.forEach((element) => {
@@ -212,28 +218,42 @@ describe('Testing Blog Service', () => {
             const response = await blogService.getBlogsByAuthorId(authroId);
 
             expect(blogRepository.getBlogByAuthorId).toBeCalledTimes(1);
-            expect(blogRepository.getBlogByAuthorId).toBeCalledWith(authroId);
+            expect(blogRepository.getBlogByAuthorId).toBeCalledWith(authroId, limit, offset);
             expect(response).toEqual(expectedData);
         });
         it('should throw an error if author has no blog', async () => {
             const authroId = '003';
             const expectedError = new AppError('The author has no blogs');
 
+            const pageSize = 2;
+            const pageNumber = 1;
+            const limit = pageSize;
+            const offset = (pageNumber - 1)*pageSize;
+
+            setLimitAndOffset.mockReturnValueOnce({limit, offset});
+
             jest   
                 .spyOn(blogRepository, 'getBlogByAuthorId')
                 .mockReturnValueOnce(null);
             
-            await expect(blogService.getBlogsByAuthorId(authroId)).rejects.toThrow(expectedError);
+            await expect(blogService.getBlogsByAuthorId(authroId, pageNumber, pageSize)).rejects.toThrow(expectedError);
         })
         it('should throw error if blogRepository fails', async () => {
             const authroId = '003';
             const expectedError = new Error('Something went wrong!');
 
+            const pageSize = 2;
+            const pageNumber = 1;
+            const limit = pageSize;
+            const offset = (pageNumber - 1)*pageSize;
+
+            setLimitAndOffset.mockReturnValueOnce({limit, offset});
+
             jest   
                 .spyOn(blogRepository, 'getBlogByAuthorId')
                 .mockRejectedValueOnce(expectedError);
             
-            await expect(blogService.getBlogsByAuthorId(authroId)).rejects.toThrow(expectedError);
+            await expect(blogService.getBlogsByAuthorId(authroId, pageNumber, pageSize)).rejects.toThrow(expectedError);
         });
     });
 

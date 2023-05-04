@@ -100,7 +100,8 @@ describe('Testing Blog Repository', () => {
 
             expect(Blog.findAll).toBeCalledTimes(1);
             expect(Blog.findAll).toBeCalledWith(
-                {include : ["author"], where: { authorId: authorId } }
+                {include : ["author"], order: [
+                    ['updatedAt', 'DESC']], where: { authorId: authorId } }
             );
             expect(response).toEqual(expectedData);  
         });
@@ -113,7 +114,8 @@ describe('Testing Blog Repository', () => {
 
             expect(Blog.findAll).toBeCalledTimes(1);
             expect(Blog.findAll).toBeCalledWith(
-                {include : ["author"], where: { authorId: authorId } }
+                {include : ["author"], order: [
+                    ['updatedAt', 'DESC']], where: { authorId: authorId } }
             );
             expect(response).toEqual(null);  
         })

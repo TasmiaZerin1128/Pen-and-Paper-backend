@@ -190,8 +190,16 @@ describe('Testing blogController module', () => {
             const req = {
                 params: {
                     authorId: '003'
+                },
+                query: {
+                    pagesize: 2,
+                    pagenumber: 1
                 }
             }
+
+            const pageSize = req.query.pagesize;
+            const pageNumber = req.query.pagenumber;
+
             const res = {};
             const next = jest.fn();
             const expectedBlog = [blogDB[0], blogDB[3]];
@@ -206,15 +214,22 @@ describe('Testing blogController module', () => {
 
             expect(blogService.getBlogsByAuthorId).toBeCalledTimes(1);
             expect(response).toBe(expectedBlog);
-            expect(blogService.getBlogsByAuthorId).toHaveBeenCalledWith(req.params.authorId);
+            expect(blogService.getBlogsByAuthorId).toHaveBeenCalledWith(req.params.authorId, pageSize, pageNumber);
         });
         it('should throw an error if blogService call fails', async () => {
 
             const req = {
                 params: {
                     authorId: '003'
+                },
+                query: {
+                    pagesize: 2,
+                    pagenumber: 1
                 }
             }
+
+            const pageSize = req.query.pagesize;
+            const pageNumber = req.query.pagenumber;
 
             const res = {};
             const next = jest.fn();

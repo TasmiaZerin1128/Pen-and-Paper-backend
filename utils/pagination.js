@@ -1,6 +1,6 @@
 function validatePage (pageSize, pageNumber) {
 
-    pageSize = ( isNaN(pageSize) || pageSize < 1 ) ? 10 : parseInt(pageSize);
+    pageSize = ( isNaN(pageSize) || pageSize < 1 ) ? 5 : parseInt(pageSize);
     pageNumber = ( isNaN(pageNumber) || pageNumber < 1 ) ? 1 : parseInt(pageNumber);
     return { pageSize, pageNumber };
 }

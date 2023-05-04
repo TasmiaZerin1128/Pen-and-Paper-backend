@@ -4,9 +4,11 @@ const { AppError } = require("../../../utils/errorHandler");
 const { userDB } = require('../mockDB');
 const UserDTO = require("../../../DTOs/user.dto");
 const userUtils = require('../../../utils/userValidation');
+const { comparePassword } = require("../../../utils/hashPassword");
 const { setLimitAndOffset } = require("../../../utils/pagination");
 
 jest.mock('../../../utils/pagination');
+jest.mock('../../../utils/hashPassword');
 // jest.mock('../../../utils/userValidation');
 
 describe('Testing User Service', () => {
@@ -258,7 +260,7 @@ describe('Testing User Service', () => {
     describe('Testing update user', () => {
         it('should update the user and return success', async () => {
         const username = 'tasmia';
-        const userToUpdate = { password : '123546' };
+        const userToUpdate = { oldPassword : '123456', newPassword: '123123' };
 
         const expectedResult = {
             id: '003',
@@ -277,6 +279,8 @@ describe('Testing User Service', () => {
         jest
             .spyOn(userRepository, 'getUserByUsername')
             .mockResolvedValueOnce(expectedResult);
+
+        comparePassword.mockReturnValueOnce(true);
         
         jest
             .spyOn(userRepository, 'updateUser')
@@ -284,13 +288,13 @@ describe('Testing User Service', () => {
 
         const response = await userService.updateUser(username, userToUpdate);
         expect(userRepository.updateUser).toBeCalledTimes(1);
-        expect(userRepository.updateUser).toHaveBeenCalledWith(username, userToUpdate.password);
+        expect(userRepository.updateUser).toHaveBeenCalledWith(username, userToUpdate.newPassword);
         expect(response).toEqual([1]);
 
         });
         it('should throw an error if password is invalid', async () => {
             const username = 'tasmia';
-            const userToUpdate = { password : '123' };
+            const userToUpdate = { oldPassword : '123456', newPassword: '123' };
 
             const expectedError = new AppError('Password must contain atleast 6 characters');
 
@@ -302,7 +306,7 @@ describe('Testing User Service', () => {
         });
         it('should throw an error if user does not exist', async () => {
             const username = 'noUser';
-            const userToUpdate = { password : '123' };
+            const userToUpdate = { oldPassword : '123456', newPassword: '123' };
 
             const expectedError = new AppError('User does not exist');
 
@@ -318,7 +322,7 @@ describe('Testing User Service', () => {
         });
         it('should throw an error if user update fails', async () => {
             const username = 'tasmia';
-            const userToUpdate = { password : '123657547' };
+            const userToUpdate = { oldPassword : '123456', newPassword: '123123' };
 
             const expectedResult = {
                 id: '003',
@@ -339,6 +343,8 @@ describe('Testing User Service', () => {
             jest
                 .spyOn(userRepository, 'getUserByUsername')
                 .mockReturnValueOnce(expectedResult);
+
+            comparePassword.mockReturnValueOnce(true);
             
             jest
                 .spyOn(userRepository, 'updateUser')
