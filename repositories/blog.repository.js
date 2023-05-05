@@ -2,7 +2,7 @@ const Blog = require('../models/blog.model');
 const { SequelizeValidationError } = require("../utils/errorHandler");
 
 exports.getAllBlogs = async (limit, offset) => {
-    const result = await Blog.findAll({include : ["author"], 
+    const result = await Blog.findAndCountAll({include : ["author"], 
     order: [['updatedAt', 'DESC']], offset : offset, limit : limit });
     return result;
 };
@@ -27,7 +27,7 @@ exports.deleteBlogByBlogId = async (blogId) => {
 };
 
 exports.getBlogByAuthorId = async (authorId, limit, offset) => {
-    const result = await Blog.findAll({include : ["author"], offset : offset, limit : limit, where: { authorId: authorId }, order: [
+    const result = await Blog.findAndCountAll({include : ["author"], offset : offset, limit : limit, where: { authorId: authorId }, order: [
       ['updatedAt', 'DESC']] });
     return result;
 };

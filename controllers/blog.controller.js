@@ -10,7 +10,7 @@ exports.getAllBlogs = async (req, res, next) => {
     let pageNumber = req.query.pagenumber;
 
     const blogs = await blogService.getAllBlogs(pageSize, pageNumber);
-    return sendResponse(req, res, 200, blogs.length ? blogs : "Blog list is empty");
+    return sendResponse(req, res, 200, blogs.rows.length ? blogs : "Blog list is empty");
   } catch (err) {
     next(err);
   }
@@ -44,7 +44,7 @@ exports.getBlogsByAuthorId = async (req, res, next) => {
     let pageNumber = req.query.pagenumber;
 
     const blog = await blogService.getBlogsByAuthorId(req.params.authorId, pageSize, pageNumber);
-    return sendResponse(req, res, 200, blog.length ? blog : "Blog list is empty");
+    return sendResponse(req, res, 200, blog.rows.length ? blog : "Blog list is empty");
   } catch (err) {
     next(err);
   }

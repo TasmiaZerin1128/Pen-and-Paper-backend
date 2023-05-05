@@ -19,9 +19,9 @@ async function createBlog(blog, username) {
 async function getAllBlogs(pageSize, pageNumber) {
     const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
     const data = await blogRepository.getAllBlogs(limit, offset);
-    const allBlog = [];
-    data.forEach((element) => {
-      allBlog.push( new BlogDTO(element));
+    const allBlog = { count: data.count, rows: [] };
+    data.rows.forEach((element) => {
+      allBlog.rows.push( new BlogDTO(element));
     });
     return allBlog;
 }
@@ -41,16 +41,16 @@ async function deleteBlogByBlogId(blogId) {
 async function getBlogById(blogId) {
     const result = await blogRepository.getBlogById(blogId);
     if(!result) throw new AppError("Blog not found", 404, false);
-    return new BlogDTO(result); 
+    return new BlogDTO(result);
 }
 
 async function getBlogsByAuthorId(authorId, pageSize, pageNumber) {
   const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
     const result = await blogRepository.getBlogByAuthorId(authorId, limit, offset);
-    if(!result) throw new AppError("The author has no blogs", 404, false);
-    const allBlog = [];
-    result.forEach((element) => {
-      allBlog.push(new BlogDTO(element));
+    if(!result.rows) throw new AppError("The author has no blogs", 404, false);
+    const allBlog = { count: result.count, rows: [] };
+    result.rows.forEach((element) => {
+      allBlog.rows.push( new BlogDTO(element));
     });
     return allBlog;
 }
