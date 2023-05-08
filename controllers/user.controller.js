@@ -9,7 +9,7 @@ exports.getAllUsers = async (req, res, next) => {
     let pageSize = req.query.pagesize;   //how many items in one page
     let pageNumber = req.query.pagenumber;    //which page to go
     const data = await userService.getAllUsers(pageSize, pageNumber);
-    return sendResponse(req, res, 200, data.length ? data : 'User table is empty');
+    return sendResponse(req, res, 200, data);
   } catch (err) {
     next(err);
   }
