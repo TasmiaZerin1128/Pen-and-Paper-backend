@@ -1,5 +1,6 @@
 APP_NAME='your app name'
 APP_PORT='port number'
+APP_HOST=IP of my pc
 SALTROUND='salt for hashing'
 
 ACCESS_TOKEN_SECRET='any secret token'

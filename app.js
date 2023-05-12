@@ -11,6 +11,7 @@ const cors = require("cors");
 dotenv.config();
 
 const PORT = process.env.APP_PORT || 3000;
+const HOST = process.env.APP_HOST || 'localhost';
 
 database.connectToDatabase();
 syncModels();
@@ -18,13 +19,13 @@ syncModels();
 const app = express();
 app.use(cookieParser());
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
     console.log(`App started on ${PORT}`);
 });
 
 app.use(cors(
   { 
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], 
+    // origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
     credentials: true 
