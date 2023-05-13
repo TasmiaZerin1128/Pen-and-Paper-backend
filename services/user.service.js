@@ -35,6 +35,9 @@ async function updateUser(username, userToUpdate) {
       if (!isPasswordMatched) {
         throw new AppError("Old password is not valid", 401, false);
       }
+      if(userToUpdate.newPassword === userToUpdate.oldPassword){
+        throw new AppError('New password cannot be the same as old password', 400, false);
+      }
       const result = await userRepository.updateUser(username, userToUpdate.newPassword);
       if(!result[0]) throw new AppError('User could not be updated', 400, true);
       return result;
