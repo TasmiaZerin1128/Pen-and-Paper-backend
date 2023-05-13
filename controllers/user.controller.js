@@ -1,15 +1,15 @@
 const userService = require("../services/user.service");
+const {sendResponse} = require("../utils/contentNegotiation");
+
 
 'use strict';
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const data = await userService.getAllUsers();
-    if(data.length){
-      res.status(200).send(data);
-    } else {
-      res.status(200).send('User table is empty');
-    }
+    let pageSize = req.query.pagesize;   //how many items in one page
+    let pageNumber = req.query.pagenumber;    //which page to go
+    const data = await userService.getAllUsers(pageSize, pageNumber);
+    return sendResponse(req, res, 200, data.length ? data : 'User table is empty');
   } catch (err) {
     next(err);
   }
@@ -17,12 +17,8 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getUserByUsername = async (req, res, next) => {
   try {
-    const data = await userService.getUserByUsername(req.params.username, true);
-    if (data) {
-      res.status(200).send(data);
-    } else {
-      res.status(404).send("User not found");
-    }
+    const data = await userService.getUserDTOByUsername(req.params.username);
+    return sendResponse(req, res, 200, data);
   } catch (err) {
     next(err);
   }
@@ -31,11 +27,7 @@ exports.getUserByUsername = async (req, res, next) => {
 exports.updateUserByUsername = async (req, res, next) => {
   try {
     const data = await userService.updateUser(req.params.username, req.body);
-    if(data[0] == 1){
-      res.status(200).send('User updated');
-    } else {
-      res.status(400).send('User could not be updated');
-    }
+    return sendResponse(req, res, 200, 'User updated');
   } catch (err) {
     next(err);
   }
@@ -44,11 +36,7 @@ exports.updateUserByUsername = async (req, res, next) => {
 exports.deleteUserByUsername = async (req, res, next) => {
   try {
     const deletedUser = await userService.deleteUser(req.params.username);
-    if(deletedUser){
-      res.status(200).send('User deleted');
-    } else {
-      res.status(404).send('User not found');
-    }
+    return sendResponse(req, res, 200, 'User deleted');
   } catch (err) {
     next(err);
   }

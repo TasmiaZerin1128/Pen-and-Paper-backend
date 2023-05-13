@@ -4,38 +4,42 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser')
 
 const database = require("./db.config");
+const syncModels = require('./models/index');
+
+const cors = require("cors");
 
 dotenv.config();
 
 const PORT = process.env.APP_PORT || 3000;
 
 database.connectToDatabase();
+syncModels();
 
 const app = express();
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.listen(PORT, () => {
     console.log(`App started on ${PORT}`);
 });
 
+app.use(cors(
+  { 
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+    credentials: true 
+  }));
 
 app.use(express.json());
-// Body-parser middleware
 app.use(express.urlencoded({extended:true}));
 
-app.use((err, req, res, next) => {
-    if (!err) {
-        return next();
-    }
-    res.status(500);
-    res.send('500: Internal server error');
-});
-
 const globalErrorHandler = (err, req, res, next) => {
-  res.status(err.statusCode).send(err.message);
+  const statusCode = err.statusCode || 500;
+  const msg = err.message || 'Oops! something went wrong. Please try again';
+  res.status(statusCode).send(msg);
 }
 
-app.use('/api', router);
+app.use('/api/v1', router);
 
 app.use('*', (req, res) => {
     res.status(404).json({

@@ -1,59 +1,73 @@
 const blogService = require("../services/blog.service");
+const { sendResponse } = require("../utils/contentNegotiation");
+const { AppError } = require("../utils/errorHandler");
+
+("use strict");
 
 exports.getAllBlogs = async (req, res, next) => {
-    try {
-    const blogs = await blogService.getAllBlogs();
-    if(blogs.length==0){
-        res.status(200).json('Blog list empty!');
-    }
-    res.status(200).json(blogs);
-    } catch (err) {
+  try {
+    let pageSize = req.query.pagesize;
+    let pageNumber = req.query.pagenumber;
+
+    const blogs = await blogService.getAllBlogs(pageSize, pageNumber);
+    return sendResponse(req, res, 200, blogs.rows.length ? blogs : "Blog list is empty");
+  } catch (err) {
     next(err);
-    }
-}
+  }
+};
 
 exports.createBlog = async (req, res, next) => {
-    try {
+  try {
+    const {title, description } = req.body;
+    if (!title || !description) {
+      throw new AppError("Title and description are needed", 400, false);
+    }
     const createdBlog = await blogService.createBlog(req.body, req.username);
-    res.status(200).json(createdBlog);
-    } catch (err) {
-        next(err);
-    }
-}
+    return sendResponse(req, res, 201, createdBlog);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.getBlogbyId = async (req, res, next) => {
-    try {
-        const blog = await blogService.getBlogbyId(req.params.blogId);
-        res.status(200).json(blog);
-    } catch (err) {
-        next(err);
-    }
-}
+exports.getBlogById = async (req, res, next) => {
+  try {
+    const blog = await blogService.getBlogById(req.params.blogId);
+    return sendResponse(req, res, 200, blog);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.editBlog = async (req, res, next) => {
-    try {
-    const editedBlog = await blogService.editBlog(req.params.blogId, req.body);
-    if(editedBlog[0] == 1){
-        res.status(200).json('Blog edited successfully');
-    }
-    else {
-        res.status(404).json('Blog not found');
-    }
-    } catch (err) {
-        next(err);
-    }
-}
+exports.getBlogsByAuthorId = async (req, res, next) => {
+  try {
+    let pageSize = req.query.pagesize;
+    let pageNumber = req.query.pagenumber;
 
-exports.deleteBlog = async (req, res, next) => {
-    try{
-    const deleteBlog = await blogService.deleteBlog(req.params.blogId);
-    if(deleteBlog){
-        res.status(200).json('Blog deleted');
+    const blog = await blogService.getBlogsByAuthorId(req.params.authorId, pageSize, pageNumber);
+    return sendResponse(req, res, 200, blog.rows.length ? blog : "Blog list is empty");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.editBlogByBlogId = async (req, res, next) => {
+  try {
+    const blogItemsToEdit = req.body;
+    if (!blogItemsToEdit.title && !blogItemsToEdit.description) {
+      throw new AppError("Title and description are missing", 400, false);
     }
-    else {
-        res.status(404).json('Blog not found');
-    }
-    } catch (err) {
-        next(err);
-    }
-}
+    const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
+    return sendResponse(req, res, 200, "Blog edited successfully");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteBlogByBlogId = async (req, res, next) => {
+  try {
+    const deleteBlog = await blogService.deleteBlogByBlogId(req.params.blogId);
+    return sendResponse(req, res, 200, "Blog deleted");
+  } catch (err) {
+    next(err);
+  }
+};

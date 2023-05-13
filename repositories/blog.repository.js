@@ -1,57 +1,35 @@
 const Blog = require('../models/blog.model');
+const { SequelizeValidationError } = require("../utils/errorHandler");
 
-exports.getAllBlogs = async () => {
-  try {
-    const result = await Blog.findAll();
+exports.getAllBlogs = async (limit, offset) => {
+    const result = await Blog.findAndCountAll({include : ["author"], 
+    order: [['updatedAt', 'DESC']], offset : offset, limit : limit });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
-exports.getBlogbyId = async (blogId) => {
-  try {
-    const result = await Blog.findOne({ where: { id: blogId } });
+exports.getBlogById = async (blogId) => {
+    const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
-exports.editBlog = async (blogId, editedBlog) => {
-  try {
+exports.editBlogByBlogId = async (blogId, editedBlog) => {
     const result = await Blog.update(
       { title: editedBlog.title, 
         description: editedBlog.description },
       { where: { id: blogId } }
     );
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
-exports.deleteBlog = async (blogId) => {
-  try {
+exports.deleteBlogByBlogId = async (blogId) => {
     const result = Blog.destroy({ where: { id: blogId } });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
-exports.getBlogbyAuthorId = async (authorId) => {
-  try {
-    const result = await Blog.findAll({ where: { authorId: authorId } });
+exports.getBlogByAuthorId = async (authorId, limit, offset) => {
+    const result = await Blog.findAndCountAll({include : ["author"], offset : offset, limit : limit, where: { authorId: authorId }, order: [
+      ['updatedAt', 'DESC']] });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
 exports.createBlog = async (blog) => {
@@ -60,6 +38,6 @@ exports.createBlog = async (blog) => {
       console.log("Blog created successfully");
       return result;
     } catch (err) {
-      throw console.error(err);
+      throw new SequelizeValidationError(err, 400);
     }
 }

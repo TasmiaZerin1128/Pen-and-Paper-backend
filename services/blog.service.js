@@ -1,82 +1,65 @@
 const blogRepository = require("../repositories/blog.repository");
-const AppError = require("../utils/errorHandler");
+const { AppError } = require("../utils/errorHandler");
 const userService = require("../services/user.service");
+const { setLimitAndOffset } = require("../utils/pagination");
+const BlogDTO = require('../DTOs/blog.dto');
 
 ("use strict");
 
 async function createBlog(blog, username) {
-  if (!blog.title || !blog.description) {
-    throw new AppError("Title and description are needed", 400, false);
-  }
-
-  try {
     const authorExists = await userService.getUserByUsername(username);
-    if(authorExists){
-      blog.authorId = authorExists.id;
-      const result = await blogRepository.createBlog(blog);
-      return result;
-    } else {
+    if(!authorExists){
       throw new AppError("Author does not exist", 404, false);
-    }
-  } catch (err) {
-    throw new AppError(err.message, err.statusCodde, err.isOperational);
-  }
-}
-
-async function getAllBlogs() {
-  try {
-    const data = await blogRepository.getAllBlogs();
-    return data;
-  } catch {
-    throw new AppError("Cannot find any Blogs table", 404, false);
-  }
-}
-
-async function editBlog(blogId, blogItemsToEdit) {
-
-  try {
-    if (!blogItemsToEdit.title && !blogItemsToEdit.description) {
-      throw new AppError("Title and description are missing", 400, false);
-    }
-    const result = await blogRepository.editBlog(blogId, blogItemsToEdit);
+    } 
+    blog.authorId = authorExists.id;
+    const result = await blogRepository.createBlog(blog);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
 }
 
-async function deleteBlog(blogId) {
-  try {
-    const result = await blogRepository.deleteBlog(blogId);
+async function getAllBlogs(pageSize, pageNumber) {
+    const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const data = await blogRepository.getAllBlogs(limit, offset);
+    const allBlog = { count: data.count, rows: [] };
+    data.rows.forEach((element) => {
+      allBlog.rows.push( new BlogDTO(element));
+    });
+    return allBlog;
+}
+
+async function editBlogByBlogId(blogId, blogItemsToEdit) {
+    const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
+    if(!result) throw new AppError("Blog not found", 404, false);
     return result;
-  } catch (err) {
-    throw new AppError("Blog delete failed", 500, true);
-  }
 }
 
-async function getBlogbyId(blogId) {
-  try {
-    const result = await blogRepository.getBlogbyId(blogId);
+async function deleteBlogByBlogId(blogId) {
+    const result = await blogRepository.deleteBlogByBlogId(blogId);
+    if(!result) throw new AppError("Blog not found", 404, false);
     return result;
-  } catch {
-    throw new AppError("Blog not found", 404, false);
-  }
 }
 
-async function getBlogbyAuthorId(authorId) {
-  try {
-    const blogExists = await blogRepository.getBlogbyAuthorId(authorId);
-    return blogExists;
-  } catch {
-    throw new AppError("Blog not found", 404, false);
-  }
+async function getBlogById(blogId) {
+    const result = await blogRepository.getBlogById(blogId);
+    if(!result) throw new AppError("Blog not found", 404, false);
+    return new BlogDTO(result);
+}
+
+async function getBlogsByAuthorId(authorId, pageSize, pageNumber) {
+  const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const result = await blogRepository.getBlogByAuthorId(authorId, limit, offset);
+    if(!result.rows) throw new AppError("The author has no blogs", 404, false);
+    const allBlog = { count: result.count, rows: [] };
+    result.rows.forEach((element) => {
+      allBlog.rows.push( new BlogDTO(element));
+    });
+    return allBlog;
 }
 
 module.exports = {
   getAllBlogs,
   createBlog,
-  getBlogbyId,
-  getBlogbyAuthorId,
-  editBlog,
-  deleteBlog,
+  getBlogById,
+  getBlogsByAuthorId,
+  editBlogByBlogId,
+  deleteBlogByBlogId,
 };

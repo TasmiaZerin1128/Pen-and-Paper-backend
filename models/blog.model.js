@@ -13,26 +13,26 @@ const Blog = sequelize.define(
     },
     title: {
       type: DataTypes.STRING,
-      notNull: true,
+      allowNull: false,
       notEmpty: true,
       defaultValue: 'Untitled Blog'
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     }
   }
 );
 
-User.hasMany(Blog, {
-  foreignKey: "authorId"
-});
+// User.hasMany(Blog, {
+//   foreignKey: "authorId", onDelete: 'cascade', hooks: true 
+// });
 
-Blog.belongsTo(User, {
-  foreignKey: "authorId"
-});
+// Blog.belongsTo(User, { as: "author" }, {
+//   foreignKey: "authorId"
+// });
 
-(async () => {
-  await Blog.sync(); 
-})();
+// (async () => {
+//   await Blog.sync(); 
+// })();
 
 module.exports = Blog;

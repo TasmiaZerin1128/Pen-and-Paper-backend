@@ -1,68 +1,38 @@
-const userDTO = require("../DTOs/user.dto");
 const userRegisterDto = require("../DTOs/userRegister.dto");
 const User = require("../models/user.model");
+const { SequelizeValidationError } = require("../utils/errorHandler");
 
-exports.getAllUsers = async () => {
-  try {
-    const result = await User.findAll();
-    const allUsers = [];
-    result.forEach((element) => {
-      allUsers.push(new userDTO(element));
+exports.getAllUsers = async (limit, offset) => {
+    const result = await User.findAll({ 
+        order: [['updatedAt', 'DESC']], 
+        offset : offset, 
+        limit : limit 
     });
-
-    return allUsers;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
+    return result;
 };
 
 exports.getUserByUsername = async (username) => {
-  try {
-    username = username.toLowerCase();
-    const result = await User.findOne({ where: { username: username } });
+    const result = await User.findOne({ where: { username: username.toLowerCase() } });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
 exports.updateUser = async (username, updatedPassword) => {
-  try {
-    username = username.toLowerCase();
     const result = await User.update(
       { password: updatedPassword },
-      { where: { username: username } }
+      { where: { username: username.toLowerCase() },
+      individualHooks: true}
     );
-    console.log(result);
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
 exports.deleteUser = async (username) => {
-  try {
-    username = username.toLowerCase();
-    const result = User.destroy({ where: { username: username } });
+    const result = User.destroy({ where: { username: username.toLowerCase() } });
     return result;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
 };
 
 exports.getUserByEmail = async (email) => {
-  try {
     const result = await User.findOne({ where: { email: email } });
-    const userdto = new userDTO(result);
-    return userdto;
-  } catch (err) {
-    console.log(err.stack);
-    throw err;
-  }
+    return result;
 };
 
 exports.createUser = async (user) => {
@@ -72,6 +42,6 @@ exports.createUser = async (user) => {
       console.log("User created successfully");
       return result;
     } catch (err) {
-      throw console.error(err);
+        throw new SequelizeValidationError(err, 400);
     }
 }

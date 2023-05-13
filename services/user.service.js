@@ -1,85 +1,65 @@
 const userRepository = require("../repositories/user.repository");
 const userUtils = require("../utils/userValidation");
-const { hashPassword } = require("../utils/hashPassword");
-const AppError = require("../utils/errorHandler");
-const userDTO = require('../DTOs/user.dto');
+const { comparePassword } = require("../utils/hashPassword");
+const { AppError } = require("../utils/errorHandler");
+const { setLimitAndOffset } = require("../utils/pagination");
+const UserDTO = require("../DTOs/user.dto");
 
 'use strict';
 
 async function createUser(user){
-
-  try {
     const result = await userRepository.createUser(user);
     return result;
-  } catch (err) {
-    throw new AppError(err.message, 500, true);
-  }
 };
 
-async function getAllUsers() {
-  try{
-    const data =  await userRepository.getAllUsers();
-    return data;
-  }
-  catch{
-    throw new AppError('Cannot find any Users table', 404, false);
-  }
+async function getAllUsers(pageSize, pageNumber) {
+    const { limit , offset } = setLimitAndOffset(pageSize, pageNumber);
+    const data =  await userRepository.getAllUsers(limit, offset);
+    const allUsers = [];
+    data.forEach((element) => {
+      allUsers.push(new UserDTO(element));
+    });
+    return allUsers;
 }
 
 async function updateUser(username, userToUpdate) {
-  if(!userUtils.checkPasswordValid(userToUpdate.password)){
+  if(!userUtils.checkPasswordValid(userToUpdate.newPassword)){
     throw new AppError('Password must contain atleast 6 characters', 400, false);
   }
   
-  try{
-    const userExists = await getUserByUsername(username, false);
-    if(userExists){
-      const hashedPassword = await hashPassword(userToUpdate.password);
-      const result = await userRepository.updateUser(username, hashedPassword);
+    const userExists = await userRepository.getUserByUsername(username);
+    if(!userExists){
+      throw new AppError('User does not exist', 404, true);
+    } 
+      const isPasswordMatched = await comparePassword(userToUpdate.oldPassword, userExists.password);
+      if (!isPasswordMatched) {
+        throw new AppError("Old password is not valid", 401, false);
+      }
+      const result = await userRepository.updateUser(username, userToUpdate.newPassword);
+      if(!result[0]) throw new AppError('User could not be updated', 400, true);
       return result;
-    } else {
-      throw new AppError('User not found', 404, false);
-    }
-    
-  }
-  catch{
-    throw new AppError(err.message, err.statusCode, err.isOperational);
-  }
 }
 
 async function deleteUser (username) {
-  try{
     const result = await userRepository.deleteUser(username);
+    if(!result) throw new AppError('User not found', 404, false);
     return result;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
 }
 
-async function getUserByUsername(username, returnUsingDTO){
-
-  try{
+async function getUserByUsername(username){
     const result = await userRepository.getUserByUsername(username);
-    if(returnUsingDTO){
-      const userFound = new userDTO(result);
-      return userFound;
-    } 
-      return result;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
+    return result;
 }
+
+async function getUserDTOByUsername(username){
+      const result = await userRepository.getUserByUsername(username);
+      if(!result) throw new AppError('User not found', 404, false);
+      return new UserDTO(result);
+  }
 
 async function getUserByEmail(email){
-  try{
     const duplicateEmail = await userRepository.getUserByEmail(email);
     return duplicateEmail;
-  }
-  catch{
-    throw new AppError('User not found', 404, false);
-  }
 }
 
-module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser };
+module.exports = { getAllUsers, createUser, getUserByUsername, getUserByEmail, updateUser, deleteUser, getUserDTOByUsername };

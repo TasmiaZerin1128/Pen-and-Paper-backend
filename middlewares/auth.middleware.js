@@ -1,7 +1,8 @@
 "use strict";
+
 const jwt = require("jsonwebtoken");
 
-exports.guard = async (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
   try {
     let accessToken = req.cookies.jwt;
 
@@ -10,12 +11,12 @@ exports.guard = async (req, res, next) => {
     }
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if(err) {
-           return res.status(400).send('Session expired')
+           return res.status(400).send('Session expired! Please log in again')
       }
       req.username = decoded.username;
       next();
       });
-    
+
   } catch (err) {
     return res.status(401).send("Unauthorized User");
   }
@@ -24,7 +25,7 @@ exports.guard = async (req, res, next) => {
 exports.authorize = async(req, res, next) => {
   const tokenUsername = req.username;
   if(tokenUsername != req.params.username){
-    return res.status(401).send("Permission denied");
+    return res.status(403).send("Permission denied");
   }
   next();
 }

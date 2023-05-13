@@ -13,25 +13,35 @@ const User = sequelize.define(
     },
     fullName: {
       type: DataTypes.STRING,
-      notNull: true,
-      notEmpty: true
+      allowNull: false,
+      notEmpty: true,
     },
     username: {
       type: DataTypes.STRING,
-      notNull: true,
       unique: true,
-      notEmpty: true
+      notEmpty: true,
+      isAlphanumeric: true,
+      validate: {
+        isAlphanumeric: {
+          msg: 'Username cannot contain space and special characters!',
+        },
+      }
     },
     email: {
       type: DataTypes.STRING,
-      notNull: true,
+      allowNull: false,
       unique: true,
-      notEmpty: true
+      notEmpty: true,
+      validate: {
+        isEmail: {
+          msg: 'Please enter a valid email'
+        }
+      }
     },
     password: {
       type: DataTypes.STRING,
-      notNull: true,
-      notEmpty: true
+      allowNull: false,
+      notEmpty: true,
     }
   },{
     hooks: {
@@ -39,13 +49,19 @@ const User = sequelize.define(
         if (user.password) {
          user.password = await hashPassword(user.password);
         }
-    }
+    },
+    beforeUpdate: async (user) => {
+      console.log(user.password);
+      if (user.password) {
+        user.password = await hashPassword(user.password);
+      }
+  }
   }
   }
 );
 
-(async () => {
-    await User.sync();  
-})();
+// (async () => {
+//     await User.sync();  
+// })()
 
 module.exports = User;
