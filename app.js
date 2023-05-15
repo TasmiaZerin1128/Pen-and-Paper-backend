@@ -10,8 +10,8 @@ const cors = require("cors");
 
 dotenv.config();
 
-const PORT = process.env.APP_PORT || 3000;
-const HOST = process.env.APP_HOST || 'localhost';
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'localhost';
 
 database.connectToDatabase();
 syncModels();
