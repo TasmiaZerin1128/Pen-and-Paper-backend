@@ -25,7 +25,7 @@ app.listen(PORT, HOST, () => {
 
 app.use(cors(
   { 
-    origin: ['https://penpaper.cyclic.app', 'http://localhost:5173'], 
+    origin: ['http://localhost:5173', 'https://pen-paper.netlify.app'], 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
     credentials: true 
