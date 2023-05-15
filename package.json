@@ -22,7 +22,7 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "jest"
   },
   "devDependencies": {
