@@ -4,7 +4,7 @@ require("dotenv").config();
 const { hashPassword } = require("../utils/hashPassword");
 
 const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: DataTypes.UUID,

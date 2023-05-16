@@ -4,7 +4,7 @@ require("dotenv").config();
 const User = require("./user.model");
 
 const Blog = sequelize.define(
-  "Blog",
+  "blog",
   {
     id: {
       type: DataTypes.UUID,
