@@ -57,7 +57,7 @@ exports.editBlogByBlogId = async (req, res, next) => {
       throw new AppError("Title and description are missing", 400, false);
     }
     const editedBlog = await blogService.editBlogByBlogId(req.params.blogId, req.body);
-    return sendResponse(req, res, 200, "Blog edited successfully");
+    return sendResponse(req, res, 200, editedBlog);
   } catch (err) {
     next(err);
   }

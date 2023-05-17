@@ -13,11 +13,13 @@ exports.getBlogById = async (blogId) => {
 };
 
 exports.editBlogByBlogId = async (blogId, editedBlog) => {
-    const result = await Blog.update(
+    const doEdit = await Blog.update(
       { title: editedBlog.title, 
         description: editedBlog.description },
-      { where: { id: blogId } }
+      { where: { id: blogId }}
     );
+    if(!doEdit) return false;
+    const result = await Blog.findOne({include : ["author"], where: { id: blogId } });
     return result;
 };
 

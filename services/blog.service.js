@@ -29,7 +29,7 @@ async function getAllBlogs(pageSize, pageNumber) {
 async function editBlogByBlogId(blogId, blogItemsToEdit) {
     const result = await blogRepository.editBlogByBlogId(blogId, blogItemsToEdit);
     if(!result) throw new AppError("Blog not found", 404, false);
-    return result;
+    return new BlogDTO(result);
 }
 
 async function deleteBlogByBlogId(blogId) {
