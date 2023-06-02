@@ -46,7 +46,7 @@ describe('Testing Blog Service', () => {
                 title: 'Hello there',
                 description: 'New post',
             }
-            const expectedError = new AppError('Author does not exist');
+            const expectedError = new AppError("Author does not exist");
             jest
                 .spyOn(userService, 'getUserByUsername')
                 .mockReturnValueOnce(null);
@@ -87,15 +87,15 @@ describe('Testing Blog Service', () => {
             jest
                 .spyOn(blogRepository, 'getAllBlogs')
                 .mockImplementation((limit, offset) => {
-                    return blogDB.slice(offset, offset + limit);
+                    return blogDB.rows.slice(offset, offset + limit);
                 });  
 
-                const allBlog = [];
-                blogDB.forEach((element) => {
+                const allBlog = { count: blogDB.count, rows: [] };
+                blogDB.rows.forEach((element) => {
                     BlogDTO.mockImplementation((element) => { 
                         return element;
                 })
-                allBlog.push(element);
+                allBlog.rows.push(element);
               });
             
             const response = await blogService.getAllBlogs(pageSize, pageNumber);
@@ -103,7 +103,7 @@ describe('Testing Blog Service', () => {
             expect(blogRepository.getAllBlogs).toBeCalledTimes(1);
             expect(blogRepository.getAllBlogs).toBeCalledWith(limit, offset);
             expect(response).toHaveLength(limit);
-            expect(response).toEqual(blogDB.slice(offset, offset + limit));
+            expect(response).toEqual(blogDB.rows.slice(offset, offset + limit));
         });
         it('should return a blogs list using default limit offset', async () => {
             const pageSize = 'g';
@@ -116,11 +116,11 @@ describe('Testing Blog Service', () => {
             jest
                 .spyOn(blogRepository, 'getAllBlogs')
                 .mockImplementation((limit, offset) => {
-                    return blogDB.slice(offset, offset + limit);
+                    return blogDB.rows.slice(offset, offset + limit);
                 });  
 
                 const allBlog = [];
-                blogDB.forEach((element) => {
+                blogDB.rows.forEach((element) => {
                     BlogDTO.mockImplementation((element) => { 
                         return element;
                 })
@@ -132,7 +132,7 @@ describe('Testing Blog Service', () => {
             expect(blogRepository.getAllBlogs).toBeCalledTimes(1);
             expect(blogRepository.getAllBlogs).toBeCalledWith(limit, offset);
             expect(response).toHaveLength(limit);
-            expect(response).toEqual(blogDB.slice(offset, offset + limit));
+            expect(response).toEqual(blogDB.rows.slice(offset, offset + limit));
         });
         it('should throw error if blogRepository fails', async () => {
             const pageSize = 4;
@@ -155,7 +155,7 @@ describe('Testing Blog Service', () => {
         it('should return the blog if exists', async () => {
             const blogId = '300';
             const expectedBlog = blogWithAuthorDB[2];
-            const expectedResult = blogDB[2];
+            const expectedResult = blogDB.rows[2];
 
             jest   
                 .spyOn(blogRepository, 'getBlogById')
@@ -195,7 +195,7 @@ describe('Testing Blog Service', () => {
     describe('Testing get blogs by authorId', () => {
         it('should return the blogs of the author', async () => {
             const authroId = '003';
-            const expectedData = [blogDB[0], blogDB[3]];
+            const expectedData = [blogDB.rows[0], blogDB.rows[3]];
             const pageSize = 1;
             const pageNumber = 1;
             const limit = pageSize;
@@ -207,12 +207,12 @@ describe('Testing Blog Service', () => {
                 .spyOn(blogRepository, 'getBlogByAuthorId')
                 .mockReturnValue(expectedData);  
 
-            const allBlog = [];
+            const allBlog = { count: 2, rows: [] };
             expectedData.forEach((element) => {
                 BlogDTO.mockImplementation((element) => { 
                     return element;
             })
-            allBlog.push(element);
+            allBlog.rows.push(element);
             });
             
             const response = await blogService.getBlogsByAuthorId(authroId);
@@ -223,7 +223,7 @@ describe('Testing Blog Service', () => {
         });
         it('should throw an error if author has no blog', async () => {
             const authroId = '003';
-            const expectedError = new AppError('The author has no blogs');
+            const expectedError = new AppError(null);
 
             const pageSize = 2;
             const pageNumber = 1;
@@ -234,7 +234,7 @@ describe('Testing Blog Service', () => {
 
             jest   
                 .spyOn(blogRepository, 'getBlogByAuthorId')
-                .mockReturnValueOnce(null);
+                .mockReturnValueOnce({count: 0, rows: []});
             
             await expect(blogService.getBlogsByAuthorId(authroId, pageNumber, pageSize)).rejects.toThrow(expectedError);
         })

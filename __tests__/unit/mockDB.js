@@ -50,7 +50,9 @@ const userDB = [
 ];
 
 
-const blogDB = [
+const blogDB = {
+    count: 4,
+    rows: [
     {
         id: '100',
         title: 'Hello there',
@@ -95,9 +97,11 @@ const blogDB = [
         authorUsername: 'tasmia',
         authorEmail: 'tasmia@gmail.com'
     }
-];
+]};
 
-const blogWithAuthorDB = [
+const blogWithAuthorDB = {
+    count: 4,
+    rows: [
     {
         id: '100',
         title: 'Hello there',
@@ -158,7 +162,7 @@ const blogWithAuthorDB = [
             updatedAt: '2023-03-29T09:56:57.000Z',
         },
     }
-];
+]};
 
 test("Db connected.", ()=>{
     expect();

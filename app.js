@@ -19,7 +19,7 @@ syncModels();
 const app = express();
 app.use(cookieParser());
 
-app.listen(PORT, HOST, () => {
+app.listen(PORT, () => {
     console.log(`App started on ${PORT}`);
 });
 

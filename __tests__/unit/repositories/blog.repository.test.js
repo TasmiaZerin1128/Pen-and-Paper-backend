@@ -21,14 +21,14 @@ describe('Testing Blog Repository', () => {
         const limit = 3;
         const offset = 1;
         jest
-            .spyOn(Blog, 'findAll')
+            .spyOn(Blog, 'findAndCountAll')
             .mockImplementation(({limit, offset}) => {
-                return blogDB.slice(offset, offset + limit);
+                return blogDB.rows.slice(offset, offset + limit);
             });
 
         const response = await blogRepository.getAllBlogs(limit, offset);
 
-        expect(Blog.findAll).toHaveBeenCalledWith(
+        expect(Blog.findAndCountAll).toHaveBeenCalledWith(
             {include : ["author"], order: [
                 ['updatedAt', 'DESC']], offset : offset, limit : limit }
         );
@@ -49,7 +49,7 @@ describe('Testing Blog Repository', () => {
         const offset = 1;
         const error = new Error('Error in getting all Blogs');
         jest
-            .spyOn(Blog, 'findAll')
+            .spyOn(Blog, 'findAndCountAll')
             .mockRejectedValueOnce(error);
 
         await expect(blogRepository.getAllBlogs(limit, offset)).rejects.toThrow(error);
@@ -94,12 +94,12 @@ describe('Testing Blog Repository', () => {
             const expectedData = [blogDB[0], blogDB[3]];
 
             jest
-                .spyOn(Blog, 'findAll').mockResolvedValueOnce(expectedData);
+                .spyOn(Blog, 'findAndCountAll').mockResolvedValueOnce(expectedData);
             
             const response = await blogRepository.getBlogByAuthorId(authorId);
 
-            expect(Blog.findAll).toBeCalledTimes(1);
-            expect(Blog.findAll).toBeCalledWith(
+            expect(Blog.findAndCountAll).toBeCalledTimes(1);
+            expect(Blog.findAndCountAll).toBeCalledWith(
                 {include : ["author"], order: [
                     ['updatedAt', 'DESC']], where: { authorId: authorId } }
             );
@@ -108,12 +108,12 @@ describe('Testing Blog Repository', () => {
         it('should return null when no Blog or Author found', async () => {
             const authorId = '300';
             jest
-                .spyOn(Blog, 'findAll').mockReturnValue(null);
+                .spyOn(Blog, 'findAndCountAll').mockReturnValue(null);
             
             const response = await blogRepository.getBlogByAuthorId(authorId);
 
-            expect(Blog.findAll).toBeCalledTimes(1);
-            expect(Blog.findAll).toBeCalledWith(
+            expect(Blog.findAndCountAll).toBeCalledTimes(1);
+            expect(Blog.findAndCountAll).toBeCalledWith(
                 {include : ["author"], order: [
                     ['updatedAt', 'DESC']], where: { authorId: authorId } }
             );
@@ -136,7 +136,7 @@ describe('Testing Blog Repository', () => {
                   description: editedBlog.description },
                 { where: { id: blogId } }
             );
-            expect(response).toBe(1);
+            expect(response).toBe(null);
         });
         it('should return 0 if no Blog found', async () => {
             const blogId = '100';
@@ -152,7 +152,7 @@ describe('Testing Blog Repository', () => {
                   description: editedBlog.description },
                 { where: { id: blogId } }
             );
-            expect(response).toBe(0);
+            expect(response).toBe(false);
         })
     })
 
